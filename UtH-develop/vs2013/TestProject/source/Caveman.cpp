@@ -2,9 +2,9 @@
 
 void Caveman::Init(PhysicsWorld *world)
 {
-	speed = 3;
+	speed = 1;
 	this->AddComponent(new Sprite("caveman.png"));
-	this->transform.SetPosition(200, 200);
+	this->transform.SetPosition(0, 0);
 	this->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
 	this->GetComponent<Rigidbody>()->SetVelocity(pmath::Vec2(0, 0));
 }
@@ -17,7 +17,7 @@ void Caveman::Hit()
 }
 void Caveman::ChangeDirection(pmath::Vec2 pullPosition)
 {
-	pmath::Vec2 temp = this->transform.GetPosition() - pullPosition;
+	pmath::Vec2 temp = this->GetComponent<Rigidbody>()->GetPosition() - pullPosition;
 	temp.normalize();
 	this->GetComponent<Rigidbody>()->SetVelocity(temp * speed);
 

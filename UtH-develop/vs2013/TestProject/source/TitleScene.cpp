@@ -15,7 +15,7 @@ void TitleScene::Update(float dt)
 {
 	Scene::Update(dt);
 
-	if (uthInput.Common.Event() == CLICK)
+	if (uthInput.Common == uth::InputEvent::CLICK)
 		uthSceneM.GoToScene(2);
 }
 void TitleScene::Draw(RenderTarget& target, RenderAttributes attributes)

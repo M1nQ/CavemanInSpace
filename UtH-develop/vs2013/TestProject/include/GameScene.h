@@ -2,6 +2,7 @@
 #define GAMESCENE_H
 
 #include <UtH/UtHEngine.hpp>
+#include "Caveman.h"
 
 using namespace uth;
 
@@ -23,6 +24,9 @@ namespace uth
 		// TODO:
 		// Logic for gameobject that are hit by caveman.
 		void ReactToHit();
+		Caveman* caveman;
+		InputEvent lastState;
+		PhysicsWorld* World;
 	};
 }
 
