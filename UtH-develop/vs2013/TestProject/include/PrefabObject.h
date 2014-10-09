@@ -1,12 +1,12 @@
 #ifndef PREFABOBJECT_H
 #define PREFABOBJECT_H
 
+#include <string>
 #include <UtH/UtHEngine.hpp>
 #include <UtH/Engine/GameObject.hpp>
 #include <UtH/Engine/Sprite.hpp>
 #include <UtH/Engine/Physics/Rigidbody.hpp>
 #include <UtH/Engine/AnimatedSprite.hpp>
-#include <string>
 
 using namespace uth;
 using namespace std;
@@ -18,7 +18,7 @@ public:
 	PrefabObject() { }
 	~PrefabObject() { }
 
-	GameObject* CreateAstronaut(PhysicsWorld world, Vec2 position, string tag = "Astronaut");
+	GameObject* CreateAstronaut(PhysicsWorld* world, Vec2 position, string tag = "Astronaut");
 	GameObject* CreateAsteroid(PhysicsWorld world, Vec2 position, string tag = "Asteroid");
 	// TODO:
 	GameObject* CreateCosmonaut(PhysicsWorld world, Vec2 position, string tag = "Cosmonaut");
@@ -29,7 +29,8 @@ public:
 	GameObject* CreateUfo(PhysicsWorld world, Vec2 position, string tag = "Ufo");
 
 private:
-	void Direct(const GameObject* object);
+	// Sets the objects direction towards the center of the screen, and randomizes a speed.
+	void Direct(GameObject* p_object);
 };
 
 #endif

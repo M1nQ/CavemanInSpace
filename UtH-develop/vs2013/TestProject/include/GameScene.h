@@ -1,10 +1,13 @@
 #ifndef GAMESCENE_H
 #define GAMESCENE_H
 
+#include <vector>
 #include <UtH/UtHEngine.hpp>
-#include "Caveman.h"
+#include <Caveman.h>
+#include <PrefabObject.h>
 
 using namespace uth;
+using namespace std;
 
 namespace uth
 {
@@ -24,9 +27,14 @@ namespace uth
 		// TODO:
 		// Logic for gameobject that are hit by caveman.
 		void ReactToHit();
-		Caveman* caveman;
-		TouchMotion lastState;
-		PhysicsWorld* World;
+
+		Caveman* p_caveman;
+		PhysicsWorld* p_world;
+		PrefabObject prefabObject;
+		vector<GameObject*> objectList;
+
+		// For testing with pc. Can be deleted later.
+		InputEvent lastStatePC;
 	};
 }
 
