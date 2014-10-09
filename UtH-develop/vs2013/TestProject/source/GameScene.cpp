@@ -20,6 +20,11 @@ bool GameScene::Init()
 	objectList.push_back(prefabObject.CreateAstronaut(p_world, Vec2(140, -500)));
 	objectList.push_back(prefabObject.CreateAstronaut(p_world, Vec2(-340, 250)));
 
+	objectList.push_back(prefabObject.CreateAsteroid(p_world, Vec2(-220, -300)));
+	objectList.push_back(prefabObject.CreateAsteroid(p_world, Vec2(210, 500)));
+	objectList.push_back(prefabObject.CreateAsteroid(p_world, Vec2(750, -270)));
+	objectList.push_back(prefabObject.CreateAsteroid(p_world, Vec2(400, -170)));
+
 	return true;
 }
 bool GameScene::DeInit()

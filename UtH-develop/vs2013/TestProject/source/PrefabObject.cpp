@@ -9,19 +9,22 @@ GameObject* PrefabObject::CreateAstronaut(PhysicsWorld* world, Vec2 position, st
 	Direct(p_astronaut);
 	return p_astronaut;
 }
-GameObject* PrefabObject::CreateAsteroid(PhysicsWorld world, Vec2 position, string tag)
+GameObject* PrefabObject::CreateAsteroid(PhysicsWorld* world, Vec2 position, string tag)
 {
 	GameObject* p_asteroid = new GameObject(tag);
-	p_asteroid->AddComponent(new Sprite(""));
+	p_asteroid->AddComponent(new Sprite("Placeholders/Asteroid_3.png"));
+	p_asteroid->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
+	p_asteroid->GetComponent<Rigidbody>("Rigidbody")->SetPosition(position);
+	Direct(p_asteroid);
 	return p_asteroid;
 }
 // TODO: Implement functions defined below.
-GameObject* PrefabObject::CreateCosmonaut(PhysicsWorld world, Vec2 position, string tag) { return nullptr; }
-GameObject* PrefabObject::CreateTaikonaut(PhysicsWorld world, Vec2 position, string tag) { return nullptr; }
-GameObject* PrefabObject::CreateMeteorite(PhysicsWorld world, Vec2 position, string tag) { return nullptr; }
-GameObject* PrefabObject::CreateSatellite(PhysicsWorld world, Vec2 position, string tag) { return nullptr; }
-GameObject* PrefabObject::CreateSpaceship(PhysicsWorld world, Vec2 position, string tag) { return nullptr; }
-GameObject* PrefabObject::CreateUfo(PhysicsWorld world, Vec2 position, string tag) { return nullptr; }
+GameObject* PrefabObject::CreateCosmonaut(PhysicsWorld* world, Vec2 position, string tag) { return nullptr; }
+GameObject* PrefabObject::CreateTaikonaut(PhysicsWorld* world, Vec2 position, string tag) { return nullptr; }
+GameObject* PrefabObject::CreateMeteorite(PhysicsWorld* world, Vec2 position, string tag) { return nullptr; }
+GameObject* PrefabObject::CreateSatellite(PhysicsWorld* world, Vec2 position, string tag) { return nullptr; }
+GameObject* PrefabObject::CreateSpaceship(PhysicsWorld* world, Vec2 position, string tag) { return nullptr; }
+GameObject* PrefabObject::CreateUfo(PhysicsWorld* world, Vec2 position, string tag) { return nullptr; }
 
 void PrefabObject::Direct(GameObject* p_object)
 {
