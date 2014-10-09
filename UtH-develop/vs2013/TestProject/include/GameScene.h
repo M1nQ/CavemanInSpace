@@ -25,7 +25,7 @@ namespace uth
 		// Logic for gameobject that are hit by caveman.
 		void ReactToHit();
 		Caveman* caveman;
-		InputEvent lastState;
+		TouchMotion lastState;
 		PhysicsWorld* World;
 	};
 }

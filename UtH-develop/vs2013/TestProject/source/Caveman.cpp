@@ -17,7 +17,7 @@ void Caveman::Hit()
 }
 void Caveman::ChangeDirection(pmath::Vec2 pullPosition)
 {
-	pmath::Vec2 temp = this->GetComponent<Rigidbody>()->GetPosition() - pullPosition;
+	pmath::Vec2 temp = this->GetComponent<Rigidbody>()->GetPosition() - pullPosition + (uthEngine.GetWindow().GetSize() / 2);
 	temp.normalize();
 	this->GetComponent<Rigidbody>()->SetVelocity(temp * speed);
 

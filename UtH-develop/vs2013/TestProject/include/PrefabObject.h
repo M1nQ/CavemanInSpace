@@ -1,5 +1,5 @@
 #ifndef PREFABOBJECT_H
-#define PREFABOBJECT_h
+#define PREFABOBJECT_H
 
 #include <UtH/UtHEngine.hpp>
 #include <UtH/Engine/GameObject.hpp>
