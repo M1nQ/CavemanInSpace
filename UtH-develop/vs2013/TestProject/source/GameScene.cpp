@@ -10,6 +10,10 @@ bool GameScene::Init()
 	prefabObject = PrefabObject();
 	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
 
+	// Temporary background used for testing.
+	background = new GameObject("Background");
+	background->AddComponent(new Sprite("Placeholders/Big_Background.png"));
+
 	// Used for PC input.
 	lastStatePC = InputEvent::NONE;
 
@@ -65,6 +69,7 @@ void GameScene::Update(float dt)
 void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
 	Scene::Draw(target, attributes);
+	background->Draw(target, attributes); // Temporary background used for testing.
 	p_caveman->Draw(target, attributes);
 
 	objectList[0]->Draw(target, attributes);

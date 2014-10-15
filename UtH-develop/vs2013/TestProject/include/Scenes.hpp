@@ -34,7 +34,7 @@ Scene* NewSceneFunc(int SceneID)
 	//case MENU:		return new MenuScene();
 	case GAME:		return new GameScene();
 	case GAMEOVER:	return new GameOverScene();
-	default:		return nullptr;
+	default:		return new GameScene();
 	}
 }
 

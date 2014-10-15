@@ -29,6 +29,7 @@ namespace uth
 		void ReactToHit();
 
 		Caveman* p_caveman;
+		GameObject* background; // Temporary background used for testing.
 		PhysicsWorld* p_world;
 		PrefabObject prefabObject;
 		vector<GameObject*> objectList;
