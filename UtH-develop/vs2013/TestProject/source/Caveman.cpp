@@ -16,7 +16,7 @@ void Caveman::Hit()
 void Caveman::ChangeDirection(pmath::Vec2 pullPosition)
 {
 	// Calculates the vector between touch position and caveman's position.
-	// caveman - (touch + camera + (caveman - camera)) + windowSize / 2
+	// caveman - (touch + camera + (caveman - camera)) + (windowSize / 2)
 	pmath::Vec2 temp = 
 						 this->GetComponent<Rigidbody>()->GetPosition() - 
 														  (pullPosition + 

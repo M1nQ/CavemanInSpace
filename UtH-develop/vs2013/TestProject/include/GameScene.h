@@ -5,6 +5,7 @@
 #include <UtH/UtHEngine.hpp>
 #include <Caveman.h>
 #include <PrefabObject.h>
+#include <map>
 
 using namespace uth;
 using namespace std;
@@ -27,12 +28,18 @@ namespace uth
 		// TODO:
 		// Logic for gameobject that are hit by caveman.
 		void ReactToHit();
+		void AddObjects();
+		bool DeleteObjects(GameObject* p_object);
+		void UpdateBackground();
+		Vec2 GetRandomSpawnPosition();
 
 		Caveman* p_caveman;
 		GameObject* background; // Temporary background used for testing.
 		PhysicsWorld* p_world;
 		PrefabObject prefabObject;
-		vector<GameObject*> objectList;
+		//multimap<string, GameObject*> objectList;
+		//multimap<string, GameObject*>::reverse_iterator i_ObjectList;
+		vector<GameObject*> objects; // Temporary object list for testing.
 
 		// For testing with pc. Can be deleted later.
 		InputEvent lastStatePC;
