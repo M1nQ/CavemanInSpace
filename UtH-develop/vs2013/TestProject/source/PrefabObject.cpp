@@ -2,6 +2,9 @@
 
 GameObject* PrefabObject::CreateAstronaut(PhysicsWorld* world, Vec2 position, string tag)
 {
+	// Creates an astronaut to the given position, heading towards the center of the screen
+	// with a sligthly randomized angle.
+
 	GameObject* p_astronaut = new GameObject(tag);
 	p_astronaut->AddComponent(new Sprite("Placeholders/astronautPlaceHolder.png"));
 	p_astronaut->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
@@ -11,6 +14,9 @@ GameObject* PrefabObject::CreateAstronaut(PhysicsWorld* world, Vec2 position, st
 }
 GameObject* PrefabObject::CreateAsteroid(PhysicsWorld* world, Vec2 position, string tag)
 {
+	// Creates an asteroid to the given position, heading towards the center of the screen
+	// with a sligthly randomized angle.
+
 	GameObject* p_asteroid = new GameObject(tag);
 	p_asteroid->AddComponent(new Sprite("Placeholders/Asteroid_3.png"));
 	p_asteroid->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
@@ -28,19 +34,24 @@ GameObject* PrefabObject::CreateUfo(PhysicsWorld* world, Vec2 position, string t
 
 void PrefabObject::Direct(GameObject* p_object)
 {
+	// Sets the object's direction towards the center of the screen, 
+	// and randomizes a speed using the randomMaxSpeed.
+
 	Vec2 direction = uthEngine.GetWindow().GetCamera().GetPosition() - p_object->GetComponent<Rigidbody>("Rigidbody")->GetPosition();
 	direction.normalize();
-	
+
 	if (direction.x > 0)
-		direction.x + Randomizer::GetFloat(0.f, 1 - direction.x);
+		direction.x += Randomizer::GetFloat(0.f, 10 - direction.x);
 	else
-		direction.x - Randomizer::GetFloat(0.f, 1 + direction.x);
+		direction.x -= Randomizer::GetFloat(0.f, 10 + direction.x);
 
 	if (direction.y > 0)
-		direction.y + Randomizer::GetFloat(0.f, 1 - direction.y);
+		direction.y += Randomizer::GetFloat(0.f, 10 - direction.y);
 	else
-		direction.y - Randomizer::GetFloat(0.f, 1 + direction.x);
+		direction.y -= Randomizer::GetFloat(0.f, 10 + direction.x);
 
 	direction.normalize();
-	p_object->GetComponent<Rigidbody>("Rigidbody")->SetVelocity(direction * Randomizer::GetFloat(0, 3));
+
+	if (direction.x != 0 && direction.y != 0)
+		p_object->GetComponent<Rigidbody>("Rigidbody")->SetVelocity(direction * Randomizer::GetFloat(0, randomMaxSpeed));
 }

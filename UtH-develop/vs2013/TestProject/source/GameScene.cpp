@@ -4,11 +4,11 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {}
 
 bool GameScene::Init()
-{
-	p_world = new PhysicsWorld(0, 0);
+{	p_world = new PhysicsWorld(0, 0);
 	p_caveman = new Caveman();
 	p_caveman->Init(p_world);
 	prefabObject = PrefabObject();
+	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
 
 	// Used for PC input.
 	lastStatePC = InputEvent::NONE;
@@ -38,20 +38,25 @@ void GameScene::Update(float dt)
 	p_caveman->Update(dt);
 	uthEngine.GetWindow().GetCamera().Update(dt);
 
-	for each (GameObject* object in objectList)
-	{
-		object->Update(dt);
-	}
-
-	//uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
+	objectList[0]->Update(dt);
+	objectList[1]->Update(dt);
+	objectList[2]->Update(dt);
+	objectList[3]->Update(dt);
+	objectList[4]->Update(dt);
+	objectList[5]->Update(dt);
+	objectList[6]->Update(dt);
+	objectList[7]->Update(dt);
+	objectList[8]->Update(dt);
 
 	// Android Input
-	/*
+	///*
 	if (uthInput.Touch.Motion() == TouchMotion::RELEASE)
 			p_caveman->ChangeDirection(uthInput.Common.Position());
-	*/
+	//*/
 
 	// PC Input for testing.
+	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
+
 	if (uthInput.Common.Event() != InputEvent::DRAG && lastStatePC == InputEvent::DRAG)
 		p_caveman->ChangeDirection(uthInput.Common.Position());
 
@@ -62,10 +67,15 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 	Scene::Draw(target, attributes);
 	p_caveman->Draw(target, attributes);
 
-	for each (GameObject* object in objectList)
-	{
-		object->Draw(target, attributes);
-	}
+	objectList[0]->Draw(target, attributes);
+	objectList[1]->Draw(target, attributes);
+	objectList[2]->Draw(target, attributes);
+	objectList[3]->Draw(target, attributes);
+	objectList[4]->Draw(target, attributes);
+	objectList[5]->Draw(target, attributes);
+	objectList[6]->Draw(target, attributes);
+	objectList[7]->Draw(target, attributes);
+	objectList[8]->Draw(target, attributes);
 }
 
 // Private //

@@ -16,8 +16,8 @@ void TitleScene::Update(float dt)
 	Scene::Update(dt);
 
 	// Android Input
-	//if (uthInput.Touch.Motion() == TouchMotion::TAP)
-	//	uthSceneM.GoToScene(2);
+	if (uthInput.Touch.Motion() == TouchMotion::TAP)
+		uthSceneM.GoToScene(2);
 
 	// PC Input
 	if (uthInput.Common == uth::InputEvent::TAP)

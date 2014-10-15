@@ -15,10 +15,12 @@ using namespace pmath;
 class PrefabObject
 {
 public:
-	PrefabObject() { }
+	inline PrefabObject() { randomMaxSpeed = 3; }
 	~PrefabObject() { }
 
+	// Creates an astronaut to the given position, heading towards the center of the screen.
 	GameObject* CreateAstronaut(PhysicsWorld* world, Vec2 position, string tag = "Astronaut");
+	// Creates an asteroid to the given position, heading towards the center of the screen.
 	GameObject* CreateAsteroid(PhysicsWorld* world, Vec2 position, string tag = "Asteroid");
 	// TODO:
 	GameObject* CreateCosmonaut(PhysicsWorld* world, Vec2 position, string tag = "Cosmonaut");
@@ -29,8 +31,11 @@ public:
 	GameObject* CreateUfo(PhysicsWorld* world, Vec2 position, string tag = "Ufo");
 
 private:
-	// Sets the objects direction towards the center of the screen, and randomizes a speed.
+	// Sets the object's direction towards the center of the screen, and randomizes a speed.
 	void Direct(GameObject* p_object);
+
+	// Maximum speed used for randomizing the speed of objects in Direct method.
+	int randomMaxSpeed;
 };
 
 #endif
