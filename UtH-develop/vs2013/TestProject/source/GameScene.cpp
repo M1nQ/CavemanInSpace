@@ -4,15 +4,17 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {}
 
 bool GameScene::Init()
-{	p_world = new PhysicsWorld(0, 0);
+{	
+	p_world = new PhysicsWorld(0, 0);
 	p_caveman = new Caveman();
+	AddChild<Caveman>(p_caveman);
 	p_caveman->Init(p_world);
 	prefabObject = PrefabObject();
 	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
 
 	// Temporary background used for testing.
-	//background = new GameObject("Background");
-	//background->AddComponent(new Sprite("Placeholders/Big_Background.png"));
+	background = new GameObject("Background");
+	background->AddComponent(new Sprite("Placeholders/Big_Background.png"));
 
 	// Used for PC input.
 	lastStatePC = InputEvent::NONE;
@@ -27,7 +29,6 @@ void GameScene::Update(float dt)
 {
 	Scene::Update(dt);
 	p_world->Update();
-	p_caveman->Update(dt);
 	uthEngine.GetWindow().GetCamera().Update(dt);
 
 	// Maintaining the list of objects.
@@ -44,8 +45,8 @@ void GameScene::Update(float dt)
 	AddObjects();
 
 	// Android Input
-	if (uthInput.Touch.Motion() == TouchMotion::RELEASE)
-			p_caveman->ChangeDirection(uthInput.Common.Position());
+	//if (uthInput.Touch[0].Motion() == TouchMotion::RELEASE)
+	//	p_caveman->ChangeDirection(uthInput.Touch[0].GetEndPosition());
 
 	// PC Input for testing
 	if (uthInput.Common.Event() != InputEvent::DRAG && lastStatePC == InputEvent::DRAG)
@@ -56,9 +57,8 @@ void GameScene::Update(float dt)
 }
 void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
+	background->Draw(target, attributes); // Temporary background used for testing.
 	Scene::Draw(target, attributes);
-	//background->Draw(target, attributes); // Temporary background used for testing.
-	p_caveman->Draw(target, attributes);
 
 	for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
 	{
@@ -75,11 +75,11 @@ void GameScene::AddObjects()
 {
 	// Maintains the objectlist so, that it always holds a certain amount of specified objects.
 
-	while (objectList.count("Astronaut") < 10)
+	while (objectList.count("Astronaut") < 15)
 	{
 		objectList.insert(make_pair("Astronaut", prefabObject.CreateAstronaut(p_world, GetRandomSpawnPosition())));
 	}
-	while (objectList.count("Asteroid") < 7)
+	while (objectList.count("Asteroid") < 20)
 	{
 		objectList.insert(make_pair("Asteroid", prefabObject.CreateAsteroid(p_world, GetRandomSpawnPosition())));
 	}

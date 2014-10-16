@@ -34,7 +34,7 @@ namespace uth
 		Vec2 GetRandomSpawnPosition();
 
 		Caveman* p_caveman;
-		//GameObject* background; // Temporary background used for testing.
+		GameObject* background; // Temporary background used for testing.
 		PhysicsWorld* p_world;
 		PrefabObject prefabObject;
 		multimap<string, GameObject*> objectList;
