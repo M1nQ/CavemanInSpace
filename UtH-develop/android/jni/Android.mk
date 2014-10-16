@@ -29,8 +29,7 @@ include $(PREBUILT_SHARED_LIBRARY)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := uthengine
-LOCAL_SRC_FILES :=  \
-../../vs2013/TestProject/source/main.cpp \
+LOCAL_SRC_FILES :=  main.cpp \
 ../../vs2013/TestProject/source/TitleScene.cpp \
 ../../vs2013/TestProject/source/GameScene.cpp \
 ../../vs2013/TestProject/source/MenuScene.cpp \
