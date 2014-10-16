@@ -44,10 +44,10 @@ void GameScene::Update(float dt)
 	AddObjects();
 
 	// Android Input
-	//if (uthInput.Touch.Motion() == TouchMotion::RELEASE)
-	//		p_caveman->ChangeDirection(uthInput.Common.Position());
+	if (uthInput.Touch.Motion() == TouchMotion::RELEASE)
+			p_caveman->ChangeDirection(uthInput.Common.Position());
 
-	// PC Input for testing.
+	// PC Input for testing
 	if (uthInput.Common.Event() != InputEvent::DRAG && lastStatePC == InputEvent::DRAG)
 		p_caveman->ChangeDirection(uthInput.Common.Position());
 
@@ -103,10 +103,10 @@ Vec2 GameScene::GetRandomSpawnPosition()
 
 	switch (randomNumber)
 	{
-	case 0: return Vec2(Randomizer::GetFloat(1000, 1500), Randomizer::GetFloat(600, 1100)) + p_caveman->transform.GetPosition();
-	case 1: return Vec2(Randomizer::GetFloat(1000, -1500), Randomizer::GetFloat(600, -1100)) + p_caveman->transform.GetPosition();
-	case 2: return Vec2(Randomizer::GetFloat(-1000, 1500), Randomizer::GetFloat(-600, 1100)) + p_caveman->transform.GetPosition();
-	case 3: return Vec2(Randomizer::GetFloat(-1000, -1500), Randomizer::GetFloat(-600, -1100)) + p_caveman->transform.GetPosition();
-	default: return Vec2(Randomizer::GetFloat(1000, 1500), Randomizer::GetFloat(600, 1100)) + p_caveman->transform.GetPosition();
+	case 0: return Vec2(Randomizer::GetFloat(-1000, 1000), Randomizer::GetFloat(600, 1100)) + p_caveman->transform.GetPosition();
+	case 1: return Vec2(Randomizer::GetFloat(-1000, 1000), Randomizer::GetFloat(-600, -1100)) + p_caveman->transform.GetPosition();
+	case 2: return Vec2(Randomizer::GetFloat(1000, 1500), Randomizer::GetFloat(-600, 600)) + p_caveman->transform.GetPosition();
+	case 3: return Vec2(Randomizer::GetFloat(-1000, -1500), Randomizer::GetFloat(-600, 600)) + p_caveman->transform.GetPosition();
+	default: return Vec2(Randomizer::GetFloat(-1000, 1000), Randomizer::GetFloat(600, 1100)) + p_caveman->transform.GetPosition();
 	}
 }
