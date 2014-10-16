@@ -17,13 +17,6 @@ bool GameScene::Init()
 	// Used for PC input.
 	lastStatePC = InputEvent::NONE;
 
-	// Temporary objects
-	for (int i = 0; i < 10; ++i)
-		objects.push_back(prefabObject.CreateAstronaut(p_world, GetRandomSpawnPosition()));
-
-	for (int i = 0; i < 10; ++i)
-		objects.push_back(prefabObject.CreateAsteroid(p_world, GetRandomSpawnPosition()));
-
 	return true;
 }
 bool GameScene::DeInit()
@@ -38,27 +31,21 @@ void GameScene::Update(float dt)
 	uthEngine.GetWindow().GetCamera().Update(dt);
 
 	// Maintaining the list of objects.
-	/*
 	if (objectList.size() > 0)
 	{
-		for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); i_ObjectList--)
+		for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
 		{
+			i_ObjectList->second->Update(dt);
+
 			if (DeleteObjects(i_ObjectList->second))
 				objectList.erase(--(i_ObjectList.base()));
-
-			i_ObjectList->second->Update(dt);
 		}
 	}
 	AddObjects();
-	*/
-
-	// Test objects update
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Update(dt);
 
 	// Android Input
-	if (uthInput.Touch.Motion() == TouchMotion::RELEASE)
-			p_caveman->ChangeDirection(uthInput.Common.Position());
+	//if (uthInput.Touch.Motion() == TouchMotion::RELEASE)
+	//		p_caveman->ChangeDirection(uthInput.Common.Position());
 
 	// PC Input for testing.
 	if (uthInput.Common.Event() != InputEvent::DRAG && lastStatePC == InputEvent::DRAG)
@@ -73,16 +60,10 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 	//background->Draw(target, attributes); // Temporary background used for testing.
 	p_caveman->Draw(target, attributes);
 
-	/*
-	for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); i_ObjectList--)
+	for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
 	{
 		i_ObjectList->second->Draw(target, attributes);
 	}
-	*/
-
-	// Test objects update
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Draw(target, attributes);
 }
 
 // Private //
@@ -94,16 +75,14 @@ void GameScene::AddObjects()
 {
 	// Maintains the objectlist so, that it always holds a certain amount of specified objects.
 
-	/*
 	while (objectList.count("Astronaut") < 10)
 	{
 		objectList.insert(make_pair("Astronaut", prefabObject.CreateAstronaut(p_world, GetRandomSpawnPosition())));
 	}
-	while (objectList.count("Asteroid") < 15)
+	while (objectList.count("Asteroid") < 7)
 	{
 		objectList.insert(make_pair("Asteroid", prefabObject.CreateAsteroid(p_world, GetRandomSpawnPosition())));
 	}
-	*/
 }
 bool GameScene::DeleteObjects(GameObject* p_object)
 {

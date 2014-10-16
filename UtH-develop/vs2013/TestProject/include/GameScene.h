@@ -37,9 +37,8 @@ namespace uth
 		GameObject* background; // Temporary background used for testing.
 		PhysicsWorld* p_world;
 		PrefabObject prefabObject;
-		//multimap<string, GameObject*> objectList;
-		//multimap<string, GameObject*>::reverse_iterator i_ObjectList;
-		vector<GameObject*> objects; // Temporary object list for testing.
+		multimap<string, GameObject*> objectList;
+		multimap<string, GameObject*>::reverse_iterator i_ObjectList;
 
 		// For testing with pc. Can be deleted later.
 		InputEvent lastStatePC;
