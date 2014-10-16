@@ -5,6 +5,7 @@ GameScene::~GameScene() {}
 
 bool GameScene::Init()
 {	
+	Randomizer::SetSeed(3425934636);
 	p_world = new PhysicsWorld(0, 0);
 	p_caveman = new Caveman();
 	AddChild<Caveman>(p_caveman);
@@ -15,9 +16,6 @@ bool GameScene::Init()
 	// Temporary background used for testing.
 	background = new GameObject("Background");
 	background->AddComponent(new Sprite("Placeholders/Big_Background.png"));
-
-	// Used for PC input.
-	lastStatePC = InputEvent::NONE;
 
 	return true;
 }
@@ -30,6 +28,7 @@ void GameScene::Update(float dt)
 	Scene::Update(dt);
 	p_world->Update();
 	uthEngine.GetWindow().GetCamera().Update(dt);
+	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
 
 	// Maintaining the list of objects.
 	if (objectList.size() > 0)
@@ -44,16 +43,9 @@ void GameScene::Update(float dt)
 	}
 	AddObjects();
 
-	// Android Input
-	//if (uthInput.Touch[0].Motion() == TouchMotion::RELEASE)
-	//	p_caveman->ChangeDirection(uthInput.Touch[0].GetEndPosition());
-
-	// PC Input for testing
-	if (uthInput.Common.Event() != InputEvent::DRAG && lastStatePC == InputEvent::DRAG)
+	// Input
+	if (uthInput.Common.Event() == InputEvent::RELEASE)
 		p_caveman->ChangeDirection(uthInput.Common.Position());
-
-	lastStatePC = uthInput.Common.Event();
-	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
 }
 void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
@@ -75,7 +67,7 @@ void GameScene::AddObjects()
 {
 	// Maintains the objectlist so, that it always holds a certain amount of specified objects.
 
-	while (objectList.count("Astronaut") < 15)
+	while (objectList.count("Astronaut") < 25)
 	{
 		objectList.insert(make_pair("Astronaut", prefabObject.CreateAstronaut(p_world, GetRandomSpawnPosition())));
 	}
@@ -86,6 +78,8 @@ void GameScene::AddObjects()
 }
 bool GameScene::DeleteObjects(GameObject* p_object)
 {
+	// Deletes objects that are too far away from the player. (Return's true if the object was deleted.)
+
 	if (Vec2::distance(p_object->transform.GetPosition(), p_caveman->transform.GetPosition()) >= 2000)
 	{
 		delete(p_object);
@@ -99,14 +93,16 @@ void GameScene::UpdateBackground()
 }
 Vec2 GameScene::GetRandomSpawnPosition()
 {
+	// Returns a random position outside the field of view, but not too far away.
+
 	short randomNumber = Randomizer::GetInt(0, 4);
 
 	switch (randomNumber)
 	{
-	case 0: return Vec2(Randomizer::GetFloat(-1000, 1000), Randomizer::GetFloat(600, 1100)) + p_caveman->transform.GetPosition();
-	case 1: return Vec2(Randomizer::GetFloat(-1000, 1000), Randomizer::GetFloat(-600, -1100)) + p_caveman->transform.GetPosition();
-	case 2: return Vec2(Randomizer::GetFloat(1000, 1500), Randomizer::GetFloat(-600, 600)) + p_caveman->transform.GetPosition();
-	case 3: return Vec2(Randomizer::GetFloat(-1000, -1500), Randomizer::GetFloat(-600, 600)) + p_caveman->transform.GetPosition();
-	default: return Vec2(Randomizer::GetFloat(-1000, 1000), Randomizer::GetFloat(600, 1100)) + p_caveman->transform.GetPosition();
+	case 0: return Vec2(Randomizer::GetFloat(-1000, 1000), Randomizer::GetFloat(600, 1600)) + p_caveman->transform.GetPosition();
+	case 1: return Vec2(Randomizer::GetFloat(-1000, 1000), Randomizer::GetFloat(-600, -1600)) + p_caveman->transform.GetPosition();
+	case 2: return Vec2(Randomizer::GetFloat(1000, 2000), Randomizer::GetFloat(-600, 600)) + p_caveman->transform.GetPosition();
+	case 3: return Vec2(Randomizer::GetFloat(-1000, -2000), Randomizer::GetFloat(-600, 600)) + p_caveman->transform.GetPosition();
+	default: return Vec2(Randomizer::GetFloat(-1000, 1000), Randomizer::GetFloat(600, 1600)) + p_caveman->transform.GetPosition();
 	}
 }

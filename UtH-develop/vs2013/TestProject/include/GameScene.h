@@ -39,9 +39,6 @@ namespace uth
 		PrefabObject prefabObject;
 		multimap<string, GameObject*> objectList;
 		multimap<string, GameObject*>::reverse_iterator i_ObjectList;
-
-		// For testing with pc. Can be deleted later.
-		InputEvent lastStatePC;
 	};
 }
 
