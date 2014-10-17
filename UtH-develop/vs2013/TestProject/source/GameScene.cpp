@@ -5,7 +5,7 @@ GameScene::~GameScene() {}
 
 bool GameScene::Init()
 {	
-	Randomizer::SetSeed(3425934636);
+	Randomizer::SetSeed(time(NULL));
 	p_world = new PhysicsWorld(0, 0);
 	p_caveman = new Caveman();
 	AddChild<Caveman>(p_caveman);
@@ -27,25 +27,9 @@ void GameScene::Update(float dt)
 {
 	Scene::Update(dt);
 	p_world->Update();
-	uthEngine.GetWindow().GetCamera().Update(dt);
-	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
-
-	// Maintaining the list of objects.
-	if (objectList.size() > 0)
-	{
-		for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
-		{
-			i_ObjectList->second->Update(dt);
-
-			if (DeleteObjects(i_ObjectList->second))
-				objectList.erase(--(i_ObjectList.base()));
-		}
-	}
-	AddObjects();
-
-	// Input
-	if (uthInput.Common.Event() == InputEvent::RELEASE)
-		p_caveman->ChangeDirection(uthInput.Common.Position());
+	MaintainObjectList(dt);
+	UpdateCameraMovement(dt);
+	Input();
 }
 void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
@@ -63,11 +47,28 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 void GameScene::ReactToHit()
 {
 }
+void GameScene::MaintainObjectList(float dt)
+{
+	// Updates, deletes and instantiates objects.
+
+	AddObjects();
+
+	if (objectList.size() > 0)
+	{
+		for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
+		{
+			i_ObjectList->second->Update(dt);
+
+			if (DeleteObjects(i_ObjectList->second))
+				objectList.erase(--(i_ObjectList.base()));
+		}
+	}
+}
 void GameScene::AddObjects()
 {
 	// Maintains the objectlist so, that it always holds a certain amount of specified objects.
 
-	while (objectList.count("Astronaut") < 25)
+	while (objectList.count("Astronaut") < 20)
 	{
 		objectList.insert(make_pair("Astronaut", prefabObject.CreateAstronaut(p_world, GetRandomSpawnPosition())));
 	}
@@ -87,10 +88,6 @@ bool GameScene::DeleteObjects(GameObject* p_object)
 	}
 	return false;
 }
-void GameScene::UpdateBackground()
-{
-	// TODO: Make a "scrolling" background.
-}
 Vec2 GameScene::GetRandomSpawnPosition()
 {
 	// Returns a random position outside the field of view, but not too far away.
@@ -105,4 +102,31 @@ Vec2 GameScene::GetRandomSpawnPosition()
 	case 3: return Vec2(Randomizer::GetFloat(-1000, -2000), Randomizer::GetFloat(-600, 600)) + p_caveman->transform.GetPosition();
 	default: return Vec2(Randomizer::GetFloat(-1000, 1000), Randomizer::GetFloat(600, 1600)) + p_caveman->transform.GetPosition();
 	}
+}
+void GameScene::UpdateBackground()
+{
+	// TODO: Make a "scrolling" background.
+}
+void GameScene::UpdateCameraMovement(float dt)
+{
+	// Makes the camera smoothly follow the player.
+	
+	Vec2 movement = p_caveman->transform.GetPosition() - uthEngine.GetWindow().GetCamera().GetPosition();
+
+	if (movement.length() != 0)
+		movement.normalize();
+
+	if (Vec2::distance(p_caveman->transform.GetPosition(), uthEngine.GetWindow().GetCamera().GetPosition()) >= 0.5f)
+		uthEngine.GetWindow().GetCamera().Scroll(movement * Vec2::distance(p_caveman->transform.GetPosition(), uthEngine.GetWindow().GetCamera().GetPosition()) / 50.f);
+	else
+		uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
+
+	uthEngine.GetWindow().GetCamera().Update(dt);
+}
+void GameScene::Input()
+{
+	// Handles input.
+
+	if (uthInput.Common.Event() == InputEvent::RELEASE)
+		p_caveman->ChangeDirection(uthInput.Common.Position());
 }

@@ -28,10 +28,13 @@ namespace uth
 		// TODO:
 		// Logic for gameobject that are hit by caveman.
 		void ReactToHit();
+		void MaintainObjectList(float dt);
 		void AddObjects();
 		bool DeleteObjects(GameObject* p_object);
-		void UpdateBackground();
 		Vec2 GetRandomSpawnPosition();
+		void UpdateBackground();
+		void UpdateCameraMovement(float dt);
+		void Input();
 
 		Caveman* p_caveman;
 		GameObject* background; // Temporary background used for testing.
