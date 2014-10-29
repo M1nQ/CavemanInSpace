@@ -13,6 +13,21 @@ bool GameScene::Init()
 	prefabObject = PrefabObject();
 	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
 
+	// particle effect for astronaut kill (placeholder)
+
+	p_partsys = new ParticleSystem(100.0f);
+	auto oxypart = uthRS.LoadTexture("oxygenpix");
+
+	ParticleTemplate pt;
+	pt.SetTexture(oxypart);
+	pt.SetLifetime(4.f);
+	pt.SetSpeed(20.f);
+
+	p_partsys->SetTemplate(pt);
+	p_partsys->AddAffector(new OxygenAffector());
+
+
+	// contact reaction logic
 	contactListener = PhysicsContactListener();
 	contactListener.onBeginContact = [&](b2Contact* contact, GameObject* a, GameObject* b)
 		{
