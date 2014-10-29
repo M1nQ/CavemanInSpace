@@ -25,7 +25,7 @@ bool GameScene::Init()
 
 	p_partsys->SetTemplate(pt);
 	p_partsys->AddAffector(new OxygenAffector());
-
+	
 
 	// contact reaction logic
 	contactListener = PhysicsContactListener();
@@ -40,6 +40,7 @@ bool GameScene::Init()
 						//kill astronaut
 						p_caveman->Hit();
 						//particles!
+						p_partsys->transform.SetPosition(b->GetComponent<Rigidbody>()->GetPosition());
 					}
 				}
 			}
