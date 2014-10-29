@@ -5,6 +5,7 @@
 #include <UtH/UtHEngine.hpp>
 #include <Caveman.h>
 #include <PrefabObject.h>
+#include <OxygenAffector.h>
 #include <map>
 
 using namespace uth;
@@ -40,6 +41,7 @@ namespace uth
 		GameObject* background; // Temporary background used for testing.
 		PhysicsWorld* p_world;
 		PhysicsContactListener contactListener;
+		ParticleSystem* p_partsys;
 		PrefabObject prefabObject;
 		multimap<string, GameObject*> objectList;
 		multimap<string, GameObject*>::reverse_iterator i_ObjectList;		
