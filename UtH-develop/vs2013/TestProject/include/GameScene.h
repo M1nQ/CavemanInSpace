@@ -39,9 +39,10 @@ namespace uth
 		Caveman* p_caveman;
 		GameObject* background; // Temporary background used for testing.
 		PhysicsWorld* p_world;
+		PhysicsContactListener contactListener;
 		PrefabObject prefabObject;
 		multimap<string, GameObject*> objectList;
-		multimap<string, GameObject*>::reverse_iterator i_ObjectList;
+		multimap<string, GameObject*>::reverse_iterator i_ObjectList;		
 	};
 }
 

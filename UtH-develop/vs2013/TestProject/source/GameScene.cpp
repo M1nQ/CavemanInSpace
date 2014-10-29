@@ -13,6 +13,24 @@ bool GameScene::Init()
 	prefabObject = PrefabObject();
 	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
 
+	contactListener = PhysicsContactListener();
+	contactListener.onBeginContact = [&](b2Contact* contact, GameObject* a, GameObject* b)
+		{
+			if (a->HasTag("Caveman"))
+			{
+				for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
+				{
+					if (i_ObjectList->second == b && i_ObjectList->first == "Astronaut")
+					{
+						//kill astronaut
+						p_caveman->Hit();
+						//particles!
+					}
+				}
+			}
+		};
+	p_world->SetContactListener(&contactListener);
+
 	// Temporary background used for testing.
 	background = new GameObject("Background");
 	background->AddComponent(new Sprite("Placeholders/Big_Background.png"));
@@ -67,7 +85,7 @@ void GameScene::MaintainObjectList(float dt)
 void GameScene::AddObjects()
 {
 	// Maintains the objectlist so, that it always holds a certain amount of specified objects.
-
+	
 	while (objectList.count("Astronaut") < 20)
 	{
 		objectList.insert(make_pair("Astronaut", prefabObject.CreateAstronaut(p_world, GetRandomSpawnPosition())));

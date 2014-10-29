@@ -7,6 +7,7 @@ void Caveman::Init(PhysicsWorld *world)
 	this->transform.SetPosition(0, 0);
 	this->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
 	this->GetComponent<Rigidbody>()->SetVelocity(pmath::Vec2(0, 0));
+	this->AddTag("Caveman");
 }
 
 void Caveman::Hit()
