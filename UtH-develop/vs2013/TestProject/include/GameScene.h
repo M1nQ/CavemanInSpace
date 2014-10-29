@@ -5,7 +5,7 @@
 #include <UtH/UtHEngine.hpp>
 #include <Caveman.h>
 #include <PrefabObject.h>
-#include <OxygenAffector.h>
+#include "OxygenAffector.h"
 #include <map>
 
 using namespace uth;
