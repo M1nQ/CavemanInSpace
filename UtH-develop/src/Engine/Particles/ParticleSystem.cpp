@@ -173,3 +173,9 @@ size_t ParticleSystem::GetParticleLimit() const
 {
     return m_particles.capacity();
 }
+
+
+void ParticleSystem::RaiseUpdateFlag()
+{
+	m_update = true;
+}

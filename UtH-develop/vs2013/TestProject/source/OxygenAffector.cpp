@@ -14,6 +14,7 @@ void OxygenAffector::InitParticle(uth::Particle& particle, const uth::ParticleTe
 	particle.direction = RandomDirection();
 	particle.direction.normalize();
 	timeLeft = pt.lifetime;
+	particle.color.a = 1;
 	speed = Randomizer::GetFloat(pt.minSpeed, pt.maxSpeed);
 }
 
@@ -25,14 +26,13 @@ void OxygenAffector::Update(float dt)
 void OxygenAffector::UpdateParticle(uth::Particle& particle, const uth::ParticleTemplate& pt, float dt)
 {
 	//TODO: set fade to happen in the last half of lifetime
-	/*timeLeft -= dt;
+	timeLeft -= dt;
 	if (timeLeft < pt.lifetime / 2 && particle.color.a > 0)
-	{*/
-		//particle.color.a--;
+	{
+		particle.color.a -= dt / (pt.lifetime/2);	
+	}	
 	
-	//}
-
-	particle.Move(particle.direction * dt * speed);
+	//particle.Move(particle.direction * dt * speed);
 	
 }
 

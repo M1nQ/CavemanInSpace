@@ -21,8 +21,8 @@ bool GameScene::Init()
 	ParticleTemplate pt;
 	pt.SetTexture(oxypart);
 	pt.SetLifetime(2.5f);
-	pt.SetSpeed(50.f, 100.f);
-	pt.SetColor(1, 1, 0.2f, 0.5f);
+	pt.SetSpeed(30.f, 70.f);
+	//pt.SetColor(1, 1, 1, 1);
 	
 	p_partsys->SetTemplate(pt);
 
@@ -45,7 +45,7 @@ bool GameScene::Init()
 						p_caveman->Hit();
 						//particles!
 						p_partsys->transform.SetPosition(b->GetComponent<Rigidbody>()->GetPosition());
-						p_partsys->SetEmitProperties(true, 0, 0.2f, 50, 70);
+						p_partsys->SetEmitProperties(true, 0, 0.2f, 40, 60);
 						particleTimer = 50;
 					}
 				}
@@ -77,7 +77,7 @@ void GameScene::Update(float dt)
 		p_partsys->SetEmitProperties(false);
 		particleTimer = 0;
 	}
-
+	p_partsys->RaiseUpdateFlag();
 	p_partsys->Update(dt);
 	MaintainObjectList(dt);
 	UpdateCameraMovement(dt);
