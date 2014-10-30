@@ -15,17 +15,21 @@ bool GameScene::Init()
 
 	// particle effect for astronaut kill (placeholder)
 
-	p_partsys = new ParticleSystem(100.0f);
-	auto oxypart = uthRS.LoadTexture("oxygenpix");
+	p_partsys = new ParticleSystem(3000);
+	auto oxypart = uthRS.LoadTexture("Placeholders/oxygenpix.png");
 
 	ParticleTemplate pt;
 	pt.SetTexture(oxypart);
-	pt.SetLifetime(4.f);
-	pt.SetSpeed(20.f);
-
-	p_partsys->SetTemplate(pt);
-	p_partsys->AddAffector(new OxygenAffector());
+	pt.SetLifetime(2.5f);
+	pt.SetSpeed(50.f, 100.f);
+	pt.SetColor(1, 1, 0.2f, 0.5f);
 	
+	p_partsys->SetTemplate(pt);
+
+	p_partsys->AddAffector(new OxygenAffector());
+	p_partsys->SetEmitProperties(false);
+
+	particleTimer = 0;
 
 	// contact reaction logic
 	contactListener = PhysicsContactListener();
@@ -41,6 +45,8 @@ bool GameScene::Init()
 						p_caveman->Hit();
 						//particles!
 						p_partsys->transform.SetPosition(b->GetComponent<Rigidbody>()->GetPosition());
+						p_partsys->SetEmitProperties(true, 0, 0.2f, 50, 70);
+						particleTimer = 50;
 					}
 				}
 			}
@@ -61,6 +67,18 @@ void GameScene::Update(float dt)
 {
 	Scene::Update(dt);
 	p_world->Update();
+	
+	if (particleTimer > 0)
+	{
+		particleTimer--;
+	}
+	else
+	{
+		p_partsys->SetEmitProperties(false);
+		particleTimer = 0;
+	}
+
+	p_partsys->Update(dt);
 	MaintainObjectList(dt);
 	UpdateCameraMovement(dt);
 	Input();
@@ -69,7 +87,7 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
 	background->Draw(target, attributes); // Temporary background used for testing.
 	Scene::Draw(target, attributes);
-
+	p_partsys->Draw(target, attributes);
 	for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
 	{
 		i_ObjectList->second->Draw(target, attributes);

@@ -42,6 +42,7 @@ namespace uth
 		PhysicsWorld* p_world;
 		PhysicsContactListener contactListener;
 		ParticleSystem* p_partsys;
+		float particleTimer;
 		PrefabObject prefabObject;
 		multimap<string, GameObject*> objectList;
 		multimap<string, GameObject*>::reverse_iterator i_ObjectList;		
