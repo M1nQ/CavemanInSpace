@@ -97,6 +97,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\OxygenAffector.cpp" />
     <ClCompile Include="source\Caveman.cpp" />
     <ClCompile Include="source\GameOverScene.cpp" />
     <ClCompile Include="source\GameScene.cpp" />
@@ -116,6 +117,10 @@
     <ClInclude Include="include\Scores.h" />
     <ClInclude Include="include\TestScene.hpp" />
     <ClInclude Include="include\TitleScene.h" />
+    <ClInclude Include="include\OxygenAffector.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
