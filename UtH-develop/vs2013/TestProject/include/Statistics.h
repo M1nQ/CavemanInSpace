@@ -14,7 +14,7 @@ public:
 	~Statistics();
 
 	void Update(float dt);
-	void Draw(RenderTarget& target);
+	void Draw(RenderTarget& target, RenderAttributes attributes);
 	void ResetScore();
 
 private:
