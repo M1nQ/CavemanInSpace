@@ -32,7 +32,7 @@ void OxygenAffector::UpdateParticle(uth::Particle& particle, const uth::Particle
 		particle.color.a -= dt / (pt.lifetime/2);	
 	}	
 	
-	//particle.Move(particle.direction * dt * speed);
+	particle.Move(particle.direction * dt * speed);
 	
 }
 

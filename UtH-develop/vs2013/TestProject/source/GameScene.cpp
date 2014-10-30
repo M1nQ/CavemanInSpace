@@ -79,6 +79,7 @@ void GameScene::Update(float dt)
 	}
 	p_partsys->RaiseUpdateFlag();
 	p_partsys->Update(dt);
+
 	MaintainObjectList(dt);
 	UpdateCameraMovement(dt);
 	Input();
