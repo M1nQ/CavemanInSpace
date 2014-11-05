@@ -16,7 +16,7 @@ bool GameScene::Init()
 
 	// particle effect for astronaut kill (placeholder)
 
-	p_partsys = new ParticleSystem(3000);
+	p_partsys = new ParticleSystem(2000);
 	auto oxypart = uthRS.LoadTexture("Placeholders/oxygenpix.png");
 
 	ParticleTemplate pt;
@@ -45,7 +45,7 @@ bool GameScene::Init()
 						p_caveman->Hit();
 						//particles!
 						p_partsys->transform.SetPosition(b->GetComponent<Rigidbody>()->GetPosition());
-						p_partsys->SetEmitProperties(true, 0, 0.2f, 40, 60);
+						p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);
 						particleTimer = 50;
 					}
 				}
