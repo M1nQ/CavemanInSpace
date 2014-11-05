@@ -11,6 +11,7 @@ bool GameScene::Init()
 	AddChild<Caveman>(p_caveman);
 	p_caveman->Init(p_world);
 	prefabObject = PrefabObject();
+	stats = Statistics();
 	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
 
 	// particle effect for astronaut kill (placeholder)
@@ -25,7 +26,6 @@ bool GameScene::Init()
 	//pt.SetColor(1, 1, 1, 1);
 	
 	p_partsys->SetTemplate(pt);
-
 	p_partsys->AddAffector(new OxygenAffector());
 	p_partsys->SetEmitProperties(false);
 
@@ -67,6 +67,7 @@ void GameScene::Update(float dt)
 {
 	Scene::Update(dt);
 	p_world->Update();
+	stats.Update(dt);
 	
 	if (particleTimer > 0)
 	{
@@ -86,13 +87,14 @@ void GameScene::Update(float dt)
 }
 void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
-	background->Draw(target, attributes); // Temporary background used for testing.
+	//background->Draw(target, attributes); // Temporary background used for testing.
 	Scene::Draw(target, attributes);
 	p_partsys->Draw(target, attributes);
 	for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
 	{
 		i_ObjectList->second->Draw(target, attributes);
 	}
+	stats.Draw(target, attributes);
 }
 
 // Private //

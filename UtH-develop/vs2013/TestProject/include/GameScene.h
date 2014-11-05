@@ -7,6 +7,7 @@
 #include <PrefabObject.h>
 #include <OxygenAffector.h>
 #include <map>
+#include <Statistics.h>
 
 using namespace uth;
 using namespace std;
@@ -44,6 +45,7 @@ namespace uth
 		ParticleSystem* p_partsys;
 		float particleTimer;
 		PrefabObject prefabObject;
+		Statistics stats;
 		multimap<string, GameObject*> objectList;
 		multimap<string, GameObject*>::reverse_iterator i_ObjectList;		
 	};

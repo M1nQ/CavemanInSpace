@@ -3,9 +3,11 @@
 
 #include <UtH/UtHEngine.hpp>
 #include <Caveman.h>
+#include <pmath\Vector4.hpp>
 
 using namespace std;
 using namespace uth;
+using namespace pmath;
 
 class Statistics
 {
@@ -16,6 +18,11 @@ public:
 	void Update(float dt);
 	void Draw(RenderTarget& target, RenderAttributes attributes);
 	void ResetScore();
+
+	// Add to this variable to add overall score.
+	int addScore;
+	// Add to this variable to increase oxygen bar.
+	float addOxygen;
 
 private:
 	void UpdateOxygenBar(float dt);
@@ -28,7 +35,7 @@ private:
 	int score;
 	GameObject* p_oxygenBar;
 	GameObject* p_scoreText;
-	GameObject* p_gameTimeText;
+	Vec4 color;
 };
 
 #endif STATISTICS_H
