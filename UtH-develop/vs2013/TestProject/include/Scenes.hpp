@@ -7,7 +7,7 @@ enum SceneName
 {
 	DEFAULT = UTHDefaultScene,
 	//TITLE,
-	//MENU,
+	MENU,
 	GAME,
 	GAMEOVER,
 	COUNT // Keep this last, it tells how many scenes there are
@@ -31,7 +31,7 @@ Scene* NewSceneFunc(int SceneID)
 	switch (SceneID)
 	{
 	//case TITLE:		return new TitleScene();
-	//case MENU:		return new MenuScene();
+	case MENU:		return new MenuScene();
 	case GAME:		return new GameScene();
 	case GAMEOVER:	return new GameOverScene();
 	default:		return new DefaultScene();
