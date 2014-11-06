@@ -8,6 +8,7 @@ bool GameScene::Init()
 	Randomizer::SetSeed(time(NULL));
 	p_world = new PhysicsWorld(0, 0);
 	p_caveman = new Caveman();
+	paused = false;
 	AddChild<Caveman>(p_caveman);
 	p_caveman->Init(p_world);
 	prefabObject = PrefabObject();
@@ -53,6 +54,31 @@ bool GameScene::Init()
 		};
 	p_world->SetContactListener(&contactListener);
 
+	p_pauseButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/eimitn.png"));
+	p_pauseButton->SetActive(true);
+	p_pauseButton->setCallBack([this]() 
+	{
+		paused = true;
+		p_playButton->SetActive(true);
+		p_playButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
+		overlay->SetActive(true);
+		overlay->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
+	});
+
+	p_playButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/eimitn.png"));
+	p_playButton->SetActive(false);
+	p_playButton->setCallBack([this]() 
+	{
+		paused = false;
+		p_playButton->SetActive(false);
+		overlay->SetActive(false);
+	});
+
+	overlay = new GameObject();
+	overlay->AddComponent(new Sprite("Overlay.png"));
+	overlay->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
+	overlay->SetActive(false);
+
 	// Temporary background used for testing.
 	background = new GameObject("Background");
 	background->AddComponent(new Sprite("Placeholders/Big_Background.png"));
@@ -65,36 +91,46 @@ bool GameScene::DeInit()
 }
 void GameScene::Update(float dt)
 {
-	Scene::Update(dt);
-	p_world->Update();
-	stats.Update(dt);
-	
-	if (particleTimer > 0)
+	if (!paused)
 	{
-		particleTimer--;
-	}
-	else
-	{
-		p_partsys->SetEmitProperties(false);
-		particleTimer = 0;
-	}
-	p_partsys->RaiseUpdateFlag();
-	p_partsys->Update(dt);
+		Scene::Update(dt);
+		p_world->Update();
+		stats.Update(dt);
 
-	MaintainObjectList(dt);
-	UpdateCameraMovement(dt);
-	Input();
+		if (particleTimer > 0)
+		{
+			particleTimer--;
+		}
+		else
+		{
+			p_partsys->SetEmitProperties(false);
+			particleTimer = 0;
+		}
+		p_partsys->RaiseUpdateFlag();
+		p_partsys->Update(dt);
+
+		MaintainObjectList(dt);
+		Input();
+		UpdateCameraMovement(dt);
+		p_pauseButton->Update(dt);
+	}
+
+	UpdateButtonPositions();
+	p_playButton->Update(dt);
 }
 void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
-	//background->Draw(target, attributes); // Temporary background used for testing.
+	background->Draw(target, attributes); // Temporary background used for testing.
 	Scene::Draw(target, attributes);
 	p_partsys->Draw(target, attributes);
 	for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
 	{
 		i_ObjectList->second->Draw(target, attributes);
 	}
+	p_pauseButton->Draw(target, attributes);
 	stats.Draw(target, attributes);
+	overlay->Draw(target, attributes);
+	p_playButton->Draw(target, attributes);
 }
 
 // Private //
@@ -184,4 +220,16 @@ void GameScene::Input()
 
 	if (uthInput.Common.Event() == InputEvent::RELEASE)
 		p_caveman->ChangeDirection(uthInput.Common.Position());
+}
+void GameScene::UpdateButtonPositions()
+{
+	p_pauseButton->transform.SetPosition(
+										 uthEngine.GetWindow().GetCamera().GetPosition().x +
+														 uthEngine.GetWindowResolution().x *
+																					  0.5f -
+																					  50.f ,
+										 uthEngine.GetWindow().GetCamera().GetPosition().y -
+														 uthEngine.GetWindowResolution().y *
+																					  0.5f + 
+																					 20.f);
 }

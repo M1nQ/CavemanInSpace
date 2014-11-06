@@ -8,6 +8,7 @@
 #include <OxygenAffector.h>
 #include <map>
 #include <Statistics.h>
+#include <Button.h>
 
 using namespace uth;
 using namespace std;
@@ -28,26 +29,31 @@ namespace uth
 
 	private:
 		// TODO:
+		bool DeleteObjects(GameObject* p_object);
+		Vec2 GetRandomSpawnPosition();
 		// Logic for gameobject that are hit by caveman.
 		void ReactToHit();
 		void MaintainObjectList(float dt);
 		void AddObjects();
-		bool DeleteObjects(GameObject* p_object);
-		Vec2 GetRandomSpawnPosition();
 		void UpdateBackground();
 		void UpdateCameraMovement(float dt);
 		void Input();
+		void UpdateButtonPositions();
 
+		bool paused;
+		Button* p_pauseButton;
+		Button* p_playButton;
 		Caveman* p_caveman;
-		GameObject* background; // Temporary background used for testing.
-		PhysicsWorld* p_world;
-		PhysicsContactListener contactListener;
-		ParticleSystem* p_partsys;
 		float particleTimer;
-		PrefabObject prefabObject;
-		Statistics stats;
+		GameObject* overlay;
 		multimap<string, GameObject*> objectList;
-		multimap<string, GameObject*>::reverse_iterator i_ObjectList;		
+		multimap<string, GameObject*>::reverse_iterator i_ObjectList;
+		ParticleSystem* p_partsys;
+		PhysicsContactListener contactListener;
+		PhysicsWorld* p_world;
+		PrefabObject prefabObject;
+		Statistics stats;	
+		GameObject* background; // Temporary background used for testing.
 	};
 }
 
