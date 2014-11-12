@@ -124,12 +124,13 @@ void GameScene::Update(float dt)
 		UpdateCameraMovement(dt);
 		p_pauseButton->Update(dt);
 		Input();
-		if (stats.IsDead())
-			GameOverLay();
+		
 	}
 
 	UpdateButtonPositions();
 	p_playButton->Update(dt);
+	if (stats.IsDead())
+			GameOverLay();
 }
 void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
@@ -258,9 +259,22 @@ void GameScene::UpdateButtonPositions()
 
 void GameScene::GameOverLay()
 {
-	paused = true;
-	p_gameOverPlaque->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
-	p_gameOverPlaque->SetActive(true);
-	p_playButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition() + (Vec2)(300, 100)); //// TODO: define final position!
-	p_playButton->SetActive(true);
+	// Gameover overlay in the same scene
+	//paused = true;
+	//p_gameOverPlaque->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
+	//p_gameOverPlaque->SetActive(true);
+	//p_playButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition() + (Vec2)(300, 100)); //// TODO: define final position!
+	//p_playButton->SetActive(true);
+
+	// OR: new scene!
+	//saving score
+	int newscore = stats.GetFinalScore();
+
+	scorefile.open("newscore.dat", std::ios::binary | std::ios::out);
+	if (scorefile)
+	{
+		scorefile.write((char*)&newscore, sizeof(int));
+	}
+	scorefile.close();
+	uthSceneM.GoToScene(2);
 }

@@ -9,6 +9,7 @@
 #include <map>
 #include <Statistics.h>
 #include <Button.h>
+#include <fstream>
 
 using namespace uth;
 using namespace std;
@@ -56,6 +57,8 @@ namespace uth
 		Statistics stats;	
 		GameObject* background; // Temporary background used for testing.
 		GameObject* p_gameOverPlaque;
+
+		std::fstream scorefile;
 	};
 }
 

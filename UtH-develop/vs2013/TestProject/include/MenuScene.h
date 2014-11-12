@@ -2,6 +2,7 @@
 #define MENUSCENE_H
 
 #include <UtH/UtHEngine.hpp>
+#include <fstream>
 #include "Button.h"
 
 using namespace uth;
@@ -27,6 +28,8 @@ namespace uth
 
 		// Top three scores are read from a safe file. May be moved to TitleScene.
 		void ReadHighScores();
+		void SetOverlayMode();
+		void CloseOverlayMode();
 
 		Button* startButton;
 		Button* creditsButton;
@@ -35,12 +38,17 @@ namespace uth
 
 		Texture* startTex;
 		Texture* creditTex;
+		Texture* scoreTex;
 		Texture* closeTex;
 
 		GameObject* background;
 		GameObject* credits;
 
 		GameObject* leaderBoard;
+
+		std::fstream highscorefile;
+
+		int scores[3];
 	};
 }
 

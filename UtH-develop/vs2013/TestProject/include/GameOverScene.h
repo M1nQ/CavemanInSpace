@@ -2,6 +2,9 @@
 #define GAMEOVERSCENE_H
 
 #include <UtH/UtHEngine.hpp>
+#include <Button.h>
+#include <EndScreen.h>
+#include <fstream>
 
 using namespace uth;
 
@@ -18,10 +21,25 @@ namespace uth
 
 		void Update(float dt) override;
 		void Draw(RenderTarget& target, RenderAttributes attributes = RenderAttributes()) override;
-
+		
 	private:
-		void CountFinalScore();
+		void GetFinalScore();
+		void FindOldScores();
 		void SaveHighScores();
+
+		Texture* startTex;
+		Button* startButton;
+		GameObject* background;
+
+		EndScreen end;
+
+		std::fstream savefile;
+
+		//FileManager files;
+
+		//working copy of scores, should be changed into a multimap if names needed
+		int allscores[4];
+		int finalscore;
 	};
 }
 #endif

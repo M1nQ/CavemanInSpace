@@ -20,7 +20,7 @@ public:
 	void Update(float dt);
 	void Draw(RenderTarget& target, RenderAttributes attributes);
 	
-	void SetFinalScore(Statistics stats);
+	void SetFinalScore(int score);
 
 private:
 	int countScore;

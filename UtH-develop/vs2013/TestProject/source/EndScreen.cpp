@@ -6,6 +6,7 @@ EndScreen::EndScreen()
 	p_finalScore = new GameObject();
 	p_finalScore->AddComponent(new Text("FreePixel.ttf", 50.f, "Score"));
 	p_finalScore->GetComponent<Text>("Score")->AddText(to_string(finalScore), color);
+	p_finalScore->transform.SetPosition(200, 300);
 }
 
 EndScreen::~EndScreen()
@@ -28,8 +29,13 @@ void EndScreen::Update(float dt)
 	p_finalScore->GetComponent<Text>("Score")->SetText(to_string(finalScore), color);
 }
 
-void EndScreen::SetFinalScore(Statistics stats)
+void EndScreen::Draw(RenderTarget& target, RenderAttributes attributes)
 {
-	countScore = stats.GetFinalScore();
+	p_finalScore->Draw(target);
+}
+
+void EndScreen::SetFinalScore(int score)
+{
+	countScore = score;
 	finalScore = 0;
 }
