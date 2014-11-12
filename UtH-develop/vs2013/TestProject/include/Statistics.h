@@ -36,7 +36,6 @@ public:
 private:
 	void UpdateOxygenBar(float dt);
 	void UpdateScore();
-	void UpdateGameTime(float dt);
 
 	float maxOxygen;
 	float oxygenLeft;
