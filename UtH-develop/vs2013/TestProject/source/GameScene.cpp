@@ -110,9 +110,9 @@ void GameScene::Update(float dt)
 		p_partsys->Update(dt);
 
 		MaintainObjectList(dt);
-		Input();
 		UpdateCameraMovement(dt);
 		p_pauseButton->Update(dt);
+		Input();
 	}
 
 	UpdateButtonPositions();
