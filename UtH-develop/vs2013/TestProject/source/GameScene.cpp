@@ -19,6 +19,7 @@ bool GameScene::Init()
 
 	p_partsys = new ParticleSystem(2000);
 	auto oxypart = uthRS.LoadTexture("Placeholders/oxygenpix.png");
+	
 
 	ParticleTemplate pt;
 	pt.SetTexture(oxypart);
@@ -123,6 +124,8 @@ void GameScene::Update(float dt)
 		UpdateCameraMovement(dt);
 		p_pauseButton->Update(dt);
 		Input();
+		if (stats.IsDead())
+			GameOverLay();
 	}
 
 	UpdateButtonPositions();
@@ -140,6 +143,7 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 	p_pauseButton->Draw(target, attributes);
 	stats.Draw(target, attributes);
 	overlay->Draw(target, attributes);
+	p_gameOverPlaque->Draw(target, attributes);
 	p_playButton->Draw(target, attributes);
 }
 
@@ -257,6 +261,6 @@ void GameScene::GameOverLay()
 	paused = true;
 	p_gameOverPlaque->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
 	p_gameOverPlaque->SetActive(true);
-	p_playButton->transform.SetPosition((Vec2)(300, 100)); //// TODO: define final position!
+	p_playButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition() + (Vec2)(300, 100)); //// TODO: define final position!
 	p_playButton->SetActive(true);
 }

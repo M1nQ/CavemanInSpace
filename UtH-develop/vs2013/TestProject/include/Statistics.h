@@ -34,14 +34,12 @@ public:
 	int addScore;
 	// Add to this variable to increase oxygen bar.
 	float addOxygen;
-	
+	bool IsDead();
 
 private:
 	void UpdateOxygenBar(float dt);
 	void UpdateScore();
-	
-
-	
+		
 	float maxOxygen;
 	float oxygenLeft;
 	float gameTime;

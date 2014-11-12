@@ -62,9 +62,11 @@ void Statistics::UpdateOxygenBar(float dt)
 
 	if (oxygenLeft > maxOxygen)
 		oxygenLeft = maxOxygen;
-	else if (oxygenLeft < 0)
+	else if (oxygenLeft <= 0)
+	{
 		oxygenLeft = 0;
-	
+		
+	}
 	p_oxygenBar->transform.SetScale(oxygenLeft, 1);
 	p_oxygenBar->transform.SetPosition(
 									   (uthEngine.GetWindow().GetCamera().GetPosition().x -
@@ -109,4 +111,11 @@ void Statistics::UpdateScore()
 int Statistics::GetFinalScore()
 {
 	return score + (int)(gameTime / 10) * 100;
+}
+
+bool Statistics::IsDead()
+{
+	if (oxygenLeft <= 0)
+		return true;
+	return false;
 }
