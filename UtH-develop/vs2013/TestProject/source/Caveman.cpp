@@ -14,12 +14,13 @@ void Caveman::Hit()
 {
 	//animation not done!!!!!
 }
-void Caveman::ChangeDirection(pmath::Vec2 pullPosition)
+void Caveman::ChangeDirectionMouse(pmath::Vec2 pullPosition)
 {
 	// Calculates the vector between touch position and caveman's position.
 	// caveman - (touch + camera + (caveman - camera)) + (windowSize / 2)
 	pmath::Vec2 temp = 
 						 this->GetComponent<Rigidbody>()->GetPosition() - 
+														  
 														  (pullPosition + 
 						uthEngine.GetWindow().GetCamera().GetPosition() +
 						(this->GetComponent<Rigidbody>()->GetPosition() - 
@@ -30,6 +31,13 @@ void Caveman::ChangeDirection(pmath::Vec2 pullPosition)
 	this->GetComponent<Rigidbody>()->SetVelocity(temp * speed);
 }
 
+// works if touch get position methods return screen (camera) coordinates
+void Caveman::ChangeDirectionTouch(pmath::Vec2 startPosition, pmath::Vec2 endPosition)
+{
+	pmath::Vec2 temp = startPosition - endPosition;
+	temp.normalize();
+	this->GetComponent<Rigidbody>()->SetVelocity(temp * speed);
+}
 
 Caveman::Caveman()
 {

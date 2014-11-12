@@ -221,13 +221,13 @@ void GameScene::Input()
 	// Handles input.
 
 	if (uthInput.Touch[0].Motion() == TouchMotion::RELEASE && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition()) > 10)
-		p_caveman->ChangeDirection(uthInput.Common.Position());
+		p_caveman->ChangeDirectionTouch(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition());
 	else if (uthInput.Touch[0].Motion() == TouchMotion::TAP)
 	{ /* TODO: Call caveman's hit function. */ }
 
 	// For testing.
 	if (uthInput.Common.Event() == InputEvent::RELEASE)
-		p_caveman->ChangeDirection(uthInput.Common.Position());
+		p_caveman->ChangeDirectionMouse(uthInput.Common.Position());
 	if (uthInput.Common.Event() == InputEvent::TAP)
 	{ /* TODO: Call caveman's hit function. */ }
 }

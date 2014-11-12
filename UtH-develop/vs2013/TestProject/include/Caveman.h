@@ -19,8 +19,9 @@ public:
 	//Input methods
 	//Hit method calls reaction method in prefab class?
 	void Hit();
-	void ChangeDirection(pmath::Vec2 pullPosition);
-
+	// For testing input
+	void ChangeDirectionMouse(pmath::Vec2 pullPosition);
+	void ChangeDirectionTouch(pmath::Vec2 startPosition, pmath::Vec2 endPosition);
 
 private:
 
