@@ -9,6 +9,15 @@ using namespace std;
 using namespace uth;
 using namespace pmath;
 
+namespace uth
+{
+	template < typename T > std::string to_string(const T& n)
+	{
+		std::ostringstream stm;
+		stm << n;
+		return stm.str();
+	}
+}
 class Statistics
 {
 public:
