@@ -34,7 +34,7 @@ bool GameScene::Init()
 
 	// contact reaction logic
 	contactListener = PhysicsContactListener();
-	contactListener.onBeginContact = [&](b2Contact* contact, GameObject* a, GameObject* b)
+	contactListener.onBeginContact = [this](b2Contact* contact, GameObject* a, GameObject* b)
 		{
 			if (a->HasTag("Caveman"))
 			{
@@ -44,6 +44,8 @@ bool GameScene::Init()
 					{
 						//kill astronaut
 						p_caveman->Hit();
+						stats.addOxygen += 0.3f;
+						stats.addScore += 100;
 						//particles!
 						p_partsys->transform.SetPosition(b->GetComponent<Rigidbody>()->GetPosition());
 						p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);

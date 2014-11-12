@@ -35,6 +35,7 @@ void Statistics::ResetScore()
 	gameTime = 0;
 	score = 0;
 	addScore = 0;
+	addOxygen = 0;
 	color = Vec4(1, 1, 1, 1);
 }
 
@@ -44,8 +45,8 @@ void Statistics::UpdateOxygenBar(float dt)
 
 	if (addOxygen > 0 && addOxygen < 0.001f)
 	{
-		oxygenLeft += addOxygen * 0.5f;
-		addOxygen -= addOxygen * 0.5f;
+		oxygenLeft += addOxygen * 0.15f;
+		addOxygen -= addOxygen * 0.15f;
 	}
 	else if (addOxygen > 0)
 	{
@@ -100,6 +101,6 @@ void Statistics::UpdateScore()
 																					0.5f -
 													  p_scoreText->transform.GetSize().x *
 																					0.5f -
-																				   100.f ,
+																				   300.f ,
 												 p_oxygenBar->transform.GetPosition().y);
 }
