@@ -17,16 +17,7 @@ void Caveman::Hit()
 void Caveman::ChangeDirectionMouse(pmath::Vec2 pullPosition)
 {
 	// Calculates the vector between touch position and caveman's position.
-	// caveman - (touch + camera + (caveman - camera)) + (windowSize / 2)
-	pmath::Vec2 temp = 
-						 this->GetComponent<Rigidbody>()->GetPosition() - 
-														  
-														  (pullPosition + 
-						uthEngine.GetWindow().GetCamera().GetPosition() +
-						(this->GetComponent<Rigidbody>()->GetPosition() - 
-					  uthEngine.GetWindow().GetCamera().GetPosition())) +
-									   (uthEngine.GetWindow().GetSize() /
-																	 2);
+	pmath::Vec2 temp = (-1.f * pullPosition) + (uthEngine.GetWindow().GetSize() * 0.5f);
 	temp.normalize();
 	this->GetComponent<Rigidbody>()->SetVelocity(temp * speed);
 }
@@ -45,14 +36,3 @@ Caveman::Caveman()
 Caveman::~Caveman()
 {
 }
-
-/*
-pmath::Vec2 temp =
-					this->GetComponent<Rigidbody>()->GetPosition() - (
-													  pullPosition +
-				   uthEngine.GetWindow().GetCamera().GetPosition() + (
-					this->GetComponent<Rigidbody>()->GetPosition() -
-				   uthEngine.GetWindow().GetCamera().GetPosition() )) + (
-								   uthEngine.GetWindow().GetSize() /
-																 2 );
-*/
