@@ -43,10 +43,10 @@ void Statistics::UpdateOxygenBar(float dt)
 {
 	// Updates the amount of oxygen and the position and scale of the oxygen bar.
 
-	if (addOxygen > 0 && addOxygen < 0.001f)
+	if (addOxygen > 0 && addOxygen > 0.01f)
 	{
-		oxygenLeft += addOxygen * 0.15f;
-		addOxygen -= addOxygen * 0.15f;
+		oxygenLeft += addOxygen * 0.05f;
+		addOxygen -= addOxygen * 0.05f;
 	}
 	else if (addOxygen > 0)
 	{
@@ -56,7 +56,7 @@ void Statistics::UpdateOxygenBar(float dt)
 	else
 	{
 		// Percentual decrease of oxygen / frames per second
-		oxygenLeft -= maxOxygen * 0.05f / (1 / dt);
+		oxygenLeft -= maxOxygen * 0.05f / ( 1 / dt);
 	}
 
 	if (oxygenLeft > maxOxygen)
