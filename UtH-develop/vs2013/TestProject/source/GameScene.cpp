@@ -56,6 +56,7 @@ bool GameScene::Init()
 		};
 	p_world->SetContactListener(&contactListener);
 
+	// Buttons
 	p_pauseButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/eimitn.png"));
 	p_pauseButton->SetActive(true);
 	p_pauseButton->setCallBack([this]() 
@@ -67,7 +68,7 @@ bool GameScene::Init()
 		overlay->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
 	});
 
-	p_playButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/eimitn.png"));
+	p_playButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/Play.png"));
 	p_playButton->SetActive(false);
 	p_playButton->setCallBack([this]() 
 	{
@@ -76,6 +77,7 @@ bool GameScene::Init()
 		overlay->SetActive(false);
 	});
 
+	// Game paused overlay
 	overlay = new GameObject();
 	overlay->AddComponent(new Sprite("Overlay.png"));
 	overlay->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
@@ -84,6 +86,12 @@ bool GameScene::Init()
 	// Temporary background used for testing.
 	background = new GameObject("Background");
 	background->AddComponent(new Sprite("Placeholders/Big_Background.png"));
+
+	// Game over overlay
+	p_gameOverPlaque = new GameObject();
+	p_gameOverPlaque->AddComponent(new Sprite("Placeholders/gameOver.png"));
+	// p_gameOverPlaque->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
+	p_gameOverPlaque->SetActive(false);
 
 	return true;
 }
@@ -242,4 +250,13 @@ void GameScene::UpdateButtonPositions()
 														 uthEngine.GetWindowResolution().y *
 																					  0.5f + 
 																					 20.f);
+}
+
+void GameScene::GameOverLay()
+{
+	paused = true;
+	p_gameOverPlaque->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
+	p_gameOverPlaque->SetActive(true);
+	p_playButton->transform.SetPosition((Vec2)(300, 100)); //// TODO: define final position!
+	p_playButton->SetActive(true);
 }

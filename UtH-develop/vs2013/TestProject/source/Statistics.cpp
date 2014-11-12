@@ -37,6 +37,7 @@ void Statistics::ResetScore()
 	addScore = 0;
 	addOxygen = 0;
 	color = Vec4(1, 1, 1, 1);
+	
 }
 
 void Statistics::UpdateOxygenBar(float dt)
@@ -103,4 +104,9 @@ void Statistics::UpdateScore()
 																					0.5f -
 																				   300.f ,
 												 p_oxygenBar->transform.GetPosition().y);
+}
+
+int Statistics::GetFinalScore()
+{
+	return score + (int)(gameTime / 10) * 100;
 }

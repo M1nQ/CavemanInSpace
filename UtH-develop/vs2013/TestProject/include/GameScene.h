@@ -39,6 +39,7 @@ namespace uth
 		void UpdateCameraMovement(float dt);
 		void Input();
 		void UpdateButtonPositions();
+		void GameOverLay();
 
 		bool paused;
 		Button* p_pauseButton;
@@ -54,6 +55,7 @@ namespace uth
 		PrefabObject prefabObject;
 		Statistics stats;	
 		GameObject* background; // Temporary background used for testing.
+		GameObject* p_gameOverPlaque;
 	};
 }
 

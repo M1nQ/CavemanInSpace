@@ -28,15 +28,20 @@ public:
 	void Draw(RenderTarget& target, RenderAttributes attributes);
 	void ResetScore();
 
+	int GetFinalScore();
+
 	// Add to this variable to add overall score.
 	int addScore;
 	// Add to this variable to increase oxygen bar.
 	float addOxygen;
+	
 
 private:
 	void UpdateOxygenBar(float dt);
 	void UpdateScore();
+	
 
+	
 	float maxOxygen;
 	float oxygenLeft;
 	float gameTime;
