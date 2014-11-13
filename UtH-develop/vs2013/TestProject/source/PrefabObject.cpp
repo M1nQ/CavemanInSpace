@@ -24,8 +24,19 @@ GameObject* PrefabObject::CreateAsteroid(PhysicsWorld* world, Vec2 position, str
 	Direct(p_asteroid);
 	return p_asteroid;
 }
+GameObject* PrefabObject::CreateCosmonaut(PhysicsWorld* world, Vec2 position, string tag) 
+{ 
+	// Creates a cosmonaut to the given position, heading towards the center of the screen
+	// with a sligthly randomized angle.
+
+	GameObject* p_cosmonaut = new GameObject(tag);
+	p_cosmonaut->AddComponent(new Sprite("Placeholders/Cosmonaut.png"));
+	p_cosmonaut->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
+	p_cosmonaut->GetComponent<Rigidbody>("Rigidbody")->SetPosition(position);
+	Direct(p_cosmonaut);
+	return p_cosmonaut;
+}
 // TODO: Implement functions defined below.
-GameObject* PrefabObject::CreateCosmonaut(PhysicsWorld* world, Vec2 position, string tag) { return nullptr; }
 GameObject* PrefabObject::CreateTaikonaut(PhysicsWorld* world, Vec2 position, string tag) { return nullptr; }
 GameObject* PrefabObject::CreateMeteorite(PhysicsWorld* world, Vec2 position, string tag) { return nullptr; }
 GameObject* PrefabObject::CreateSatellite(PhysicsWorld* world, Vec2 position, string tag) { return nullptr; }

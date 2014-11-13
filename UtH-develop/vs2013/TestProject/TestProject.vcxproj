@@ -121,6 +121,7 @@
     <ClInclude Include="include\GameOverScene.h" />
     <ClInclude Include="include\GameScene.h" />
     <ClInclude Include="include\MenuScene.h" />
+    <ClInclude Include="include\NautComponent.h" />
     <ClInclude Include="include\PrefabObject.h" />
     <ClInclude Include="include\Scenes.hpp" />
     <ClInclude Include="include\Scores.h" />

@@ -92,5 +92,8 @@
     <ClInclude Include="include\EndScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\NautComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
