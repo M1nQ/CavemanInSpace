@@ -18,6 +18,9 @@ bool GameOverScene::Init()
 
 	end = EndScreen();
 	end.SetFinalScore(allscores[3]);
+	
+	SaveHighScores();
+	end.SetHighScores(allscores[0], allscores[1], allscores[2]);
 
 	startButton = new Button(uthEngine.GetWindow(), startTex);	
 	startButton->setCallBack([]()
@@ -25,7 +28,8 @@ bool GameOverScene::Init()
 		uthSceneM.GoToScene(1);
 	});
 
-	startButton->transform.SetPosition(0, 250);
+	Vec2 offset = Vec2(300, -50);
+	startButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition() + offset);
 	AddChild<Button>(startButton);
 
 	return true;
@@ -80,7 +84,7 @@ void GameOverScene::SaveHighScores()
 	int temp;
 	for (int j = 0; j < 4; ++j)
 	{
-		for (int i = 3; i >= j; --i)
+		for (int i = 3; i > j; --i)
 		{
 			if (allscores[i] > allscores[i - 1])
 			{
@@ -95,9 +99,11 @@ void GameOverScene::SaveHighScores()
 	savefile.open("highscores.dat", std::ios::binary | std::ios::out);
 	if (savefile)
 	{
-		for (int i = 0; i < 3; ++i)
-		{
-			savefile.write((char*)&allscores[i], sizeof(int));
-		}
+		
+		savefile.write((char*)&allscores[0], sizeof(int));
+		savefile.write((char*)&allscores[1], sizeof(int));
+		savefile.write((char*)&allscores[2], sizeof(int));
+		
 	}
+	savefile.close();
 }

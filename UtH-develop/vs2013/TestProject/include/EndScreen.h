@@ -21,12 +21,17 @@ public:
 	void Draw(RenderTarget& target, RenderAttributes attributes);
 	
 	void SetFinalScore(int score);
+	void SetHighScores(int first, int second, int third);
 
 private:
 	int countScore;
 	int finalScore;
 
 	GameObject* p_finalScore;
+	GameObject* p_first;
+	GameObject* p_second;
+	GameObject* p_third;
+
 	Vec4 color;
 };
 
