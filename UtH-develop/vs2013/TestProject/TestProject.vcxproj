@@ -103,6 +103,7 @@
   <ItemGroup>
     <ClCompile Include="Source\EndScreen.cpp" />
     <ClCompile Include="source\Button.cpp" />
+    <ClCompile Include="source\NautComponent.cpp" />
     <ClCompile Include="source\OxygenAffector.cpp" />
     <ClCompile Include="source\Caveman.cpp" />
     <ClCompile Include="source\GameOverScene.cpp" />

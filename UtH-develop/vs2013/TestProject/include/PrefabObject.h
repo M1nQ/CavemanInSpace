@@ -22,8 +22,9 @@ public:
 	GameObject* CreateAstronaut(PhysicsWorld* world, Vec2 position, string tag = "Astronaut");
 	// Creates an asteroid to the given position, heading towards the center of the screen.
 	GameObject* CreateAsteroid(PhysicsWorld* world, Vec2 position, string tag = "Asteroid");
-	// TODO:
+	// Creates a cosmonaut to the given position, heading towards the center of the screen.
 	GameObject* CreateCosmonaut(PhysicsWorld* world, Vec2 position, string tag = "Cosmonaut");
+	// TODO:
 	GameObject* CreateTaikonaut(PhysicsWorld* world, Vec2 position, string tag = "Taikonaut");
 	GameObject* CreateMeteorite(PhysicsWorld* world, Vec2 position, string tag = "Meteorite");
 	GameObject* CreateSatellite(PhysicsWorld* world, Vec2 position, string tag = "Satellite");

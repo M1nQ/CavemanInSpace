@@ -11,18 +11,19 @@ class NautComponent : public Component
 {
 public:
 	inline NautComponent(const string& name) : Component(name) {}
-	~NautComponent();
+	inline virtual ~NautComponent() {}
 
 	inline virtual void Init() {}
 	inline virtual void Draw(RenderTarget&) {}
-	inline virtual void Update(float) {}
-	virtual void Hit(Vec2 playerPosition);
+	inline bool isDead() { if (hp <= 0) return true; return false; }
+	virtual void Update(float dt);
+
+	// Subtracts from hp and sets direction away from the given position.
+	virtual void Hit(Vec2 position);
 
 	float oxygen;
 
 protected:
-	virtual void Die();
-
 	int hp;
 };
 
