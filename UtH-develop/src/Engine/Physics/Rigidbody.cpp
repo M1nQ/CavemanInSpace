@@ -245,6 +245,82 @@ void Rigidbody::SetKinematic(bool value)
 	value ? m_body->SetType(b2_kinematicBody) : m_body->SetType(b2_dynamicBody);
 }
 
+void Rigidbody::SetPhysicsGroup(const short index)
+ {
+	     auto filter = m_body->GetFixtureList()->GetFilterData();
+	
+
+		     filter.groupIndex = index;
+	
+
+		     m_body->GetFixtureList()->SetFilterData(filter);
+	 }
+
+
+ short Rigidbody::GetPhysicsGroup() const
+ {
+	     return m_body->GetFixtureList()->GetFilterData().groupIndex;
+	 }
+
+
+ void Rigidbody::SetPhysicsCategory(const Physics::Category category)
+ {
+	     auto filter = m_body->GetFixtureList()->GetFilterData();
+	
+
+		     filter.categoryBits = static_cast<short>(category);
+	
+
+		     m_body->GetFixtureList()->SetFilterData(filter);
+	 }
+
+
+ Physics::Category Rigidbody::GetPhysicsCategory() const
+ {
+	     return static_cast<Physics::Category>(m_body->GetFixtureList()->
+		         GetFilterData().categoryBits);
+	 }
+
+
+
+
+ void Rigidbody::SetPhysicsMask(const short mask)
+ {
+	     auto filter = m_body->GetFixtureList()->GetFilterData();
+	
+
+		     filter.maskBits = mask;
+	
+
+		     m_body->GetFixtureList()->SetFilterData(filter);
+	 }
+
+
+ short Rigidbody::GetPhysicsMask() const
+ {
+	     return m_body->GetFixtureList()->GetFilterData().maskBits;
+	 }
+
+
+ void Rigidbody::SetTrigger(bool trigger)
+ {
+	     m_body->GetFixtureList()->SetSensor(trigger);
+	 }
+
+
+ bool Rigidbody::IsTrigger() const
+ {
+	     return m_body->GetFixtureList()->IsSensor();
+	 }
+
+
+ b2Body* Rigidbody::GetBox2dBody() const
+ {
+	     return m_body;
+	 }
+
+
+
 // Private
 
 void Rigidbody::defaults()

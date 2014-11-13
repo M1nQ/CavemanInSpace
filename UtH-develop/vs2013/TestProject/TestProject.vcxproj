@@ -101,6 +101,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\Club.cpp" />
     <ClCompile Include="Source\EndScreen.cpp" />
     <ClCompile Include="source\Button.cpp" />
     <ClCompile Include="source\NautComponent.cpp" />
@@ -116,6 +117,7 @@
     <ClCompile Include="source\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Club.h" />
     <ClInclude Include="include\EndScreen.h" />
     <ClInclude Include="include\Button.h" />
     <ClInclude Include="include\Caveman.h" />

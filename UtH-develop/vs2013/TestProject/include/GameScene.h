@@ -9,6 +9,7 @@
 #include <map>
 #include <Statistics.h>
 #include <Button.h>
+#include <Club.h>
 #include <fstream>
 
 using namespace uth;
@@ -46,6 +47,7 @@ namespace uth
 		Button* p_pauseButton;
 		Button* p_playButton;
 		Caveman* p_caveman;
+		Club* p_club;
 		float particleTimer;
 		GameObject* overlay;
 		multimap<string, GameObject*> objectList;

@@ -11,6 +11,9 @@ bool GameScene::Init()
 	paused = false;
 	AddChild<Caveman>(p_caveman);
 	p_caveman->Init(p_world);
+	p_club = new Club(p_caveman->transform.GetSize());
+	p_club->Init(p_world);
+	AddChild<Club>(p_club);
 	prefabObject = PrefabObject();
 	stats = Statistics();
 	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
@@ -37,8 +40,9 @@ bool GameScene::Init()
 	contactListener = PhysicsContactListener();
 	contactListener.onBeginContact = [this](b2Contact* contact, GameObject* a, GameObject* b)
 		{
-			if (a->HasTag("Caveman"))
+			if (a->HasTag("Club"))
 			{
+
 				for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
 				{
 					if (i_ObjectList->second == b && i_ObjectList->first == "Astronaut")
@@ -56,7 +60,7 @@ bool GameScene::Init()
 			}
 		};
 	p_world->SetContactListener(&contactListener);
-
+	
 	// Buttons
 	p_pauseButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/eimitn.png"));
 	p_pauseButton->SetActive(true);
@@ -105,7 +109,9 @@ void GameScene::Update(float dt)
 	if (!paused)
 	{
 		Scene::Update(dt);
+		
 		p_world->Update();
+		p_club->update(dt);
 		stats.Update(dt);
 
 		if (particleTimer > 0)
@@ -136,6 +142,7 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
 	background->Draw(target, attributes); // Temporary background used for testing.
 	Scene::Draw(target, attributes);
+	p_club->Draw(target, attributes);
 	p_partsys->Draw(target, attributes);
 	for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
 	{
@@ -236,13 +243,18 @@ void GameScene::Input()
 	if (uthInput.Touch[0].Motion() == TouchMotion::RELEASE && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition()) > 10)
 		p_caveman->ChangeDirectionTouch(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition());
 	else if (uthInput.Touch[0].Motion() == TouchMotion::TAP)
-	{ /* TODO: Call caveman's hit function. */ }
+	{ /* TODO: Call caveman's hit function. */ 
+	
+	}
 
 	// For testing.
 	if (uthInput.Common.Event() == InputEvent::RELEASE)
 		p_caveman->ChangeDirectionMouse(uthInput.Common.Position());
 	if (uthInput.Common.Event() == InputEvent::TAP)
-	{ /* TODO: Call caveman's hit function. */ }
+	{ /* TODO: Call caveman's hit function. */ 
+		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
+		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
+	}
 }
 void GameScene::UpdateButtonPositions()
 {

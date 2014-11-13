@@ -7,7 +7,9 @@
 #include <UtH/Engine/Physics/Rigidbody.hpp>
 #include <UtH/Engine/AnimatedSprite.hpp>
 
+
 using namespace uth;
+using namespace pmath;
 
 class Caveman : public GameObject
 {
@@ -16,6 +18,7 @@ public:
 	~Caveman();
 
 	void Init(PhysicsWorld *world);
+	//void update(float dt);
 	//Input methods
 	//Hit method calls reaction method in prefab class?
 	void Hit();
@@ -25,8 +28,14 @@ public:
 
 private:
 
+	int timeFromHit;
 	float speed;
-	float oxygen;
+	GameObject* p_club;
+	Vec2 clubsize;
+	float reach;
+	Vec2 hitDirection;
+	Rigidbody* cavemanColl;
+	Rigidbody* clubColl;
 };
 
 #endif
