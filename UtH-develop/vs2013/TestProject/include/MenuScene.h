@@ -6,6 +6,7 @@
 #include "Button.h"
 
 using namespace uth;
+using namespace std;
 
 namespace uth
 {
@@ -28,8 +29,12 @@ namespace uth
 
 		// Top three scores are read from a safe file. May be moved to TitleScene.
 		void ReadHighScores();
+		void SetScoreText();
 		void SetOverlayMode();
 		void CloseOverlayMode();
+		void Scores_SetActive(bool active);
+
+		//Window wnd;
 
 		Button* startButton;
 		Button* creditsButton;
@@ -44,11 +49,12 @@ namespace uth
 		GameObject* background;
 		GameObject* credits;
 
-		GameObject* leaderBoard;
+		GameObject* leaderboard[3];
 
 		std::fstream highscorefile;
 
 		int scores[3];
+		pmath::Vec4 textColor;
 	};
 }
 

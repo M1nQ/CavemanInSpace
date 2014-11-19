@@ -27,10 +27,10 @@ EndScreen::~EndScreen()
 
 void EndScreen::Update(float dt)
 {
-	if (countScore >= 5)
+	if (countScore >= 50)
 	{
-		countScore -= 5;
-		finalScore += 5;
+		countScore -= 50;
+		finalScore += 50;
 	}
 	else if (countScore > 0)
 	{
@@ -55,9 +55,22 @@ void EndScreen::SetFinalScore(int score)
 	finalScore = 0;
 }
 
-void EndScreen::SetHighScores(int first, int second, int third)
+void EndScreen::SetHighScores(int first, int second, int third, int current)
 {
-	p_first->GetComponent<Text>("Score")->AddText(to_string(first), color);
-	p_second->GetComponent<Text>("Score")->AddText(to_string(second), color);
-	p_third->GetComponent<Text>("Score")->AddText(to_string(third), color);
+	p_first->GetComponent<Text>("Score")->AddText(to_string(first), Highlight(first, current));
+	p_second->GetComponent<Text>("Score")->AddText(to_string(second), Highlight(second, current));
+	p_third->GetComponent<Text>("Score")->AddText(to_string(third), Highlight(third, current));
+}
+
+// Ugly code for highlighting current score in leaderboard!
+// TODO: make prettier.
+
+Vec4 EndScreen::Highlight(int score, int newscore)
+{
+	Vec4 color = Vec4(1, 1, 1, 1);
+	if (score == newscore)
+	{
+		color = Vec4(1, 0, 1, 1);
+	}
+	return color;
 }

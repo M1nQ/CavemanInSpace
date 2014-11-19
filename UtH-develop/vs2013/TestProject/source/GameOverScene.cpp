@@ -20,7 +20,7 @@ bool GameOverScene::Init()
 	end.SetFinalScore(allscores[3]);
 	
 	SaveHighScores();
-	end.SetHighScores(allscores[0], allscores[1], allscores[2]);
+	end.SetHighScores(allscores[0], allscores[1], allscores[2], allscores[3]);
 
 	startButton = new Button(uthEngine.GetWindow(), startTex);	
 	startButton->setCallBack([]()

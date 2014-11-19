@@ -21,9 +21,12 @@ public:
 	void Draw(RenderTarget& target, RenderAttributes attributes);
 	
 	void SetFinalScore(int score);
-	void SetHighScores(int first, int second, int third);
+	void SetHighScores(int first, int second, int third, int current);
 
 private:
+
+	Vec4 Highlight(int score, int newscore);
+
 	int countScore;
 	int finalScore;
 
