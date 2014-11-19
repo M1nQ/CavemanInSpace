@@ -135,8 +135,8 @@ void GameScene::Update(float dt)
 
 	UpdateButtonPositions();
 	p_playButton->Update(dt);
-	/*if (stats.IsDead())
-			GameOverLay();*/
+	if (stats.IsDead())
+			GameOverLay();
 }
 void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
@@ -167,16 +167,38 @@ void GameScene::ReactToHit(GameObject* a)
 {
 	for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
 	{
-		if (i_ObjectList->second == a && i_ObjectList->first == "Astronaut")
+		if (i_ObjectList->second == a)
 		{
-			//kill astronaut
-			p_caveman->Hit();
-			stats.addOxygen += 0.3f;
-			stats.addScore += 100;
-			//particles!
-			p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
-			p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);
-			particleTimer = 50;
+			if (i_ObjectList->first == "Astronaut")
+			{
+				//kill astronaut
+				stats.addOxygen += 0.3f;
+				stats.addScore += 100;
+				//particles!
+				p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
+				p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);
+				particleTimer = 50;
+			}
+			else if (i_ObjectList->first == "Cosmonaut")
+			{
+				stats.addOxygen += 0.4f;
+				stats.addScore += 200;
+				//particles!
+				p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
+				p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);
+				particleTimer = 50;
+			}
+			else if (i_ObjectList->first == "Asteroid")
+			{
+				stats.addScore += 10;
+				p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
+				p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);
+				
+				particleTimer = 50;
+				// TODO: destroy object, change particles to animation?
+				a->SetActive(false);
+			}
+			else {}
 		}
 	}
 }

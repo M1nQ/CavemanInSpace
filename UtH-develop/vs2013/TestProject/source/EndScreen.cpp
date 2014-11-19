@@ -67,10 +67,10 @@ void EndScreen::SetHighScores(int first, int second, int third, int current)
 
 Vec4 EndScreen::Highlight(int score, int newscore)
 {
-	Vec4 color = Vec4(1, 1, 1, 1);
+	Vec4 col = Vec4(1, 1, 1, 1);
 	if (score == newscore)
 	{
-		color = Vec4(1, 0, 1, 1);
+		col = Vec4(1, 0, 1, 1);
 	}
-	return color;
+	return col;
 }

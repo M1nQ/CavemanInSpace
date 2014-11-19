@@ -16,7 +16,7 @@ void Club::Init(PhysicsWorld *world)
 	this->AddComponent(new Rigidbody(*world, COLLIDER_BALL, size));
 	this->AddTag("Club");
 	clubColl = this->GetComponent<Rigidbody>();
-
+	clubColl->SetPhysicsGroup(-1);
 	clubColl->SetActive(false);
 }
 

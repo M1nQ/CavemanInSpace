@@ -8,6 +8,7 @@ void Caveman::Init(PhysicsWorld *world)
 	this->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
 	cavemanColl = this->GetComponent<Rigidbody>();
 	cavemanColl->SetVelocity(pmath::Vec2(0, 0));
+	cavemanColl->SetPhysicsGroup(-1);
 	this->AddTag("Caveman");
 	
 }

@@ -18,9 +18,10 @@ bool GameOverScene::Init()
 
 	end = EndScreen();
 	end.SetFinalScore(allscores[3]);
+	int newScore = allscores[3]; // because SaveHighScores will change list order
 	
 	SaveHighScores();
-	end.SetHighScores(allscores[0], allscores[1], allscores[2], allscores[3]);
+	end.SetHighScores(allscores[0], allscores[1], allscores[2], newScore);
 
 	startButton = new Button(uthEngine.GetWindow(), startTex);	
 	startButton->setCallBack([]()
