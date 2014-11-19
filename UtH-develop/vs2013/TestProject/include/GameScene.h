@@ -49,6 +49,8 @@ namespace uth
 		Caveman* p_caveman;
 		Club* p_club;
 		float particleTimer;
+		float screenDiameter;
+		GameObject* p_background[4];
 		GameObject* overlay;
 		multimap<string, GameObject*> objectList;
 		multimap<string, GameObject*>::reverse_iterator i_ObjectList;
@@ -56,8 +58,7 @@ namespace uth
 		PhysicsContactListener contactListener;
 		PhysicsWorld* p_world;
 		PrefabObject prefabObject;
-		Statistics stats;	
-		GameObject* background; // Temporary background used for testing.
+		Statistics stats;
 		GameObject* p_gameOverPlaque;
 
 		std::fstream scorefile;

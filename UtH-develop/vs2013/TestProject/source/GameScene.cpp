@@ -9,6 +9,7 @@ bool GameScene::Init()
 	p_world = new PhysicsWorld(0, 0);
 	p_caveman = new Caveman();
 	paused = false;
+	screenDiameter = sqrt(pow(uthEngine.GetWindowResolution().x, 2) + pow(uthEngine.GetWindowResolution().y, 2));
 	AddChild<Caveman>(p_caveman);
 	p_caveman->Init(p_world);
 	p_club = new Club(p_caveman->transform.GetSize());
@@ -79,9 +80,16 @@ bool GameScene::Init()
 	overlay->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
 	overlay->SetActive(false);
 
-	// Temporary background used for testing.
-	background = new GameObject("Background");
-	background->AddComponent(new Sprite("Placeholders/Big_Background.png"));
+	// Background initialization
+	for (int i = 0; i < 4; ++i)
+	{
+		p_background[i] = new GameObject("Background");
+		p_background[i]->AddComponent(new Sprite("Placeholders/Big_Background.png"));
+		p_background[i]->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
+	}
+	p_background[1]->transform.SetPosition(Vec2 (uthEngine.GetWindowResolution().x , 0));
+	p_background[2]->transform.SetPosition(Vec2(0, uthEngine.GetWindowResolution().y));
+	p_background[3]->transform.SetPosition(uthEngine.GetWindowResolution());
 
 	// Game over overlay
 	p_gameOverPlaque = new GameObject();
@@ -101,6 +109,7 @@ void GameScene::Update(float dt)
 	{
 		Scene::Update(dt);
 		
+		UpdateBackground();
 		p_world->Update(dt);
 		p_club->update(dt);
 		stats.Update(dt);
@@ -131,14 +140,20 @@ void GameScene::Update(float dt)
 }
 void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
-	background->Draw(target, attributes); // Temporary background used for testing.
+	for (int i = 0; i < 4; ++i)
+	{
+		p_background[i]->Draw(target, attributes);
+	}
+
 	Scene::Draw(target, attributes);
 	p_club->Draw(target, attributes);
 	p_partsys->Draw(target, attributes);
+
 	for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
 	{
 		i_ObjectList->second->Draw(target, attributes);
 	}
+
 	p_pauseButton->Draw(target, attributes);
 	stats.Draw(target, attributes);
 	overlay->Draw(target, attributes);
@@ -190,6 +205,10 @@ void GameScene::AddObjects()
 	{
 		objectList.insert(make_pair("Astronaut", prefabObject.CreateAstronaut(p_world, GetRandomSpawnPosition())));
 	}
+	while (objectList.count("Cosmonaut") < 10)
+	{
+		objectList.insert(make_pair("Cosmonaut", prefabObject.CreateCosmonaut(p_world, GetRandomSpawnPosition())));
+	}
 	while (objectList.count("Asteroid") < 20)
 	{
 		objectList.insert(make_pair("Asteroid", prefabObject.CreateAsteroid(p_world, GetRandomSpawnPosition())));
@@ -199,7 +218,7 @@ bool GameScene::DeleteObjects(GameObject* p_object)
 {
 	// Deletes objects that are too far away from the player. (Return's true if the object was deleted.)
 
-	if (Vec2::distance(p_object->transform.GetPosition(), p_caveman->transform.GetPosition()) >= 2000)
+	if (Vec2::distance(p_object->transform.GetPosition(), p_caveman->transform.GetPosition()) >= screenDiameter + 200)
 	{
 		delete(p_object);
 		return true;
@@ -211,19 +230,39 @@ Vec2 GameScene::GetRandomSpawnPosition()
 	// Returns a random position outside the field of view, but not too far away.
 
 	short randomNumber = Randomizer::GetInt(0, 4);
+	Vec2 temp;
 
-	switch (randomNumber)
-	{
-	case 0: return Vec2(Randomizer::GetFloat(-1000, 1000), Randomizer::GetFloat(600, 1600)) + p_caveman->transform.GetPosition();
-	case 1: return Vec2(Randomizer::GetFloat(-1000, 1000), Randomizer::GetFloat(-600, -1600)) + p_caveman->transform.GetPosition();
-	case 2: return Vec2(Randomizer::GetFloat(1000, 2000), Randomizer::GetFloat(-600, 600)) + p_caveman->transform.GetPosition();
-	case 3: return Vec2(Randomizer::GetFloat(-1000, -2000), Randomizer::GetFloat(-600, 600)) + p_caveman->transform.GetPosition();
-	default: return Vec2(Randomizer::GetFloat(-1000, 1000), Randomizer::GetFloat(600, 1600)) + p_caveman->transform.GetPosition();
-	}
+	do {
+		switch (randomNumber)
+		{
+		case 0: temp = Vec2(Randomizer::GetFloat(0, 1), Randomizer::GetFloat(0, 1)); break;
+		case 1: temp = Vec2(Randomizer::GetFloat(0, 1), Randomizer::GetFloat(-1, 0)); break;
+		case 2: temp = Vec2(Randomizer::GetFloat(-1, 0), Randomizer::GetFloat(-1, 0)); break;
+		case 3: temp = Vec2(Randomizer::GetFloat(-1, 0), Randomizer::GetFloat(0, 1)); break;
+		default: temp = Vec2(Randomizer::GetFloat(0, 1), Randomizer::GetFloat(0, 1)); break;
+		}
+	} while (temp.length() == 0);
+
+	temp.normalize();
+	temp *= screenDiameter;
+	return temp + p_caveman->transform.GetPosition();
 }
 void GameScene::UpdateBackground()
 {
-	// TODO: Make a "scrolling" background.
+	// Moves the background objects according to the player's movement to create an illusion of an endless background.
+
+	for (int i = 0; i < 4; ++i)
+	{
+		if (p_background[i]->transform.GetPosition().x - uthEngine.GetWindow().GetCamera().GetPosition().x < uthEngine.GetWindowResolution().x * -1)
+			p_background[i]->transform.SetPosition(p_background[i]->transform.GetPosition().x + uthEngine.GetWindowResolution().x * 2, p_background[i]->transform.GetPosition().y);
+		else if (p_background[i]->transform.GetPosition().x - uthEngine.GetWindow().GetCamera().GetPosition().x > uthEngine.GetWindowResolution().x)
+			p_background[i]->transform.SetPosition(p_background[i]->transform.GetPosition().x - uthEngine.GetWindowResolution().x * 2, p_background[i]->transform.GetPosition().y);
+
+		if (p_background[i]->transform.GetPosition().y - uthEngine.GetWindow().GetCamera().GetPosition().y < uthEngine.GetWindowResolution().y * -1)
+			p_background[i]->transform.SetPosition(p_background[i]->transform.GetPosition().x, p_background[i]->transform.GetPosition().y + uthEngine.GetWindowResolution().y * 2);
+		else if (p_background[i]->transform.GetPosition().y - uthEngine.GetWindow().GetCamera().GetPosition().y > uthEngine.GetWindowResolution().y)
+			p_background[i]->transform.SetPosition(p_background[i]->transform.GetPosition().x, p_background[i]->transform.GetPosition().y - uthEngine.GetWindowResolution().y * 2);
+	}
 }
 void GameScene::UpdateCameraMovement(float dt)
 {
