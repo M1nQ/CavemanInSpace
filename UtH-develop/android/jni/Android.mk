@@ -29,16 +29,7 @@ include $(PREBUILT_SHARED_LIBRARY)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := uthengine
-LOCAL_SRC_FILES :=  main.cpp \
-../../vs2013/TestProject/source/TitleScene.cpp \
-../../vs2013/TestProject/source/GameScene.cpp \
-../../vs2013/TestProject/source/MenuScene.cpp \
-../../vs2013/TestProject/source/GameOverScene.cpp \
-../../vs2013/TestProject/source/Caveman.cpp \
-../../vs2013/TestProject/source/PrefabObject.cpp \
-../../vs2013/TestProject/source/Button.cpp \
-../../vs2013/TestProject/source/OxygenAffector.cpp \
-../../vs2013/TestProject/source/Statistics.cpp \
+LOCAL_SRC_FILES := main.cpp \
 ../../vs2013/TestProject/source/TestScene.cpp
 LOCAL_LDLIBS    := -llog -landroid -lEGL -lGLESv2 -lOpenSLES
 LOCAL_STATIC_LIBRARIES := android_native_app_glue engine

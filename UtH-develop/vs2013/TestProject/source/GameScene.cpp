@@ -110,7 +110,7 @@ void GameScene::Update(float dt)
 	{
 		Scene::Update(dt);
 		
-		p_world->Update();
+		p_world->Update(dt);
 		p_club->update(dt);
 		stats.Update(dt);
 
