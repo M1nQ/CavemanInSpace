@@ -30,12 +30,12 @@ private:
 
 	int timeFromHit;
 	float speed;
-	GameObject* p_club;
-	Vec2 clubsize;
-	float reach;
+	
+	
+	
 	Vec2 hitDirection;
 	Rigidbody* cavemanColl;
-	Rigidbody* clubColl;
+	
 };
 
 #endif

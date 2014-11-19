@@ -34,7 +34,7 @@ namespace uth
 		bool DeleteObjects(GameObject* p_object);
 		Vec2 GetRandomSpawnPosition();
 		// Logic for gameobject that are hit by caveman.
-		void ReactToHit();
+		void ReactToHit(GameObject* a);
 		void MaintainObjectList(float dt);
 		void AddObjects();
 		void UpdateBackground();

@@ -40,24 +40,15 @@ bool GameScene::Init()
 	contactListener = PhysicsContactListener();
 	contactListener.onBeginContact = [this](b2Contact* contact, GameObject* a, GameObject* b)
 		{
-			if (a->HasTag("Club"))
+			if (b->HasTag("Club"))
 			{
-
-				for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
-				{
-					if (i_ObjectList->second == b && i_ObjectList->first == "Astronaut")
-					{
-						//kill astronaut
-						p_caveman->Hit();
-						stats.addOxygen += 0.3f;
-						stats.addScore += 100;
-						//particles!
-						p_partsys->transform.SetPosition(b->GetComponent<Rigidbody>()->GetPosition());
-						p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);
-						particleTimer = 50;
-					}
-				}
+				ReactToHit(a);
 			}
+			else if (a->HasTag("Club"))
+			{
+				ReactToHit(b);
+			}
+			else {}
 		};
 	p_world->SetContactListener(&contactListener);
 	
@@ -135,8 +126,8 @@ void GameScene::Update(float dt)
 
 	UpdateButtonPositions();
 	p_playButton->Update(dt);
-	if (stats.IsDead())
-			GameOverLay();
+	/*if (stats.IsDead())
+			GameOverLay();*/
 }
 void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
@@ -157,8 +148,22 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 
 // Private //
 
-void GameScene::ReactToHit()
+void GameScene::ReactToHit(GameObject* a)
 {
+	for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
+	{
+		if (i_ObjectList->second == a && i_ObjectList->first == "Astronaut")
+		{
+			//kill astronaut
+			p_caveman->Hit();
+			stats.addOxygen += 0.3f;
+			stats.addScore += 100;
+			//particles!
+			p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
+			p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);
+			particleTimer = 50;
+		}
+	}
 }
 void GameScene::MaintainObjectList(float dt)
 {
