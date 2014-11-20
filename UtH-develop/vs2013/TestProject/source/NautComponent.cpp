@@ -2,6 +2,10 @@
 
 void NautComponent::Update(float dt)
 {
+	// Makes dead nauts fade away.
+
+	if (hp <= 0 && parent->GetComponent<Sprite>()->GetColor().a > 0)
+		parent->GetComponent<Sprite>()->SetColor(1, 1, 1, (parent->GetComponent<Sprite>()->GetColor().a) - 0.01 * (1 / dt));
 }
 void NautComponent::Hit(Vec2 position)
 {
