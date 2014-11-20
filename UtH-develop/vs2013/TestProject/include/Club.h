@@ -2,10 +2,6 @@
 #define CLUB_H
 
 #include <UtH/UtHEngine.hpp>
-#include <UtH/Engine/GameObject.hpp>
-#include <UtH/Engine/Sprite.hpp>
-#include <UtH/Engine/Physics/Rigidbody.hpp>
-#include <UtH/Engine/AnimatedSprite.hpp>
 
 using namespace uth;
 using namespace pmath;
@@ -17,8 +13,9 @@ public:
 	~Club();
 
 	void Init(PhysicsWorld *world);
-	void update(float dt);
+	void update(float dt, Vec2 cavemanPos);
 	void Hit(Vec2 cavemanPosition, Vec2 tapPosition);
+	void HasHit();
 
 private:
 	Vec2 size;

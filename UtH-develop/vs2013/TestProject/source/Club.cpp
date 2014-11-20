@@ -3,7 +3,7 @@
 Club::Club(Vec2 clubSize)
 {
 	size = clubSize;
-	reach = 1.5f * clubSize.x;
+	reach = 1.f * clubSize.x;
 }
 Club::~Club()
 {}
@@ -20,24 +20,24 @@ void Club::Init(PhysicsWorld *world)
 	clubColl->SetActive(false);
 }
 
-void Club::update(float dt)
+void Club::update(float dt, Vec2 cavemanPos)
 {
-	Vec2 campos = uthEngine.GetWindow().GetCamera().GetPosition();
+	//Vec2 campos = uthEngine.GetWindow().GetCamera().GetPosition();
 	if (timeFromHit > 0)
 	{
-		clubColl->SetPosition(campos + (hitDirection * reach));
+		clubColl->SetPosition(cavemanPos + (hitDirection * reach));
 		timeFromHit -= dt;
 	}
 	else if (timeFromHit <= 0)
 	{
 		timeFromHit = 0;
-		clubColl->SetPosition(campos);
+		clubColl->SetPosition(cavemanPos);
 		if (clubColl->IsActive())
 			clubColl->SetActive(false);
 		//
 	}
 	else
-		clubColl->SetPosition(campos);
+		clubColl->SetPosition(cavemanPos);
 }
 
 void Club::Hit(Vec2 cavemanPosition, Vec2 tapPosition)
@@ -47,4 +47,9 @@ void Club::Hit(Vec2 cavemanPosition, Vec2 tapPosition)
 	hitDirection = temp;
 	timeFromHit = 5;
 	clubColl->SetActive(true);
+}
+
+void Club::HasHit()
+{
+	timeFromHit = 0;
 }
