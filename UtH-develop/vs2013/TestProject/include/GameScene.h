@@ -3,17 +3,9 @@
 
 #include <vector>
 #include <UtH/UtHEngine.hpp>
-#include <Caveman.h>
-#include <PrefabObject.h>
-#include <OxygenAffector.h>
+#include <CavemanGame.h>
 #include <map>
-#include <Statistics.h>
-#include <Button.h>
-#include <Club.h>
 #include <fstream>
-#include <NautComponent.h>
-#include <CosmonautComponent.h>
-#include <TaikonautComponent.h>
 
 using namespace uth;
 using namespace std;
@@ -54,25 +46,36 @@ namespace uth
 		void VariableInit();
 
 		bool paused;
-		Button* p_pauseButton;
-		Button* p_playButton;
-		Caveman* p_caveman;
-		Club* p_club;
-		float particleTimer;
-		float screenDiameter;
-		GameObject* p_background[4];
-		GameObject* overlay;
-		multimap<string, GameObject*> objectList;
-		multimap<string, GameObject*>::reverse_iterator i_ObjectList;
-		ParticleSystem* p_partsys;
+
+		// Physics and particles
 		PhysicsContactListener contactListener;
 		PhysicsWorld* p_world;
+		ParticleSystem* p_partsys;
+		float particleTimer;
+
+		// Background
+		GameObject* p_background[4];
+		GameObject* overlay;
+		float screenDiameter;
+
+		// Game objects
+		Caveman* p_caveman;
+		Club* p_club;
+		Arrow* p_arrow;
+		multimap<string, GameObject*> objectList;
+		multimap<string, GameObject*>::reverse_iterator i_ObjectList;
+
 		PrefabObject prefabObject;
 		short asteroidAmount;
 		short astronautAmount;
 		short cosmonautAmount;
-		Statistics stats;
 
+		// Buttons
+		Button* p_pauseButton;
+		Button* p_playButton;
+
+		// Scorekeeping
+		Statistics stats;
 		std::fstream scorefile;
 	};
 }

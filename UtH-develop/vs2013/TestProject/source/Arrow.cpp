@@ -8,16 +8,16 @@ void Arrow::Init()
 	this->SetActive(false);
 }
 
-void Arrow::update(float dt)
+void Arrow::update(Vec2 cavemanPos)
 {
 	if (this->IsActive() == true)
 	{
 		direction = start - uthInput.Common.Position();
-		scale = direction.length;
+		scale = direction.length();
 		direction.normalize();
 		this->transform.ScaleToSize(scale, 24);
 		this->transform.SetRotation(pmath::atan2(direction.y, direction.x));
-		this->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition() - (direction * 50));
+		this->transform.SetPosition(cavemanPos - (direction * 50));
 	}
 }
 

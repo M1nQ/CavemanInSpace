@@ -14,7 +14,7 @@ public:
 	~Arrow(){}
 
 	void Init();
-	void update(float dt);
+	void update(Vec2 cavemanPos);
 	void DrawArrow(Vec2 startPos);
 	void DisableArrow();
 

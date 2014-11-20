@@ -1,8 +1,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <UtH/Engine/GameObject.hpp>
-#include <UtH/Renderer/Texture.hpp>
+#include <UtH/UtHEngine.hpp>
 #include <functional>
 
 class Button : public uth::GameObject

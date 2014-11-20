@@ -120,6 +120,7 @@
     <ClCompile Include="source\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\CavemanGame.h" />
     <ClInclude Include="include\Arrow.h" />
     <ClInclude Include="include\Club.h" />
     <ClInclude Include="include\CosmonautComponent.h" />

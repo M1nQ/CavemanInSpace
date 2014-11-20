@@ -274,20 +274,38 @@ void GameScene::UpdateCameraMovement(float dt)
 }
 void GameScene::Input()
 {
-	// Handles input.
-
+	// Handles touch input.
+	if (uthInput.Touch[0].Motion() == TouchMotion::DRAG && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Common.Position()) > 10)
+	{
+		if (p_arrow->IsActive() == false)
+			p_arrow->DrawArrow(uthInput.Touch[0].GetStartPosition());
+		else p_arrow->update(p_caveman->transform.GetPosition());
+	}
 	if (uthInput.Touch[0].Motion() == TouchMotion::RELEASE && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition()) > 10)
+	{
+		p_arrow->DisableArrow();
 		p_caveman->ChangeDirectionTouch(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition());
+	}
 	else if (uthInput.Touch[0].Motion() == TouchMotion::TAP)
-	{ /* TODO: Call caveman's hit function. */ 
-	
+	{  
+		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
+		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
 	}
 
-	// For testing.
+	// Mouse input for testing.
+	if (uthInput.Mouse.IsButtonDown(Mouse::MButton::LEFT) == true && p_arrow->IsActive() == false)
+		p_arrow->DrawArrow(uthInput.Common.Position());
+	if (uthInput.Common.Event() == InputEvent::DRAG)
+	{
+		p_arrow->update(p_caveman->transform.GetPosition());
+	}
 	if (uthInput.Common.Event() == InputEvent::RELEASE)
+	{
 		p_caveman->ChangeDirectionMouse(uthInput.Common.Position());
+		p_arrow->DisableArrow();
+	}
 	if (uthInput.Common.Event() == InputEvent::TAP)
-	{ /* TODO: Call caveman's hit function. */ 
+	{  
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
 		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
 	}
@@ -418,6 +436,10 @@ void GameScene::VariableInit()
 	p_club = new Club(p_caveman->transform.GetSize());
 	p_club->Init(p_world);
 	AddChild<Club>(p_club);
+
+	p_arrow = new Arrow();
+	p_arrow->Init();
+	AddChild<Arrow>(p_arrow);
 
 	prefabObject = PrefabObject();
 	stats = Statistics();
