@@ -4,14 +4,26 @@
 #include <UtH/UtHEngine.hpp>
 
 using namespace uth;
+using namespace pmath;
 
 class Arrow :
 	public GameObject
 {
 public:
-	Arrow();
-	~Arrow();
+	Arrow(){}
+	~Arrow(){}
 
 	void Init();
+	void update(float dt);
+	void DrawArrow(Vec2 startPos);
+	void DisableArrow();
+
+private:
+	Texture* arrowPic;
+	Vec2 direction;
+	Vec2 start;
+	
+	float scale;
+
 };
 #endif
