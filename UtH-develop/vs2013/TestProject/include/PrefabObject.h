@@ -7,6 +7,7 @@
 #include <UtH/Engine/Sprite.hpp>
 #include <UtH/Engine/Physics/Rigidbody.hpp>
 #include <UtH/Engine/AnimatedSprite.hpp>
+#include <pmath\Matrix2.hpp>
 
 using namespace uth;
 using namespace std;
@@ -15,7 +16,7 @@ using namespace pmath;
 class PrefabObject
 {
 public:
-	inline PrefabObject() { randomMaxSpeed = 3; }
+	inline PrefabObject() { randomMaxSpeed = 2; }
 	~PrefabObject() { }
 
 	// Creates an astronaut to the given position, heading towards the center of the screen.

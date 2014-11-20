@@ -45,24 +45,25 @@ GameObject* PrefabObject::CreateUfo(PhysicsWorld* world, Vec2 position, string t
 
 void PrefabObject::Direct(GameObject* p_object)
 {
-	// Sets the object's direction towards the center of the screen, 
+	// Sets the object's direction at most 90 degrees away from the center of the sceen,
 	// and randomizes a speed using the randomMaxSpeed.
 
 	Vec2 direction = uthEngine.GetWindow().GetCamera().GetPosition() - p_object->GetComponent<Rigidbody>("Rigidbody")->GetPosition();
 	direction.normalize();
+	float randomNumber = Randomizer::GetInt(0, 90) * 180 / pi;
 
-	if (direction.x > 0)
-		direction.x += Randomizer::GetFloat(0.f, 10 - direction.x);
+	if (Randomizer::GetInt(0, 1) == 0)
+	{
+		Matrix2<float> rotation = Matrix2<float>(cos(randomNumber), -sin(randomNumber),
+												 sin(randomNumber), cos(randomNumber));
+		direction *= rotation;
+	}
 	else
-		direction.x -= Randomizer::GetFloat(0.f, 10 + direction.x);
+	{
+		Matrix2<float> rotation = Matrix2<float>(cos(randomNumber), sin(randomNumber),
+												 -sin(randomNumber), cos(randomNumber));
+		direction *= rotation;
+	}
 
-	if (direction.y > 0)
-		direction.y += Randomizer::GetFloat(0.f, 10 - direction.y);
-	else
-		direction.y -= Randomizer::GetFloat(0.f, 10 + direction.x);
-
-	direction.normalize();
-
-	if (direction.x != 0 && direction.y != 0)
-		p_object->GetComponent<Rigidbody>("Rigidbody")->SetVelocity(direction * Randomizer::GetFloat(0, randomMaxSpeed));
+	p_object->GetComponent<Rigidbody>("Rigidbody")->SetVelocity(direction * Randomizer::GetFloat(0, randomMaxSpeed));
 }
