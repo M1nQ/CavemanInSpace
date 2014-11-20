@@ -274,6 +274,8 @@ void GameScene::UpdateCameraMovement(float dt)
 }
 void GameScene::Input()
 {
+	// TODO: check which input version should be used?
+
 	// Handles touch input.
 	if (uthInput.Touch[0].Motion() == TouchMotion::DRAG && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Common.Position()) > 10)
 	{
@@ -284,6 +286,7 @@ void GameScene::Input()
 	if (uthInput.Touch[0].Motion() == TouchMotion::RELEASE && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition()) > 10)
 	{
 		p_arrow->DisableArrow();
+		stats.addOxygen -= 0.1f;
 		p_caveman->ChangeDirectionTouch(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition());
 	}
 	else if (uthInput.Touch[0].Motion() == TouchMotion::TAP)
@@ -302,6 +305,7 @@ void GameScene::Input()
 	if (uthInput.Common.Event() == InputEvent::RELEASE)
 	{
 		p_caveman->ChangeDirectionMouse(uthInput.Common.Position());
+		stats.addOxygen -= 0.1f;
 		p_arrow->DisableArrow();
 	}
 	if (uthInput.Common.Event() == InputEvent::TAP)

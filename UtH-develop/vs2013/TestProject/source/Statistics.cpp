@@ -43,16 +43,18 @@ void Statistics::ResetScore()
 void Statistics::UpdateOxygenBar(float dt)
 {
 	// Updates the amount of oxygen and the position and scale of the oxygen bar.
-
-	if (addOxygen > 0 && addOxygen > 0.01f)
+	if (addOxygen != 0)
 	{
-		oxygenLeft += addOxygen * 0.05f;
-		addOxygen -= addOxygen * 0.05f;
-	}
-	else if (addOxygen > 0)
-	{
-		oxygenLeft += addOxygen;
-		addOxygen = 0;
+		if (addOxygen > 0.01f || addOxygen < -0.01f)
+		{
+			oxygenLeft += addOxygen * 0.05f;
+			addOxygen -= addOxygen * 0.05f;
+		}
+		else
+		{
+			oxygenLeft += addOxygen;
+			addOxygen = 0;
+		}
 	}
 	else
 	{
