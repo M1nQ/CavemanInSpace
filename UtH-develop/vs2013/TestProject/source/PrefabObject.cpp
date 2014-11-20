@@ -1,4 +1,5 @@
-#include "PrefabObject.h"
+#include <PrefabObject.h>
+#include <NautComponent.h>
 
 GameObject* PrefabObject::CreateAstronaut(PhysicsWorld* world, Vec2 position, string tag)
 {
@@ -9,8 +10,22 @@ GameObject* PrefabObject::CreateAstronaut(PhysicsWorld* world, Vec2 position, st
 	p_astronaut->AddComponent(new Sprite("Placeholders/astronautPlaceHolder.png"));
 	p_astronaut->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
 	p_astronaut->GetComponent<Rigidbody>("Rigidbody")->SetPosition(position);
+	p_astronaut->AddComponent(new NautComponent());
 	Direct(p_astronaut);
 	return p_astronaut;
+}
+GameObject* PrefabObject::CreateCosmonaut(PhysicsWorld* world, Vec2 position, string tag)
+{
+	// Creates a cosmonaut to the given position, heading towards the center of the screen
+	// with a sligthly randomized angle.
+
+	GameObject* p_cosmonaut = new GameObject(tag);
+	p_cosmonaut->AddComponent(new Sprite("Placeholders/Cosmonaut.png"));
+	p_cosmonaut->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
+	p_cosmonaut->GetComponent<Rigidbody>("Rigidbody")->SetPosition(position);
+	p_cosmonaut->AddComponent(new NautComponent("NautComponent", 0.4f, 2));
+	Direct(p_cosmonaut);
+	return p_cosmonaut;
 }
 GameObject* PrefabObject::CreateAsteroid(PhysicsWorld* world, Vec2 position, string tag)
 {
@@ -23,18 +38,6 @@ GameObject* PrefabObject::CreateAsteroid(PhysicsWorld* world, Vec2 position, str
 	p_asteroid->GetComponent<Rigidbody>("Rigidbody")->SetPosition(position);
 	Direct(p_asteroid);
 	return p_asteroid;
-}
-GameObject* PrefabObject::CreateCosmonaut(PhysicsWorld* world, Vec2 position, string tag) 
-{ 
-	// Creates a cosmonaut to the given position, heading towards the center of the screen
-	// with a sligthly randomized angle.
-
-	GameObject* p_cosmonaut = new GameObject(tag);
-	p_cosmonaut->AddComponent(new Sprite("Placeholders/Cosmonaut.png"));
-	p_cosmonaut->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
-	p_cosmonaut->GetComponent<Rigidbody>("Rigidbody")->SetPosition(position);
-	Direct(p_cosmonaut);
-	return p_cosmonaut;
 }
 // TODO: Implement functions defined below.
 GameObject* PrefabObject::CreateTaikonaut(PhysicsWorld* world, Vec2 position, string tag) { return nullptr; }

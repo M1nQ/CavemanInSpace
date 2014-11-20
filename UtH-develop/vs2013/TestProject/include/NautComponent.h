@@ -10,13 +10,11 @@ using namespace pmath;
 class NautComponent : public Component
 {
 public:
-	inline NautComponent(const string& name) : Component(name) {}
+	inline NautComponent(const string& name = "NautComponent", float oxygen = 0.3f, int hp = 1) : Component(name) { this->oxygen = oxygen; this->hp = hp; }
 	inline virtual ~NautComponent() {}
 
-	inline virtual void Init() {}
-	inline virtual void Draw(RenderTarget&) {}
-	inline bool isDead() { if (hp <= 0) return true; return false; }
 	virtual void Update(float dt);
+	inline bool isDead() { if (hp <= 0) return true; return false; }
 
 	// Subtracts from hp and sets direction away from the given position.
 	virtual void Hit(Vec2 position);

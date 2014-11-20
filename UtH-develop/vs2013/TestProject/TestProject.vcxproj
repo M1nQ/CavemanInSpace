@@ -118,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Club.h" />
+    <ClInclude Include="include\CosmonautComponent.h" />
     <ClInclude Include="include\EndScreen.h" />
     <ClInclude Include="include\Button.h" />
     <ClInclude Include="include\Caveman.h" />
@@ -129,12 +130,15 @@
     <ClInclude Include="include\Scenes.hpp" />
     <ClInclude Include="include\Scores.h" />
     <ClInclude Include="include\Statistics.h" />
+    <ClInclude Include="include\TaikonautComponent.h" />
     <ClInclude Include="include\TestScene.hpp" />
     <ClInclude Include="include\TitleScene.h" />
     <ClInclude Include="include\OxygenAffector.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="source\CosmonautComponent.h" />
+    <ClInclude Include="source\TaikonautComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
