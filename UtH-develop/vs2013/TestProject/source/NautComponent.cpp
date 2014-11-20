@@ -2,11 +2,10 @@
 
 void NautComponent::Update(float dt)
 {
-	// Makes dead nauts fade away.
-
 	if (hp <= 0 && parent->GetComponent<Sprite>()->GetColor().a > 0)
 	{
-		parent->GetComponent<Sprite>()->SetColor(1, 1, 1, (parent->GetComponent<Sprite>()->GetColor().a) - 0.01f * (1 / dt));
+		// Substaracts from alpha: Alpha - precentage in seconds
+		parent->GetComponent<Sprite>()->SetColor(1, 1, 1, (parent->GetComponent<Sprite>()->GetColor().a) - 1 / (1 / dt));
 		parent->GetComponent<Rigidbody>()->SetKinematic(true);
 	}
 }

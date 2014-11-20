@@ -27,6 +27,7 @@ public:
 	void Update(float dt);
 	void Draw(RenderTarget& target, RenderAttributes attributes);
 	void ResetScore();
+	inline float GetGameTime() { return gameTime; }
 
 	int GetFinalScore();
 

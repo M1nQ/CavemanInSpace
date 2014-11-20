@@ -11,6 +11,9 @@
 #include <Button.h>
 #include <Club.h>
 #include <fstream>
+#include <NautComponent.h>
+#include <CosmonautComponent.h>
+#include <TaikonautComponent.h>
 
 using namespace uth;
 using namespace std;
@@ -41,7 +44,14 @@ namespace uth
 		void UpdateCameraMovement(float dt);
 		void Input();
 		void UpdateButtonPositions();
-		void GameOverLay();
+		void GameOverLogic();
+
+		void BackgroundInit();
+		void PauseInit();
+		void ButtonsInit();
+		void ContactLogicInit();
+		void ParticleInit();
+		void VariableInit();
 
 		bool paused;
 		Button* p_pauseButton;
@@ -58,8 +68,10 @@ namespace uth
 		PhysicsContactListener contactListener;
 		PhysicsWorld* p_world;
 		PrefabObject prefabObject;
+		short asteroidAmount;
+		short astronautAmount;
+		short cosmonautAmount;
 		Statistics stats;
-		GameObject* p_gameOverPlaque;
 
 		std::fstream scorefile;
 	};

@@ -5,97 +5,12 @@ GameScene::~GameScene() {}
 
 bool GameScene::Init()
 {	
-	Randomizer::SetSeed(time(NULL));
-	p_world = new PhysicsWorld(0, 0);
-	p_caveman = new Caveman();
-	paused = false;
-	screenDiameter = sqrt(pow(uthEngine.GetWindowResolution().x, 2) + pow(uthEngine.GetWindowResolution().y, 2));
-	AddChild<Caveman>(p_caveman);
-	p_caveman->Init(p_world);
-	p_club = new Club(p_caveman->transform.GetSize());
-	p_club->Init(p_world);
-	AddChild<Club>(p_club);
-	prefabObject = PrefabObject();
-	stats = Statistics();
-	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
-
-	// particle effect for astronaut kill (placeholder)
-
-	p_partsys = new ParticleSystem(2000);
-	auto oxypart = uthRS.LoadTexture("Placeholders/oxygenpix.png");
-	
-
-	ParticleTemplate pt;
-	pt.SetTexture(oxypart);
-	pt.SetLifetime(2.5f);
-	pt.SetSpeed(30.f, 70.f);
-	//pt.SetColor(1, 1, 1, 1);
-	
-	p_partsys->SetTemplate(pt);
-	p_partsys->AddAffector(new OxygenAffector());
-	p_partsys->SetEmitProperties(false);
-
-	particleTimer = 0;
-
-	// contact reaction logic
-	contactListener = PhysicsContactListener();
-	contactListener.onBeginContact = [this](b2Contact* contact, GameObject* a, GameObject* b)
-		{
-			if (b->HasTag("Club"))
-			{
-				ReactToHit(a);
-			}
-			else if (a->HasTag("Club"))
-			{
-				ReactToHit(b);
-			}
-			else {}
-		};
-	p_world->SetContactListener(&contactListener);
-	
-	// Buttons
-	p_pauseButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/eimitn.png"));
-	p_pauseButton->SetActive(true);
-	p_pauseButton->setCallBack([this]() 
-	{
-		paused = true;
-		p_playButton->SetActive(true);
-		p_playButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
-		overlay->SetActive(true);
-		overlay->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
-	});
-
-	p_playButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/Play.png"));
-	p_playButton->SetActive(false);
-	p_playButton->setCallBack([this]() 
-	{
-		paused = false;
-		p_playButton->SetActive(false);
-		overlay->SetActive(false);
-	});
-
-	// Game paused overlay
-	overlay = new GameObject();
-	overlay->AddComponent(new Sprite("Overlay.png"));
-	overlay->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
-	overlay->SetActive(false);
-
-	// Background initialization
-	for (int i = 0; i < 4; ++i)
-	{
-		p_background[i] = new GameObject("Background");
-		p_background[i]->AddComponent(new Sprite("Placeholders/Big_Background.png"));
-		p_background[i]->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
-	}
-	p_background[1]->transform.SetPosition(Vec2 (uthEngine.GetWindowResolution().x , 0));
-	p_background[2]->transform.SetPosition(Vec2(0, uthEngine.GetWindowResolution().y));
-	p_background[3]->transform.SetPosition(uthEngine.GetWindowResolution());
-
-	// Game over overlay
-	p_gameOverPlaque = new GameObject();
-	p_gameOverPlaque->AddComponent(new Sprite("Placeholders/gameOver.png"));
-	// p_gameOverPlaque->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
-	p_gameOverPlaque->SetActive(false);
+	VariableInit();
+	ParticleInit();
+	ContactLogicInit();
+	ButtonsInit();
+	PauseInit();
+	BackgroundInit();
 
 	return true;
 }
@@ -111,7 +26,7 @@ void GameScene::Update(float dt)
 		
 		UpdateBackground();
 		p_world->Update(dt);
-		p_club->update(dt);
+		p_club->update(dt, p_caveman->transform.GetPosition());
 		stats.Update(dt);
 
 		if (particleTimer > 0)
@@ -136,7 +51,7 @@ void GameScene::Update(float dt)
 	UpdateButtonPositions();
 	p_playButton->Update(dt);
 	if (stats.IsDead())
-			GameOverLay();
+			GameOverLogic();
 }
 void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
@@ -157,7 +72,6 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 	p_pauseButton->Draw(target, attributes);
 	stats.Draw(target, attributes);
 	overlay->Draw(target, attributes);
-	p_gameOverPlaque->Draw(target, attributes);
 	p_playButton->Draw(target, attributes);
 }
 
@@ -171,22 +85,34 @@ void GameScene::ReactToHit(GameObject* a)
 		{
 			if (i_ObjectList->first == "Astronaut")
 			{
+				a->GetComponent<NautComponent>()->Hit(p_club->transform.GetPosition());
+
 				//kill astronaut
-				stats.addOxygen += 0.3f;
-				stats.addScore += 100;
-				//particles!
-				p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
-				p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);
-				particleTimer = 50;
+				if (a->GetComponent<NautComponent>()->isDead() && a->GetComponent<NautComponent>()->oxygen > 0)
+				{
+					stats.addOxygen += a->GetComponent<NautComponent>()->oxygen;
+					a->GetComponent<NautComponent>()->oxygen = 0;
+					stats.addScore += 100;
+					//particles!
+					p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
+					p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);
+					particleTimer = 50;
+				}
 			}
 			else if (i_ObjectList->first == "Cosmonaut")
 			{
-				stats.addOxygen += 0.4f;
-				stats.addScore += 200;
-				//particles!
-				p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
-				p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);
-				particleTimer = 50;
+				a->GetComponent<NautComponent>()->Hit(p_club->transform.GetPosition());
+
+				if (a->GetComponent<NautComponent>()->isDead() && a->GetComponent<NautComponent>()->oxygen > 0)
+				{
+					stats.addOxygen += a->GetComponent<NautComponent>()->oxygen;
+					a->GetComponent<NautComponent>()->oxygen = 0;
+					stats.addScore += 200;
+					//particles!
+					p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
+					p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);
+					particleTimer = 50;
+				}
 			}
 			else if (i_ObjectList->first == "Asteroid")
 			{
@@ -218,20 +144,57 @@ void GameScene::MaintainObjectList(float dt)
 				objectList.erase(--(i_ObjectList.base()));
 		}
 	}
+
+	if (stats.GetGameTime() > 60)
+	{
+		asteroidAmount = 30;
+		astronautAmount = 10;
+		cosmonautAmount = 5;
+	}
+	else if (stats.GetGameTime() > 50)
+	{
+		asteroidAmount = 40;
+		astronautAmount = 15;
+		cosmonautAmount = 10;
+	}
+	else if (stats.GetGameTime() > 40)
+	{
+		asteroidAmount = 40;
+		astronautAmount = 20;
+		cosmonautAmount = 10;
+	}
+	else if (stats.GetGameTime() > 30)
+	{
+		asteroidAmount = 50;
+		astronautAmount = 20;
+		cosmonautAmount = 15;
+	}
+	else if (stats.GetGameTime() > 20)
+	{
+		asteroidAmount = 40;
+		astronautAmount = 30;
+		cosmonautAmount = 20;
+	}
+	else if (stats.GetGameTime() > 10)
+	{
+		asteroidAmount = 30;
+		astronautAmount = 30;
+		cosmonautAmount = 30;
+	}
 }
 void GameScene::AddObjects()
 {
 	// Maintains the objectlist so, that it always holds a certain amount of specified objects.
 	
-	while (objectList.count("Astronaut") < 20)
+	while (objectList.count("Astronaut") < astronautAmount)
 	{
 		objectList.insert(make_pair("Astronaut", prefabObject.CreateAstronaut(p_world, GetRandomSpawnPosition())));
 	}
-	while (objectList.count("Cosmonaut") < 10)
+	while (objectList.count("Cosmonaut") < cosmonautAmount)
 	{
 		objectList.insert(make_pair("Cosmonaut", prefabObject.CreateCosmonaut(p_world, GetRandomSpawnPosition())));
 	}
-	while (objectList.count("Asteroid") < 20)
+	while (objectList.count("Asteroid") < asteroidAmount)
 	{
 		objectList.insert(make_pair("Asteroid", prefabObject.CreateAsteroid(p_world, GetRandomSpawnPosition())));
 	}
@@ -239,8 +202,15 @@ void GameScene::AddObjects()
 bool GameScene::DeleteObjects(GameObject* p_object)
 {
 	// Deletes objects that are too far away from the player. (Return's true if the object was deleted.)
-
-	if (Vec2::distance(p_object->transform.GetPosition(), p_caveman->transform.GetPosition()) >= screenDiameter + 200)
+	if (p_object->HasTag("Naut"))
+	{
+		if ((p_object->GetComponent<NautComponent>()->isDead() && p_object->GetComponent<Sprite>()->GetColor().a <= 0))
+		{
+			delete(p_object);
+			return true;
+		}
+	}
+	else if (Vec2::distance(p_object->transform.GetPosition(), p_caveman->transform.GetPosition()) >= screenDiameter)
 	{
 		delete(p_object);
 		return true;
@@ -275,15 +245,15 @@ void GameScene::UpdateBackground()
 
 	for (int i = 0; i < 4; ++i)
 	{
-		if (p_background[i]->transform.GetPosition().x - uthEngine.GetWindow().GetCamera().GetPosition().x < uthEngine.GetWindowResolution().x * -1)
-			p_background[i]->transform.SetPosition(p_background[i]->transform.GetPosition().x + uthEngine.GetWindowResolution().x * 2, p_background[i]->transform.GetPosition().y);
-		else if (p_background[i]->transform.GetPosition().x - uthEngine.GetWindow().GetCamera().GetPosition().x > uthEngine.GetWindowResolution().x)
-			p_background[i]->transform.SetPosition(p_background[i]->transform.GetPosition().x - uthEngine.GetWindowResolution().x * 2, p_background[i]->transform.GetPosition().y);
+		if (p_background[i]->transform.GetPosition().x - uthEngine.GetWindow().GetCamera().GetPosition().x < p_background[1]->GetComponent<Sprite>()->GetSize().x * -1)
+			p_background[i]->transform.SetPosition(p_background[i]->transform.GetPosition().x + p_background[1]->GetComponent<Sprite>()->GetSize().x * 2, p_background[i]->transform.GetPosition().y);
+		else if (p_background[i]->transform.GetPosition().x - uthEngine.GetWindow().GetCamera().GetPosition().x > p_background[1]->GetComponent<Sprite>()->GetSize().x)
+			p_background[i]->transform.SetPosition(p_background[i]->transform.GetPosition().x - p_background[1]->GetComponent<Sprite>()->GetSize().x * 2, p_background[i]->transform.GetPosition().y);
 
-		if (p_background[i]->transform.GetPosition().y - uthEngine.GetWindow().GetCamera().GetPosition().y < uthEngine.GetWindowResolution().y * -1)
-			p_background[i]->transform.SetPosition(p_background[i]->transform.GetPosition().x, p_background[i]->transform.GetPosition().y + uthEngine.GetWindowResolution().y * 2);
-		else if (p_background[i]->transform.GetPosition().y - uthEngine.GetWindow().GetCamera().GetPosition().y > uthEngine.GetWindowResolution().y)
-			p_background[i]->transform.SetPosition(p_background[i]->transform.GetPosition().x, p_background[i]->transform.GetPosition().y - uthEngine.GetWindowResolution().y * 2);
+		if (p_background[i]->transform.GetPosition().y - uthEngine.GetWindow().GetCamera().GetPosition().y < p_background[1]->GetComponent<Sprite>()->GetSize().y * -1)
+			p_background[i]->transform.SetPosition(p_background[i]->transform.GetPosition().x, p_background[i]->transform.GetPosition().y + p_background[1]->GetComponent<Sprite>()->GetSize().y * 2);
+		else if (p_background[i]->transform.GetPosition().y - uthEngine.GetWindow().GetCamera().GetPosition().y > p_background[1]->GetComponent<Sprite>()->GetSize().y)
+			p_background[i]->transform.SetPosition(p_background[i]->transform.GetPosition().x, p_background[i]->transform.GetPosition().y - p_background[1]->GetComponent<Sprite>()->GetSize().y * 2);
 	}
 }
 void GameScene::UpdateCameraMovement(float dt)
@@ -334,18 +304,8 @@ void GameScene::UpdateButtonPositions()
 																					  0.5f + 
 																					 20.f);
 }
-
-void GameScene::GameOverLay()
+void GameScene::GameOverLogic()
 {
-	// Gameover overlay in the same scene
-	//paused = true;
-	//p_gameOverPlaque->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
-	//p_gameOverPlaque->SetActive(true);
-	//p_playButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition() + (Vec2)(300, 100)); //// TODO: define final position!
-	//p_playButton->SetActive(true);
-
-	// OR: new scene!
-	//saving score
 	int newscore = stats.GetFinalScore();
 
 	scorefile.open("newscore.dat", std::ios::binary | std::ios::out);
@@ -355,4 +315,112 @@ void GameScene::GameOverLay()
 	}
 	scorefile.close();
 	uthSceneM.GoToScene(2);
+}
+
+// Initialization
+
+void GameScene::BackgroundInit()
+{
+	for (int i = 0; i < 4; ++i)
+	{
+		p_background[i] = new GameObject("Background");
+		p_background[i]->AddComponent(new Sprite("Big_Background.png"));
+	}
+	p_background[1]->transform.SetPosition(Vec2(p_background[1]->GetComponent<Sprite>()->GetSize().x, 0));
+	p_background[2]->transform.SetPosition(Vec2(0, p_background[1]->GetComponent<Sprite>()->GetSize().y));
+	p_background[3]->transform.SetPosition(p_background[1]->GetComponent<Sprite>()->GetSize());
+}
+void GameScene::PauseInit()
+{
+	// Game paused overlay
+	overlay = new GameObject();
+	overlay->AddComponent(new Sprite("Overlay.png"));
+	overlay->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
+	overlay->SetActive(false);
+}
+void GameScene::ButtonsInit()
+{
+	p_pauseButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/eimitn.png"));
+	p_pauseButton->SetActive(true);
+	p_pauseButton->setCallBack([this]()
+	{
+		paused = true;
+		p_playButton->SetActive(true);
+		p_playButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
+		overlay->SetActive(true);
+		overlay->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
+	});
+
+	p_playButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/Play.png"));
+	p_playButton->SetActive(false);
+	p_playButton->setCallBack([this]()
+	{
+		paused = false;
+		p_playButton->SetActive(false);
+		overlay->SetActive(false);
+	});
+}
+void GameScene::ContactLogicInit()
+{
+	contactListener = PhysicsContactListener();
+	contactListener.onBeginContact = [this](b2Contact* contact, GameObject* a, GameObject* b)
+	{
+		if (b->HasTag("Club"))
+		{
+			ReactToHit(a);
+			p_club->HasHit();
+		}
+		else if (a->HasTag("Club"))
+		{
+			ReactToHit(b);
+			p_club->HasHit();
+		}
+		else {}
+	};
+	p_world->SetContactListener(&contactListener);
+}
+void GameScene::ParticleInit()
+{
+	// particle effect for astronaut kill (placeholder)
+
+	p_partsys = new ParticleSystem(2000);
+	auto oxypart = uthRS.LoadTexture("Placeholders/oxygenpix.png");
+
+
+	ParticleTemplate pt;
+	pt.SetTexture(oxypart);
+	pt.SetLifetime(2.5f);
+	pt.SetSpeed(30.f, 70.f);
+	//pt.SetColor(1, 1, 1, 1);
+
+	p_partsys->SetTemplate(pt);
+	p_partsys->AddAffector(new OxygenAffector());
+	p_partsys->SetEmitProperties(false);
+
+	particleTimer = 0;
+}
+void GameScene::VariableInit()
+{
+	asteroidAmount = 40;
+	astronautAmount = 40;
+	cosmonautAmount = 25;
+
+	paused = false;
+	screenDiameter = sqrt(pow(uthEngine.GetWindowResolution().x, 2) + pow(uthEngine.GetWindowResolution().y, 2));
+
+	Randomizer::SetSeed(time(NULL));
+	p_world = new PhysicsWorld(0, 0);
+
+	p_caveman = new Caveman();
+	AddChild<Caveman>(p_caveman);
+	p_caveman->Init(p_world);
+
+	p_club = new Club(p_caveman->transform.GetSize());
+	p_club->Init(p_world);
+	AddChild<Club>(p_club);
+
+	prefabObject = PrefabObject();
+	stats = Statistics();
+
+	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
 }

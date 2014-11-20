@@ -16,7 +16,7 @@ using namespace pmath;
 class PrefabObject
 {
 public:
-	inline PrefabObject() { randomMaxSpeed = 2; }
+	inline PrefabObject() { randomMaxSpeed = 3; }
 	~PrefabObject() { }
 
 	// Creates an astronaut to the given position, heading towards the center of the screen.

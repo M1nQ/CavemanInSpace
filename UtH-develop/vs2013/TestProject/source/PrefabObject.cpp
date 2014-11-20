@@ -11,6 +11,7 @@ GameObject* PrefabObject::CreateAstronaut(PhysicsWorld* world, Vec2 position, st
 	p_astronaut->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
 	p_astronaut->GetComponent<Rigidbody>("Rigidbody")->SetPosition(position);
 	p_astronaut->AddComponent(new NautComponent());
+	p_astronaut->AddTag("Naut");
 	Direct(p_astronaut);
 	return p_astronaut;
 }
@@ -24,6 +25,7 @@ GameObject* PrefabObject::CreateCosmonaut(PhysicsWorld* world, Vec2 position, st
 	p_cosmonaut->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
 	p_cosmonaut->GetComponent<Rigidbody>("Rigidbody")->SetPosition(position);
 	p_cosmonaut->AddComponent(new NautComponent("NautComponent", 0.4f, 2));
+	p_cosmonaut->AddTag("Naut");
 	Direct(p_cosmonaut);
 	return p_cosmonaut;
 }
