@@ -306,7 +306,7 @@ void GameScene::Input()
 	{
 		if (p_pauseButton->IsClicked() == false)
 		{
-			p_caveman->ChangeDirectionMouse(uthInput.Common.Position());
+			p_caveman->ChangeDirectionMouse(p_arrow->GetNormDirection());
 			stats.addOxygen -= 0.1f;
 			p_arrow->DisableArrow();
 		}

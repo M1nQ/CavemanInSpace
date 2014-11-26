@@ -36,4 +36,9 @@ void Arrow::DisableArrow()
 	this->SetActive(false);
 }
 
+Vec2 Arrow::GetNormDirection()
+{
+	return direction.normalize();
+}
+
 

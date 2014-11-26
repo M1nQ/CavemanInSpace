@@ -18,12 +18,12 @@ void Caveman::Hit()
 {
 	//animation not done!!!!!
 }
-void Caveman::ChangeDirectionMouse(pmath::Vec2 pullPosition)
+void Caveman::ChangeDirectionMouse(pmath::Vec2 arrowDirection)
 {
 	// Calculates the vector between touch position and caveman's position.
-	pmath::Vec2 temp = (-1.f * pullPosition) + (uthEngine.GetWindow().GetSize() * 0.5f);
-	temp.normalize();
-	cavemanColl->SetVelocity(temp * speed);
+	//pmath::Vec2 temp = (-1.f * pullPosition) + (uthEngine.GetWindow().GetSize() * 0.5f);
+	//temp.normalize();
+	cavemanColl->SetVelocity(arrowDirection * speed);
 }
 
 // works if touch getPosition methods return screen (camera) coordinates

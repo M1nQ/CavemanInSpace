@@ -17,6 +17,7 @@ public:
 	void update(Vec2 cavemanPos);
 	void DrawArrow(Vec2 startPos);
 	void DisableArrow();
+	Vec2 GetNormDirection();
 
 private:
 	Texture* arrowPic;
