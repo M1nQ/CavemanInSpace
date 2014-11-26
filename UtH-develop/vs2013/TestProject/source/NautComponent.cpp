@@ -21,3 +21,15 @@ void NautComponent::Hit(Vec2 position)
 		--hp;
 	}
 }
+GameObject* NautComponent::addTrail()
+{
+	// TODO: Implemetn trail
+	/*
+	lastIndicatorPosition = parent->transform.GetPosition();
+	GameObject* trailObject = new GameObject("Trail");
+	trailObject->transform.SetPosition(lastIndicatorPosition);
+	trailObject->transform.Rotate(parent->transform.)
+	trailObject->AddComponent(new Sprite(uthRS.LoadTexture("Herpaslerpa.png")));
+	return trailObject;
+	*/
+}
