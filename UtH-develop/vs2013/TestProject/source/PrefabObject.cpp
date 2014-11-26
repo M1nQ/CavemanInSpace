@@ -1,6 +1,25 @@
 #include <PrefabObject.h>
 #include <NautComponent.h>
 
+GameObject* PrefabObject::CreateGameObject(PhysicsWorld* world, Vec2 position, string spritePath, string nameTag)
+{
+	GameObject* p_object = new GameObject(nameTag);
+	p_object->transform.SetPosition(position);
+	p_object->AddComponent(new Sprite(spritePath));
+	p_object->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
+
+	if (nameTag.find("naut") != string::npos)
+		p_object->AddTag("Naut");
+
+	if (nameTag == "Astronaut")
+		p_object->AddComponent(new NautComponent());
+	else if (nameTag == "Cosmonaut")
+		p_object->AddComponent(new NautComponent("NautComponent", 0.4f, 2));
+
+	Direct(p_object);
+	return p_object;
+}
+
 GameObject* PrefabObject::CreateAstronaut(PhysicsWorld* world, Vec2 position, string tag)
 {
 	// Creates an astronaut to the given position, heading towards the center of the screen
