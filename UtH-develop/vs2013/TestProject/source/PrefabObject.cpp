@@ -3,9 +3,11 @@
 
 GameObject* PrefabObject::CreateGameObject(PhysicsWorld* world, Vec2 position, string spritePath, string nameTag)
 {
+	// Creates a gameObject of specified type to given position with a randomized angle.
+
 	GameObject* p_object = new GameObject(nameTag);
 	p_object->transform.SetPosition(position);
-	p_object->AddComponent(new Sprite(spritePath));
+	p_object->AddComponent(new Sprite(uthRS.LoadTexture(spritePath)));
 	p_object->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
 
 	if (nameTag.find("naut") != string::npos)
@@ -27,7 +29,7 @@ GameObject* PrefabObject::CreateAstronaut(PhysicsWorld* world, Vec2 position, st
 
 	GameObject* p_astronaut = new GameObject(tag);
 	p_astronaut->transform.SetPosition(position);
-	p_astronaut->AddComponent(new Sprite("Placeholders/astronautPlaceHolder.png"));
+	p_astronaut->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/astronautPlaceHolder.png")));
 	p_astronaut->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
 	p_astronaut->AddComponent(new NautComponent());
 	p_astronaut->AddTag("Naut");
@@ -41,7 +43,7 @@ GameObject* PrefabObject::CreateCosmonaut(PhysicsWorld* world, Vec2 position, st
 
 	GameObject* p_cosmonaut = new GameObject(tag);
 	p_cosmonaut->transform.SetPosition(position);
-	p_cosmonaut->AddComponent(new Sprite("Placeholders/Cosmonaut.png"));
+	p_cosmonaut->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/Cosmonaut.png")));
 	p_cosmonaut->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
 	p_cosmonaut->AddComponent(new NautComponent("NautComponent", 0.4f, 2));
 	p_cosmonaut->AddTag("Naut");
@@ -55,7 +57,7 @@ GameObject* PrefabObject::CreateAsteroid(PhysicsWorld* world, Vec2 position, str
 
 	GameObject* p_asteroid = new GameObject(tag);
 	p_asteroid->transform.SetPosition(position);
-	p_asteroid->AddComponent(new Sprite("Placeholders/Asteroid_3.png"));
+	p_asteroid->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/Asteroid_3.png")));
 	p_asteroid->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
 	Direct(p_asteroid);
 	return p_asteroid;

@@ -15,6 +15,7 @@ public:
 	inline PrefabObject() { randomMaxSpeed = 3; }
 	~PrefabObject() { }
 
+	// Creates a gameObject of specified type to given position with a randomized angle.
 	GameObject* CreateGameObject(PhysicsWorld* world, Vec2 position, string spritePath, string nameTag);
 	// Creates an astronaut to the given position, heading towards the center of the screen.
 	GameObject* CreateAstronaut(PhysicsWorld* world, Vec2 position, string tag = "Astronaut");
