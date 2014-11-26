@@ -15,7 +15,10 @@ void Arrow::update(Vec2 cavemanPos)
 		direction = start - uthInput.Common.Position();
 		scale = direction.length();
 		direction.normalize();
-		this->transform.ScaleToSize(scale, 144);
+		if (scale > 100)
+		{
+			this->transform.ScaleToSize(scale, 100);
+		}
 		this->transform.SetRotation(pmath::atan2(direction.y, direction.x));
 		this->transform.SetPosition(cavemanPos - (direction * 50));
 	}
@@ -24,6 +27,7 @@ void Arrow::update(Vec2 cavemanPos)
 void Arrow::DrawArrow(Vec2 startPos)
 {	
 	start = startPos;
+	this->transform.ScaleToSize(100, 100);
 	this->SetActive(true);
 }
 
