@@ -12,7 +12,7 @@ bool MenuScene::Init()
 	// avoid recurrent Get-calls (or not?)
 	//wnd = uthEngine.GetWindow();
 
-	startTex = uthRS.LoadTexture("Placeholders/caveman.png");
+	startTex = uthRS.LoadTexture("Placeholders/Play.png");
 	creditTex = uthRS.LoadTexture("Placeholders/credButton.png");
 	scoreTex = uthRS.LoadTexture("Placeholders/HiScore.png");
 	closeTex = uthRS.LoadTexture("Placeholders/eimitn.png");

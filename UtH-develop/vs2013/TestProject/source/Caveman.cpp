@@ -29,7 +29,7 @@ void Caveman::ChangeDirectionMouse(pmath::Vec2 pullPosition)
 // works if touch getPosition methods return screen (camera) coordinates
 void Caveman::ChangeDirectionTouch(pmath::Vec2 startPosition, pmath::Vec2 endPosition)
 {
-	pmath::Vec2 temp = startPosition - endPosition;
+	pmath::Vec2 temp = cavemanColl->GetPosition() - endPosition;
 	speed = temp.length() * 0.05f; // if resolution problems, calc as percentage of screen size
 	temp.normalize();
 	cavemanColl->SetVelocity(temp * speed);

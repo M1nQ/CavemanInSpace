@@ -26,3 +26,12 @@ void Button::setCallBack(std::function<void()> callback)
 {
 	this->callback = callback;
 }
+
+bool Button::IsClicked()
+{
+	auto pos = target.PixelToCoords(uthInput.Common.Position());
+
+	if (transform.GetBounds().contains(pos))
+		return true;
+	return false;
+}

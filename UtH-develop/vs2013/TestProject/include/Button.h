@@ -13,6 +13,7 @@ public:
 	void update(float dt) override;
 	
 	void setCallBack(std::function<void()> callback);
+	bool IsClicked();
 
 private:
 	const uth::RenderTarget& target;

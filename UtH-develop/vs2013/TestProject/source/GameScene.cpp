@@ -50,8 +50,8 @@ void GameScene::Update(float dt)
 
 	UpdateButtonPositions();
 	p_playButton->Update(dt);
-	/*if (stats.IsDead())
-			GameOverLogic();*/
+	if (stats.IsDead())
+			GameOverLogic();
 }
 void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
@@ -302,13 +302,17 @@ void GameScene::Input()
 	{
 		p_arrow->update(p_caveman->transform.GetPosition());
 	}
-	if (uthInput.Common.Event() == InputEvent::RELEASE)
+	if (uthInput.Mouse.IsButtonReleased(Mouse::MButton::LEFT) == true)
 	{
-		p_caveman->ChangeDirectionMouse(uthInput.Common.Position());
-		stats.addOxygen -= 0.1f;
-		p_arrow->DisableArrow();
+		if (p_pauseButton->IsClicked() == false)
+		{
+			p_caveman->ChangeDirectionMouse(uthInput.Common.Position());
+			stats.addOxygen -= 0.1f;
+			p_arrow->DisableArrow();
+		}
+		else p_arrow->DisableArrow();
 	}
-	if (uthInput.Common.Event() == InputEvent::TAP)
+	if (uthInput.Mouse.IsButtonPressed(Mouse::MButton::RIGHT) == true)
 	{  
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
 		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
@@ -413,7 +417,7 @@ void GameScene::ParticleInit()
 	pt.SetTexture(oxypart);
 	pt.SetLifetime(2.5f);
 	pt.SetSpeed(30.f, 70.f);
-	//pt.SetColor(1, 1, 1, 1);
+	pt.SetColor(1, 1, 1, 1);
 
 	p_partsys->SetTemplate(pt);
 	p_partsys->AddAffector(new OxygenAffector());
