@@ -18,11 +18,16 @@ void Caveman::Hit()
 {
 	//animation not done!!!!!
 }
-void Caveman::ChangeDirectionMouse(pmath::Vec2 arrowDirection)
+void Caveman::ChangeDirectionMouse(pmath::Vec2 arrowDirection, bool strongpull)
 {
 	// Calculates the vector between touch position and caveman's position.
 	//pmath::Vec2 temp = (-1.f * pullPosition) + (uthEngine.GetWindow().GetSize() * 0.5f);
 	//temp.normalize();
+	if (strongpull)
+		speed = 5;
+	else
+		speed = 3;
+
 	cavemanColl->SetVelocity(arrowDirection * speed);
 }
 

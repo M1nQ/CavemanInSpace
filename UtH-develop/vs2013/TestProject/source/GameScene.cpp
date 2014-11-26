@@ -306,8 +306,12 @@ void GameScene::Input()
 	{
 		if (p_pauseButton->IsClicked() == false)
 		{
-			p_caveman->ChangeDirectionMouse(p_arrow->GetNormDirection());
-			stats.addOxygen -= 0.1f;
+			bool bigpull = p_arrow->IsStrong();
+			p_caveman->ChangeDirectionMouse(p_arrow->GetNormDirection(), bigpull);
+			if (bigpull)
+				stats.addOxygen -= 0.1f;
+			else
+				stats.addOxygen -= 0.05f;
 			p_arrow->DisableArrow();
 		}
 		else p_arrow->DisableArrow();
@@ -407,10 +411,11 @@ void GameScene::ContactLogicInit()
 }
 void GameScene::ParticleInit()
 {
-	// particle effect for astronaut kill (placeholder)
+	// particle effect for astronaut kill
 
-	p_partsys = new ParticleSystem(200);
+	p_partsys = new ParticleSystem(100);
 	auto oxypart = uthRS.LoadTexture("Placeholders/oxypart.png");
+	//auto rockpart
 
 
 	ParticleTemplate pt;
@@ -422,7 +427,6 @@ void GameScene::ParticleInit()
 	p_partsys->SetTemplate(pt);
 	p_partsys->AddAffector(new OxygenAffector());
 	p_partsys->SetEmitProperties(false);
-
 	particleTimer = 0;
 }
 void GameScene::VariableInit()

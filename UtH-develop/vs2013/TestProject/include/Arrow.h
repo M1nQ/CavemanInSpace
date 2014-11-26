@@ -18,6 +18,7 @@ public:
 	void DrawArrow(Vec2 startPos);
 	void DisableArrow();
 	Vec2 GetNormDirection();
+	inline bool IsStrong(){ return scale > 300; }
 
 private:
 	Texture* arrowPic;
