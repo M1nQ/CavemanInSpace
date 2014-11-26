@@ -7,9 +7,9 @@ GameObject* PrefabObject::CreateAstronaut(PhysicsWorld* world, Vec2 position, st
 	// with a sligthly randomized angle.
 
 	GameObject* p_astronaut = new GameObject(tag);
+	p_astronaut->transform.SetPosition(position);
 	p_astronaut->AddComponent(new Sprite("Placeholders/astronautPlaceHolder.png"));
 	p_astronaut->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
-	p_astronaut->GetComponent<Rigidbody>("Rigidbody")->SetPosition(position);
 	p_astronaut->AddComponent(new NautComponent());
 	p_astronaut->AddTag("Naut");
 	Direct(p_astronaut);
@@ -21,9 +21,9 @@ GameObject* PrefabObject::CreateCosmonaut(PhysicsWorld* world, Vec2 position, st
 	// with a sligthly randomized angle.
 
 	GameObject* p_cosmonaut = new GameObject(tag);
+	p_cosmonaut->transform.SetPosition(position);
 	p_cosmonaut->AddComponent(new Sprite("Placeholders/Cosmonaut.png"));
 	p_cosmonaut->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
-	p_cosmonaut->GetComponent<Rigidbody>("Rigidbody")->SetPosition(position);
 	p_cosmonaut->AddComponent(new NautComponent("NautComponent", 0.4f, 2));
 	p_cosmonaut->AddTag("Naut");
 	Direct(p_cosmonaut);
@@ -35,9 +35,9 @@ GameObject* PrefabObject::CreateAsteroid(PhysicsWorld* world, Vec2 position, str
 	// with a sligthly randomized angle.
 
 	GameObject* p_asteroid = new GameObject(tag);
+	p_asteroid->transform.SetPosition(position);
 	p_asteroid->AddComponent(new Sprite("Placeholders/Asteroid_3.png"));
 	p_asteroid->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
-	p_asteroid->GetComponent<Rigidbody>("Rigidbody")->SetPosition(position);
 	Direct(p_asteroid);
 	return p_asteroid;
 }
