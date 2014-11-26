@@ -2,7 +2,7 @@
 
 void Arrow::Init()
 {
-	arrowPic = uthRS.LoadTexture("Placeholders/nuoli.png");
+	arrowPic = uthRS.LoadTexture("Placeholders/Pointer.png");
 	this->AddComponent(new Sprite(arrowPic));
 	this->transform.SetOrigin(6);
 	this->SetActive(false);
@@ -15,7 +15,7 @@ void Arrow::update(Vec2 cavemanPos)
 		direction = start - uthInput.Common.Position();
 		scale = direction.length();
 		direction.normalize();
-		this->transform.ScaleToSize(scale, 24);
+		this->transform.ScaleToSize(scale, 144);
 		this->transform.SetRotation(pmath::atan2(direction.y, direction.x));
 		this->transform.SetPosition(cavemanPos - (direction * 50));
 	}

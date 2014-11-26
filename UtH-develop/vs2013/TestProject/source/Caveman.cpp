@@ -2,7 +2,7 @@
 
 void Caveman::Init(PhysicsWorld *world)
 {
-	speed = 3;
+	speed = 4;
 	this->AddComponent(new Sprite("Placeholders/caveman.png"));
 	this->transform.SetPosition(0, 0);
 	this->AddComponent(new Rigidbody(*world, COLLIDER_BALL));

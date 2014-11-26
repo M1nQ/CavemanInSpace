@@ -50,8 +50,8 @@ void GameScene::Update(float dt)
 
 	UpdateButtonPositions();
 	p_playButton->Update(dt);
-	if (stats.IsDead())
-			GameOverLogic();
+	/*if (stats.IsDead())
+			GameOverLogic();*/
 }
 void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {
@@ -95,7 +95,7 @@ void GameScene::ReactToHit(GameObject* a)
 					stats.addScore += 100;
 					//particles!
 					p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
-					p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);
+					p_partsys->SetEmitProperties(true, 0, 0.2f, 1, 3);
 					particleTimer = 50;
 				}
 			}
@@ -110,7 +110,7 @@ void GameScene::ReactToHit(GameObject* a)
 					stats.addScore += 200;
 					//particles!
 					p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
-					p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);
+					p_partsys->SetEmitProperties(true, 0, 0.2f, 4, 6);
 					particleTimer = 50;
 				}
 			}
@@ -118,7 +118,7 @@ void GameScene::ReactToHit(GameObject* a)
 			{
 				stats.addScore += 10;
 				p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
-				p_partsys->SetEmitProperties(true, 0, 0.2f, 20, 40);
+				p_partsys->SetEmitProperties(true, 0, 0.2f, 1, 2);
 				
 				particleTimer = 50;
 				// TODO: destroy object, change particles to animation?
@@ -405,8 +405,8 @@ void GameScene::ParticleInit()
 {
 	// particle effect for astronaut kill (placeholder)
 
-	p_partsys = new ParticleSystem(2000);
-	auto oxypart = uthRS.LoadTexture("Placeholders/oxygenpix.png");
+	p_partsys = new ParticleSystem(200);
+	auto oxypart = uthRS.LoadTexture("Placeholders/oxypart.png");
 
 
 	ParticleTemplate pt;
