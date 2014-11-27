@@ -165,8 +165,8 @@ void GameScene::MaintainObjectList(float dt)
 
 		if ((*i_trailList)->GetComponent<TrailComponent>()->isTransparent())
 		{
-			trailList.remove(*i_trailList);
 			delete(*i_trailList);
+			trailList.remove(*i_trailList);
 		}
 	}
 }
