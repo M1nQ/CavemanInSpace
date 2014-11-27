@@ -61,7 +61,7 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 		p_background[i]->Draw(target, attributes);
 	}
 
-	for (i_trailList = trailList.rbegin(); i_trailList != trailList.rend(); ++i_trailList)
+	for (i_trailList = trailList.begin(); i_trailList != trailList.end(); ++i_trailList)
 	{
 		(*i_trailList)->Draw(target, attributes);
 	}
@@ -152,22 +152,35 @@ void GameScene::MaintainObjectList(float dt)
 
 			if (i_ObjectList->second->HasTag("Naut"))
 				if (i_ObjectList->second->GetComponent<NautComponent>()->hasMoved())
-					trailList.push_back(i_ObjectList->second->GetComponent<NautComponent>()->addTrail());
+				{
+				trailList.push_back(i_ObjectList->second->GetComponent<NautComponent>()->addTrail());
+				
+				}
 
 			if (DeleteObjects(i_ObjectList->second))
+			{
 				objectList.erase(--(i_ObjectList.base()));
+				++nauts;
+				std::cout << "Naut " << nauts << " deleted" << std::endl;
+			}
 		}
 	}
 
-	for (i_trailList = trailList.rbegin(); i_trailList != trailList.rend(); ++i_trailList)
+	for (i_trailList = trailList.begin(); i_trailList != trailList.end();)
 	{
 		(*i_trailList)->GetComponent<TrailComponent>()->Update(dt);
-
+		
 		if ((*i_trailList)->GetComponent<TrailComponent>()->isTransparent())
 		{
 			DeleteTrail((*i_trailList));
-			trailList.erase(--(i_trailList.base()));
+
+			// list::erase returns iterator to next element, which should be saved:
+			i_trailList = trailList.erase(i_trailList);
+			cout << "deleted" << endl;
 		}
+		// iterator is incremented only if nothing is removed (calling erase automatically moves iterator forward)
+		else
+			++i_trailList;
 	}
 }
 void GameScene::AddObjects()
@@ -198,6 +211,7 @@ bool GameScene::DeleteObjects(GameObject* p_object)
 			return true;
 		}
 	}
+
 	else if (Vec2::distance(p_object->transform.GetPosition(), p_caveman->transform.GetPosition()) >= screenDiameter)
 	{
 		delete(p_object);
@@ -207,6 +221,7 @@ bool GameScene::DeleteObjects(GameObject* p_object)
 }
 void GameScene::DeleteTrail(GameObject* p_trail)
 {
+	
 	delete(p_trail);
 }
 Vec2 GameScene::GetRandomSpawnPosition()
@@ -269,7 +284,7 @@ void GameScene::Input()
 	// TODO: check which input version should be used?
 
 	// Handles touch input.
-	if (uthInput.Touch[0].Motion() == TouchMotion::DRAG && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Common.Position()) > 10)
+	/*if (uthInput.Touch[0].Motion() == TouchMotion::DRAG && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Common.Position()) > 10)
 	{
 		if (p_arrow->IsActive() == false)
 			p_arrow->DrawArrow(uthInput.Touch[0].GetStartPosition());
@@ -286,7 +301,7 @@ void GameScene::Input()
 		p_clubAttack->PlayEffect();
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
 		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
-	}
+	}*/
 
 	// Mouse input for testing.
 	if (uthInput.Mouse.IsButtonDown(Mouse::MButton::LEFT) == true && p_arrow->IsActive() == false)
@@ -495,7 +510,7 @@ void GameScene::VariableInit()
 
 	prefabObject = PrefabObject();
 	stats = Statistics();
-
+	nauts = 0;
 	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
 }
 void GameScene::SoundInit()

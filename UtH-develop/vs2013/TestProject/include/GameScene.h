@@ -71,7 +71,7 @@ namespace uth
 		multimap<string, GameObject*> objectList;
 		multimap<string, GameObject*>::reverse_iterator i_ObjectList;
 		list<GameObject*> trailList;
-		list<GameObject*>::reverse_iterator i_trailList;
+		list<GameObject*>::iterator i_trailList;
 
 		PrefabObject prefabObject;
 		short asteroidAmount;
@@ -96,6 +96,8 @@ namespace uth
 		// Scorekeeping
 		Statistics stats;
 		std::fstream scorefile;
+
+		int nauts;
 	};
 }
 
