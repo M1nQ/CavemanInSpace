@@ -34,6 +34,7 @@ namespace uth
 		void ReactToHit(GameObject* a);
 		void MaintainObjectList(float dt);
 		void AddObjects();
+		void DeleteTrail(GameObject* p_trail);
 		void UpdateBackground();
 		void UpdateCameraMovement(float dt);
 		void Input();

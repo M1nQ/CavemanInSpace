@@ -150,6 +150,10 @@ void GameScene::MaintainObjectList(float dt)
 		{
 			i_ObjectList->second->Update(dt);
 
+			if (i_ObjectList->second->HasTag("Naut"))
+				if (i_ObjectList->second->GetComponent<NautComponent>()->hasMoved())
+					trailList.push_back(i_ObjectList->second->GetComponent<NautComponent>()->addTrail());
+
 			if (DeleteObjects(i_ObjectList->second))
 				objectList.erase(--(i_ObjectList.base()));
 		}
@@ -159,14 +163,10 @@ void GameScene::MaintainObjectList(float dt)
 	{
 		(*i_trailList)->GetComponent<TrailComponent>()->Update(dt);
 
-		if (i_ObjectList->second->HasTag("Naut"))
-			if (i_ObjectList->second->GetComponent<NautComponent>()->hasMoved())
-				trailList.push_back((*i_trailList)->GetComponent<NautComponent>()->addTrail());
-
 		if ((*i_trailList)->GetComponent<TrailComponent>()->isTransparent())
 		{
-			delete(*i_trailList);
-			trailList.remove(*i_trailList);
+			DeleteTrail((*i_trailList));
+			trailList.erase(--(i_trailList.base()));
 		}
 	}
 }
@@ -204,6 +204,10 @@ bool GameScene::DeleteObjects(GameObject* p_object)
 		return true;
 	}
 	return false;
+}
+void GameScene::DeleteTrail(GameObject* p_trail)
+{
+	delete(p_trail);
 }
 Vec2 GameScene::GetRandomSpawnPosition()
 {
