@@ -4,6 +4,7 @@
 #include <UtH/UtHEngine.hpp>
 #include <fstream>
 #include <Button.h>
+#include <Audio.hpp>
 
 using namespace uth;
 using namespace std;
@@ -45,6 +46,9 @@ namespace uth
 		Texture* creditTex;
 		Texture* scoreTex;
 		Texture* closeTex;
+
+		Sound* buttonSound;
+		Sound* music;
 
 		GameObject* background;
 		GameObject* credits;

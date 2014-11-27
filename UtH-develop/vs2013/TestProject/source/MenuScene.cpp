@@ -17,6 +17,9 @@ bool MenuScene::Init()
 	scoreTex = uthRS.LoadTexture("Placeholders/HiScore.png");
 	closeTex = uthRS.LoadTexture("Placeholders/eimitn.png");
 
+	buttonSound = uthRS.LoadSound("");
+	music = uthRS.LoadSound("");
+
 	background = new GameObject("Background");
 	background->AddComponent(new Sprite("Placeholders/Title_screen.png"));
 	background->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
@@ -107,6 +110,7 @@ void MenuScene::ReadHighScores()
 
 void MenuScene::SetOverlayMode()
 {
+	buttonSound->Play();
 	// set overlay and closeOverlay active
 	credits->SetActive(true);
 	closeButton->SetActive(true);
@@ -117,6 +121,7 @@ void MenuScene::SetOverlayMode()
 }
 void MenuScene::CloseOverlayMode()
 {
+	buttonSound->Play();
 	// disable overlay etc.
 	credits->SetActive(false);
 	closeButton->SetActive(false);
