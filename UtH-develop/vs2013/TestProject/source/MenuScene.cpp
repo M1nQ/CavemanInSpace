@@ -17,8 +17,8 @@ bool MenuScene::Init()
 	scoreTex = uthRS.LoadTexture("Placeholders/HiScore.png");
 	closeTex = uthRS.LoadTexture("Placeholders/eimitn.png");
 
-	buttonSound = uthRS.LoadSound("");
-	music = uthRS.LoadSound("");
+	/*buttonSound = uthRS.LoadSound("");
+	music = uthRS.LoadSound("");*/
 
 	background = new GameObject("Background");
 	background->AddComponent(new Sprite("Placeholders/Title_screen.png"));
