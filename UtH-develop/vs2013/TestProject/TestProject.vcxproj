@@ -118,7 +118,6 @@
     <ClCompile Include="source\TaikonautComponent.cpp" />
     <ClCompile Include="source\TestScene.cpp" />
     <ClCompile Include="source\TitleScene.cpp" />
-    <ClCompile Include="source\TrailComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CavemanGame.h" />

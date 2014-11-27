@@ -61,11 +61,13 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 		p_background[i]->Draw(target, attributes);
 	}
 
-	Scene::Draw(target, attributes);
-	p_club->Draw(target, attributes);
-	p_partsys->Draw(target, attributes);
+	for (i_trailList = trailList.rbegin(); i_trailList != trailList.rend(); ++i_trailList)
+	{
+		(*i_trailList)->Draw(target, attributes);
+	}
 
-	behindObjects->Draw(target, attributes);
+	Scene::Draw(target, attributes);
+	p_partsys->Draw(target, attributes);
 
 	for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
 	{
@@ -148,12 +150,23 @@ void GameScene::MaintainObjectList(float dt)
 		{
 			i_ObjectList->second->Update(dt);
 
-			if (i_ObjectList->second->HasTag("Naut"))
-				if (i_ObjectList->second->GetComponent<NautComponent>()->hasMoved())
-					behindObjects->AddChild(i_ObjectList->second->GetComponent<NautComponent>()->addTrail());
-
 			if (DeleteObjects(i_ObjectList->second))
 				objectList.erase(--(i_ObjectList.base()));
+		}
+	}
+
+	for (i_trailList = trailList.rbegin(); i_trailList != trailList.rend(); ++i_trailList)
+	{
+		(*i_trailList)->GetComponent<TrailComponent>()->Update(dt);
+
+		if (i_ObjectList->second->HasTag("Naut"))
+			if (i_ObjectList->second->GetComponent<NautComponent>()->hasMoved())
+				trailList.push_back((*i_trailList)->GetComponent<NautComponent>()->addTrail());
+
+		if ((*i_trailList)->GetComponent<TrailComponent>()->isTransparent())
+		{
+			trailList.remove(*i_trailList);
+			delete(*i_trailList);
 		}
 	}
 }
@@ -382,8 +395,6 @@ void GameScene::BackgroundInit()
 	p_background[1]->transform.SetPosition(Vec2(p_background[1]->GetComponent<Sprite>()->GetSize().x, 0));
 	p_background[2]->transform.SetPosition(Vec2(0, p_background[1]->GetComponent<Sprite>()->GetSize().y));
 	p_background[3]->transform.SetPosition(p_background[1]->GetComponent<Sprite>()->GetSize());
-
-	behindObjects = new Layer("Indicator");
 }
 void GameScene::PauseInit()
 {

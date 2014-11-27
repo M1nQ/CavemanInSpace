@@ -1,4 +1,5 @@
 #include <NautComponent.h>
+#include <TrailComponent.h>
 
 void NautComponent::Update(float dt)
 {
@@ -33,5 +34,6 @@ GameObject* NautComponent::addTrail()
 	trailObject->transform.SetPosition(lastIndicatorPosition);
 	trailObject->transform.Rotate((lastPosition[0] - lastPosition[1]).angle());
 	trailObject->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/Indicator.png")));
+	trailObject->AddComponent(new TrailComponent());
 	return trailObject;
 }

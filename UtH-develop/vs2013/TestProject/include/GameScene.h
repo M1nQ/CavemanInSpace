@@ -5,7 +5,9 @@
 #include <UtH/UtHEngine.hpp>
 #include <CavemanGame.h>
 #include <map>
+#include <list>
 #include <fstream>
+#include <TrailComponent.h>
 
 using namespace uth;
 using namespace std;
@@ -61,15 +63,14 @@ namespace uth
 		GameObject* overlay;
 		float screenDiameter;
 
-		// Layers
-		Layer* behindObjects;
-
 		// Game objects
 		Caveman* p_caveman;
 		Club* p_club;
 		Arrow* p_arrow;
 		multimap<string, GameObject*> objectList;
 		multimap<string, GameObject*>::reverse_iterator i_ObjectList;
+		list<GameObject*> trailList;
+		list<GameObject*>::reverse_iterator i_trailList;
 
 		PrefabObject prefabObject;
 		short asteroidAmount;
