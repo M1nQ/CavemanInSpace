@@ -11,6 +11,7 @@ bool GameScene::Init()
 	ButtonsInit();
 	PauseInit();
 	BackgroundInit();
+	SoundInit();
 
 	return true;
 }
@@ -92,6 +93,7 @@ void GameScene::ReactToHit(GameObject* a)
 				//kill astronaut
 				if (a->GetComponent<NautComponent>()->isDead() && a->GetComponent<NautComponent>()->oxygen > 0)
 				{
+					p_astroDie->PlayEffect();
 					stats.addOxygen += a->GetComponent<NautComponent>()->oxygen;
 					a->GetComponent<NautComponent>()->oxygen = 0;
 					stats.addScore += 100;
@@ -107,6 +109,7 @@ void GameScene::ReactToHit(GameObject* a)
 
 				if (a->GetComponent<NautComponent>()->isDead() && a->GetComponent<NautComponent>()->oxygen > 0)
 				{
+					p_astroDie->PlayEffect();
 					stats.addOxygen += a->GetComponent<NautComponent>()->oxygen;
 					a->GetComponent<NautComponent>()->oxygen = 0;
 					stats.addScore += 200;
@@ -115,9 +118,11 @@ void GameScene::ReactToHit(GameObject* a)
 					p_partsys->SetEmitProperties(true, 0, 0.2f, 4, 6);
 					particleTimer = 50;
 				}
+				else p_astroHit->PlayEffect();
 			}
 			else if (i_ObjectList->first == "Asteroid")
 			{
+				p_hitRock->PlayEffect();
 				stats.addScore += 10;
 				p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
 				p_partsys->SetEmitProperties(true, 0, 0.2f, 1, 2);
@@ -260,7 +265,8 @@ void GameScene::Input()
 		p_caveman->ChangeDirectionTouch(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition());
 	}
 	else if (uthInput.Touch[0].Motion() == TouchMotion::TAP)
-	{  
+	{
+		p_clubAttack->PlayEffect();
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
 		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
 	}
@@ -279,15 +285,23 @@ void GameScene::Input()
 			bool bigpull = p_arrow->IsStrong();
 			p_caveman->ChangeDirectionMouse(p_arrow->GetNormDirection(), bigpull);
 			if (bigpull)
+			{
 				stats.addOxygen -= 0.1f;
+				p_cavemanMove->SetVolume(100); // OR SetPitch?
+			}
 			else
+			{
 				stats.addOxygen -= 0.05f;
+				p_cavemanMove->SetVolume(70);
+			}
 			p_arrow->DisableArrow();
+			p_cavemanMove->PlayEffect();
 		}
 		else p_arrow->DisableArrow();
 	}
 	if (uthInput.Mouse.IsButtonPressed(Mouse::MButton::RIGHT) == true)
 	{  
+		p_clubAttack->PlayEffect();
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
 		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
 	}
@@ -468,4 +482,15 @@ void GameScene::VariableInit()
 	stats = Statistics();
 
 	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
+}
+void GameScene::SoundInit()
+{
+	p_astroDie = uthRS.LoadSound("sound/astronaut_dying_groan.wav");
+	p_astroHit = uthRS.LoadSound("sound/astronaut_hit.wav");
+	p_panic1 = uthRS.LoadSound("sound/astronaut_panic_voice_1.wav");
+	p_panic2 = uthRS.LoadSound("sound/astronaut_panic_voice_2.wav");
+	p_clubAttack = uthRS.LoadSound("sound/caveman_club_attack.wav");
+	p_cavemanMove = uthRS.LoadSound("sound/caveman_move.wav");
+	p_hitMetal = uthRS.LoadSound("sound/hit_sound_metal.wav");
+	p_hitRock = uthRS.LoadSound("sound/hit_sound_rock.wav");
 }

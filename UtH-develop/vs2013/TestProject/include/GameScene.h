@@ -46,6 +46,7 @@ namespace uth
 		void ContactLogicInit();
 		void ParticleInit();
 		void VariableInit();
+		void SoundInit();
 
 		bool paused;
 
@@ -78,6 +79,17 @@ namespace uth
 		// Buttons
 		Button* p_pauseButton;
 		Button* p_playButton;
+
+		// Sounds
+		Sound* p_astroDie;
+		Sound* p_astroHit;
+		Sound* p_panic1;
+		Sound* p_panic2;
+		Sound* p_clubAttack;
+		Sound* p_cavemanMove;
+		Sound* p_hitMetal;
+		Sound* p_hitRock;
+		// TODO: add music!
 
 		// Scorekeeping
 		Statistics stats;

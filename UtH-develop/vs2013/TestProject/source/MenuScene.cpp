@@ -108,9 +108,12 @@ void MenuScene::ReadHighScores()
 	highscorefile.close();
 }
 
+
+// TODO: Uncomment Play calls when sound is implemented!
+
 void MenuScene::SetOverlayMode()
 {
-	buttonSound->Play();
+	//buttonSound->Play();
 	// set overlay and closeOverlay active
 	credits->SetActive(true);
 	closeButton->SetActive(true);
@@ -121,7 +124,7 @@ void MenuScene::SetOverlayMode()
 }
 void MenuScene::CloseOverlayMode()
 {
-	buttonSound->Play();
+	//buttonSound->Play();
 	// disable overlay etc.
 	credits->SetActive(false);
 	closeButton->SetActive(false);
