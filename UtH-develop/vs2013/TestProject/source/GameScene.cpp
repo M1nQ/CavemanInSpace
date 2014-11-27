@@ -64,6 +64,8 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 	p_club->Draw(target, attributes);
 	p_partsys->Draw(target, attributes);
 
+	behindObjects->Draw(target, attributes);
+
 	for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
 	{
 		i_ObjectList->second->Draw(target, attributes);
@@ -132,6 +134,7 @@ void GameScene::MaintainObjectList(float dt)
 {
 	// Updates, deletes and instantiates objects.
 
+	GameState();
 	AddObjects();
 
 	if (objectList.size() > 0)
@@ -140,46 +143,13 @@ void GameScene::MaintainObjectList(float dt)
 		{
 			i_ObjectList->second->Update(dt);
 
+			if (i_ObjectList->second->HasTag("Naut"))
+				if (i_ObjectList->second->GetComponent<NautComponent>()->hasMoved())
+					behindObjects->AddChild(i_ObjectList->second->GetComponent<NautComponent>()->addTrail());
+
 			if (DeleteObjects(i_ObjectList->second))
 				objectList.erase(--(i_ObjectList.base()));
 		}
-	}
-
-	if (stats.GetGameTime() > 60)
-	{
-		asteroidAmount = 30;
-		astronautAmount = 10;
-		cosmonautAmount = 5;
-	}
-	else if (stats.GetGameTime() > 50)
-	{
-		asteroidAmount = 40;
-		astronautAmount = 15;
-		cosmonautAmount = 10;
-	}
-	else if (stats.GetGameTime() > 40)
-	{
-		asteroidAmount = 40;
-		astronautAmount = 20;
-		cosmonautAmount = 10;
-	}
-	else if (stats.GetGameTime() > 30)
-	{
-		asteroidAmount = 50;
-		astronautAmount = 20;
-		cosmonautAmount = 15;
-	}
-	else if (stats.GetGameTime() > 20)
-	{
-		asteroidAmount = 40;
-		astronautAmount = 30;
-		cosmonautAmount = 20;
-	}
-	else if (stats.GetGameTime() > 10)
-	{
-		asteroidAmount = 30;
-		astronautAmount = 30;
-		cosmonautAmount = 30;
 	}
 }
 void GameScene::AddObjects()
@@ -346,6 +316,45 @@ void GameScene::GameOverLogic()
 	scorefile.close();
 	uthSceneM.GoToScene(2);
 }
+void GameScene::GameState()
+{
+	if (stats.GetGameTime() > 60)
+	{
+		asteroidAmount = 30;
+		astronautAmount = 10;
+		cosmonautAmount = 5;
+	}
+	else if (stats.GetGameTime() > 50)
+	{
+		asteroidAmount = 40;
+		astronautAmount = 15;
+		cosmonautAmount = 10;
+	}
+	else if (stats.GetGameTime() > 40)
+	{
+		asteroidAmount = 40;
+		astronautAmount = 20;
+		cosmonautAmount = 10;
+	}
+	else if (stats.GetGameTime() > 30)
+	{
+		asteroidAmount = 50;
+		astronautAmount = 20;
+		cosmonautAmount = 15;
+	}
+	else if (stats.GetGameTime() > 20)
+	{
+		asteroidAmount = 40;
+		astronautAmount = 30;
+		cosmonautAmount = 20;
+	}
+	else if (stats.GetGameTime() > 10)
+	{
+		asteroidAmount = 30;
+		astronautAmount = 30;
+		cosmonautAmount = 30;
+	}
+}
 
 // Initialization
 
@@ -359,6 +368,8 @@ void GameScene::BackgroundInit()
 	p_background[1]->transform.SetPosition(Vec2(p_background[1]->GetComponent<Sprite>()->GetSize().x, 0));
 	p_background[2]->transform.SetPosition(Vec2(0, p_background[1]->GetComponent<Sprite>()->GetSize().y));
 	p_background[3]->transform.SetPosition(p_background[1]->GetComponent<Sprite>()->GetSize());
+
+	behindObjects = new Layer("Indicator");
 }
 void GameScene::PauseInit()
 {

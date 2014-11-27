@@ -15,7 +15,7 @@ public:
 
 	virtual void Update(float dt);
 	inline bool isDead() { if (hp <= 0) return true; return false; }
-	inline bool hasMoved() { if (Vec2::distance(lastIndicatorPosition, parent->transform.GetPosition())) return true; return false; }
+	inline bool hasMoved() { if (Vec2::distance(lastIndicatorPosition, parent->transform.GetPosition()) > 200.f) return true; return false; }
 
 	// Subtracts from hp and sets direction away from the given position.
 	virtual void Hit(Vec2 position);
@@ -26,6 +26,7 @@ public:
 protected:
 	int hp;
 	Vec2 lastIndicatorPosition;
+	Vec2 lastPosition[2];
 };
 
 #endif NAUTCOMPONENT_H

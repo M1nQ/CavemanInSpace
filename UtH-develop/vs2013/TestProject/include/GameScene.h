@@ -37,6 +37,8 @@ namespace uth
 		void Input();
 		void UpdateButtonPositions();
 		void GameOverLogic();
+		// Controls the amount of gameObjects in the scene.
+		void GameState();
 
 		void BackgroundInit();
 		void PauseInit();
@@ -57,6 +59,9 @@ namespace uth
 		GameObject* p_background[4];
 		GameObject* overlay;
 		float screenDiameter;
+
+		// Layers
+		Layer* behindObjects;
 
 		// Game objects
 		Caveman* p_caveman;

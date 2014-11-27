@@ -118,6 +118,7 @@
     <ClCompile Include="source\TaikonautComponent.cpp" />
     <ClCompile Include="source\TestScene.cpp" />
     <ClCompile Include="source\TitleScene.cpp" />
+    <ClCompile Include="source\TrailComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CavemanGame.h" />
@@ -142,6 +143,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="include\TrailComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
