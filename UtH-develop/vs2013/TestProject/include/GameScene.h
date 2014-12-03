@@ -43,7 +43,8 @@ namespace uth
 		// Controls the amount of gameObjects in the scene.
 		void GameState();
 		void TraceNauts();
-		void ScreenLimit(float xScale); // helper method to find screen limits
+		// helper method to find screen limits
+		Vec2 ScreenLimitPoint(Vec2 cavepos, Vec2 astropos, Vec2 corner1, Vec2 corner2); 
 
 		void BackgroundInit();
 		void PauseInit();
@@ -65,7 +66,8 @@ namespace uth
 		GameObject* p_background[4];
 		GameObject* overlay;
 		float screenDiameter;
-		float screenDiameterRatio;
+		
+		Vec2 corners[4];
 
 		// Game objects
 		Caveman* p_caveman;
@@ -76,6 +78,8 @@ namespace uth
 		list<GameObject*> trailList;
 		list<GameObject*>::iterator i_trailList;
 		GameObject* deleteAsteroid;
+
+		GameObject* p_indicator;
 
 		PrefabObject prefabObject;
 		short asteroidAmount;

@@ -86,6 +86,7 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 	stats.Draw(target, attributes);
 	overlay->Draw(target, attributes);
 	p_playButton->Draw(target, attributes);
+	p_indicator->Draw(target, attributes);
 }
 
 // Private //
@@ -154,6 +155,7 @@ void GameScene::MaintainObjectList(float dt)
 
 	GameState();
 	AddObjects();
+	TraceNauts();
 
 	if (objectList.size() > 0)
 	{
@@ -431,19 +433,45 @@ void GameScene::GameState()
 void GameScene::TraceNauts()
 {
 	Vec2 temp;
-	float distance;
+	Vec2 indPos;
+	
 	if (objectList.size() > 0)
 	{
 		for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
 		{
 			if (i_ObjectList->second->HasTag("Naut"))
 			{
-				Vec2 cavepos = p_caveman->transform.GetPosition();
-				temp = i_ObjectList->second->transform.GetPosition() - cavepos;
-				distance = temp.length();
-				temp.normalize();
-				//if (distance > (cavepos )
+				Vec2 cavepos = uthEngine.GetWindow().PixelToCoords(p_caveman->transform.GetPosition());
+				Vec2 nautpos = uthEngine.GetWindow().PixelToCoords(i_ObjectList->second->transform.GetPosition());
+				temp = nautpos - cavepos;
 				
+				// Find the right sector and set indPos at screen edge
+				if ((corners[1] - cavepos).y / (corners[1] - cavepos).x < (temp.y / temp.x) < (corners[2] - cavepos).y / (corners[2] - cavepos).x)
+				{
+					indPos = ScreenLimitPoint(cavepos, nautpos, corners[1], corners[2]);
+				}				
+				else if ((corners[3] - cavepos).y / (corners[3] - cavepos).x < (temp.y / temp.x) < (corners[0] - cavepos).y / (corners[0] - cavepos).x)
+				{
+					indPos = ScreenLimitPoint(cavepos, nautpos, corners[3], corners[0]);
+				}
+				else if (temp.y < 0)
+				{
+					indPos = ScreenLimitPoint(cavepos, nautpos, corners[0], corners[1]);
+				}
+				else
+					indPos = ScreenLimitPoint(cavepos, nautpos, corners[2], corners[3]);
+
+				if (temp.length() <= indPos.length())
+				{
+					// remove / disable
+				}
+				else
+				{
+					// Find Naut's indicator and set to indPos
+					p_indicator->transform.SetPosition(uthEngine.GetWindow().CoordsToPixel(indPos));
+				}
+				
+
 			}
 		}
 	}
@@ -534,7 +562,10 @@ void GameScene::VariableInit()
 {
 	paused = false;
 	screenDiameter = sqrt(pow(uthEngine.GetWindowResolution().x, 2) + pow(uthEngine.GetWindowResolution().y, 2));
-	screenDiameterRatio = (uthEngine.GetWindowResolution().y / uthEngine.GetWindowResolution().x);
+	corners[0] = Vec2(0, 0);
+	corners[1] = Vec2(uthEngine.GetWindowResolution().x, 0);
+	corners[2] = Vec2(uthEngine.GetWindowResolution().x, uthEngine.GetWindowResolution().y);
+	corners[4] = Vec2(0, uthEngine.GetWindowResolution().y);
 
 	Randomizer::SetSeed(time(NULL));
 	p_world = new PhysicsWorld(0, 0);
@@ -550,6 +581,9 @@ void GameScene::VariableInit()
 	p_arrow = new Arrow();
 	p_arrow->Init();
 	AddChild<Arrow>(p_arrow);
+
+	p_indicator = new GameObject();
+	p_indicator->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/oxypart.png")));
 
 	prefabObject = PrefabObject();
 	stats = Statistics();
@@ -569,13 +603,19 @@ void GameScene::SoundInit()
 	p_hitMetal = uthRS.LoadSound("sounds/hit_sound_metal.wav");
 	p_hitRock = uthRS.LoadSound("sounds/hit_sound_rock.wav");
 }
-void GameScene::ScreenLimit(float xScale)
+
+// Helper method for naut indicator
+
+Vec2 GameScene::ScreenLimitPoint(Vec2 cavepos, Vec2 astropos, Vec2 corner1, Vec2 corner2)
 {	
-	if (xScale > 0)
-	{
-		if (xScale < screenDiameterRatio)
-		{
-			//if ()
-		}
-	}
+	Vec2 result;
+	Vec2 x = corner1 - cavepos;
+	Vec2 d1 = astropos - cavepos;
+	Vec2 d2 = corner2 - corner1;
+
+	float cross = d1.x * d2.y - d1.y * d2.x; // no check for actual crossing since we trust that general direction will be close enough
+
+	float t1 = (x.x * d2.y - x.y * d2.x) / cross;
+	result = cavepos + d1 * t1;
+	return result;
 }
