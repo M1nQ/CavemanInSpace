@@ -243,7 +243,7 @@ Vec2 GameScene::GetRandomSpawnPosition()
 	} while (temp.length() == 0);
 
 	temp.normalize();
-	temp *= screenDiameter;
+	temp *= screenDiameter * 0.66f;
 	return temp + p_caveman->transform.GetPosition();
 }
 void GameScene::UpdateBackground()
