@@ -43,6 +43,11 @@ void GameScene::Update(float dt)
 		p_partsys->Update(dt);
 
 		MaintainObjectList(dt);
+
+		if (deleteAsteroid != nullptr)
+			deleteAsteroid->Update(dt);
+
+		DeleteAsteroid(dt);
 		UpdateCameraMovement(dt);
 		p_pauseButton->Update(dt);
 		Input();
@@ -68,6 +73,9 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 
 	Scene::Draw(target, attributes);
 	p_partsys->Draw(target, attributes);
+
+	if (deleteAsteroid != nullptr)
+		deleteAsteroid->Draw(target, attributes);
 
 	for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
 	{
@@ -124,7 +132,6 @@ void GameScene::ReactToHit(GameObject* a)
 			}
 			else if (i_ObjectList->first == "Asteroid")
 			{
-				DeleteTrail(a);
 				p_hitRock->PlayEffect();
 				stats.addScore += 10;
 				p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
@@ -132,9 +139,12 @@ void GameScene::ReactToHit(GameObject* a)
 				
 				particleTimer = 50;
 				// TODO: destroy object, change particles to animation?
-				a->SetActive(false);
+				//delete(a);
+				deleteAsteroid = a;
+				objectList.erase(--(i_ObjectList.base()));
 			}
-			else {}
+
+			break;
 		}
 	}
 }
@@ -154,8 +164,7 @@ void GameScene::MaintainObjectList(float dt)
 			if (i_ObjectList->second->HasTag("Naut"))
 				if (i_ObjectList->second->GetComponent<NautComponent>()->hasMoved())
 				{
-				trailList.push_back(i_ObjectList->second->GetComponent<NautComponent>()->addTrail());
-				
+					trailList.push_back(i_ObjectList->second->GetComponent<NautComponent>()->addTrail());
 				}
 
 			if (DeleteObjects(i_ObjectList->second))
@@ -173,7 +182,7 @@ void GameScene::MaintainObjectList(float dt)
 		
 		if ((*i_trailList)->GetComponent<TrailComponent>()->isTransparent())
 		{
-			DeleteTrail((*i_trailList));
+			delete((*i_trailList));
 
 			// list::erase returns iterator to next element, which should be saved:
 			i_trailList = trailList.erase(i_trailList);
@@ -220,10 +229,21 @@ bool GameScene::DeleteObjects(GameObject* p_object)
 	}
 	return false;
 }
-void GameScene::DeleteTrail(GameObject* p_trail)
+void GameScene::DeleteAsteroid(float dt)
 {
-	// Now also used in getting rid of asteroids.
-	delete(p_trail);
+	if (deleteAsteroid != nullptr)
+	{
+		if (deleteAsteroid->GetComponent<Sprite>()->GetColor().a > 0)
+		{
+			deleteAsteroid->GetComponent<Sprite>()->SetColor(1, 1, 1, (deleteAsteroid->GetComponent<Sprite>()->GetColor().a) - 2 / (1 / dt));
+			deleteAsteroid->GetComponent<Rigidbody>()->SetKinematic(true);
+		}
+		else
+		{
+			delete(deleteAsteroid);
+			deleteAsteroid = nullptr;
+		}
+	}
 }
 Vec2 GameScene::GetRandomSpawnPosition()
 {
@@ -487,7 +507,6 @@ void GameScene::ContactLogicInit()
 			ReactToHit(b);
 			p_club->HasHit();
 		}
-		else {}
 	};
 	p_world->SetContactListener(&contactListener);
 }
@@ -536,6 +555,8 @@ void GameScene::VariableInit()
 	stats = Statistics();
 	nauts = 0;
 	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
+
+	deleteAsteroid = nullptr;
 }
 void GameScene::SoundInit()
 {

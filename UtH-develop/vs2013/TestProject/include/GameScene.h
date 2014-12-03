@@ -34,7 +34,7 @@ namespace uth
 		void ReactToHit(GameObject* a);
 		void MaintainObjectList(float dt);
 		void AddObjects();
-		void DeleteTrail(GameObject* p_trail);
+		void DeleteAsteroid(float dt);
 		void UpdateBackground();
 		void UpdateCameraMovement(float dt);
 		void Input();
@@ -75,6 +75,7 @@ namespace uth
 		multimap<string, GameObject*>::reverse_iterator i_ObjectList;
 		list<GameObject*> trailList;
 		list<GameObject*>::iterator i_trailList;
+		GameObject* deleteAsteroid;
 
 		PrefabObject prefabObject;
 		short asteroidAmount;
