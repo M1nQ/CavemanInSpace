@@ -2,6 +2,7 @@
 #define MENUSCENE_H
 
 #include <UtH/UtHEngine.hpp>
+#include <Statistics.h>
 #include <fstream>
 #include <Button.h>
 
