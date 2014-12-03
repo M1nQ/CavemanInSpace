@@ -86,7 +86,7 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 	stats.Draw(target, attributes);
 	overlay->Draw(target, attributes);
 	p_playButton->Draw(target, attributes);
-	p_indicator->Draw(target, attributes);
+	//p_indicator->Draw(target, attributes); // for testing only!
 }
 
 // Private //
@@ -155,7 +155,7 @@ void GameScene::MaintainObjectList(float dt)
 
 	GameState();
 	AddObjects();
-	TraceNauts();
+	//TraceNauts();
 
 	if (objectList.size() > 0)
 	{
@@ -430,6 +430,8 @@ void GameScene::GameState()
 		cosmonautAmount = 30;
 	}
 }
+
+// Not working at all.
 void GameScene::TraceNauts()
 {
 	Vec2 temp;
