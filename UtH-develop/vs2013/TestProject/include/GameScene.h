@@ -42,6 +42,8 @@ namespace uth
 		void GameOverLogic();
 		// Controls the amount of gameObjects in the scene.
 		void GameState();
+		void TraceNauts();
+		void ScreenLimit(float xScale); // helper method to find screen limits
 
 		void BackgroundInit();
 		void PauseInit();
@@ -63,6 +65,7 @@ namespace uth
 		GameObject* p_background[4];
 		GameObject* overlay;
 		float screenDiameter;
+		float screenDiameterRatio;
 
 		// Game objects
 		Caveman* p_caveman;
@@ -98,6 +101,7 @@ namespace uth
 		std::fstream scorefile;
 
 		int nauts;
+
 	};
 }
 

@@ -124,6 +124,7 @@ void GameScene::ReactToHit(GameObject* a)
 			}
 			else if (i_ObjectList->first == "Asteroid")
 			{
+				DeleteTrail(a);
 				p_hitRock->PlayEffect();
 				stats.addScore += 10;
 				p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
@@ -176,7 +177,7 @@ void GameScene::MaintainObjectList(float dt)
 
 			// list::erase returns iterator to next element, which should be saved:
 			i_trailList = trailList.erase(i_trailList);
-			cout << "deleted" << endl;
+
 		}
 		// iterator is incremented only if nothing is removed (calling erase automatically moves iterator forward)
 		else
@@ -211,8 +212,8 @@ bool GameScene::DeleteObjects(GameObject* p_object)
 			return true;
 		}
 	}
-
-	else if (Vec2::distance(p_object->transform.GetPosition(), p_caveman->transform.GetPosition()) >= screenDiameter)
+	
+	if (Vec2::distance(p_object->transform.GetPosition(), p_caveman->transform.GetPosition()) >= screenDiameter)
 	{
 		delete(p_object);
 		return true;
@@ -221,7 +222,7 @@ bool GameScene::DeleteObjects(GameObject* p_object)
 }
 void GameScene::DeleteTrail(GameObject* p_trail)
 {
-	
+	// Now also used in getting rid of asteroids.
 	delete(p_trail);
 }
 Vec2 GameScene::GetRandomSpawnPosition()
@@ -400,6 +401,32 @@ void GameScene::GameState()
 		astronautAmount = 30;
 		cosmonautAmount = 30;
 	}
+	else
+	{
+		asteroidAmount = 30;
+		astronautAmount = 30;
+		cosmonautAmount = 30;
+	}
+}
+void GameScene::TraceNauts()
+{
+	Vec2 temp;
+	float distance;
+	if (objectList.size() > 0)
+	{
+		for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
+		{
+			if (i_ObjectList->second->HasTag("Naut"))
+			{
+				Vec2 cavepos = p_caveman->transform.GetPosition();
+				temp = i_ObjectList->second->transform.GetPosition() - cavepos;
+				distance = temp.length();
+				temp.normalize();
+				//if (distance > (cavepos )
+				
+			}
+		}
+	}
 }
 
 // Initialization
@@ -486,12 +513,9 @@ void GameScene::ParticleInit()
 }
 void GameScene::VariableInit()
 {
-	asteroidAmount = 40;
-	astronautAmount = 40;
-	cosmonautAmount = 25;
-
 	paused = false;
 	screenDiameter = sqrt(pow(uthEngine.GetWindowResolution().x, 2) + pow(uthEngine.GetWindowResolution().y, 2));
+	screenDiameterRatio = (uthEngine.GetWindowResolution().y / uthEngine.GetWindowResolution().x);
 
 	Randomizer::SetSeed(time(NULL));
 	p_world = new PhysicsWorld(0, 0);
@@ -523,4 +547,14 @@ void GameScene::SoundInit()
 	p_cavemanMove = uthRS.LoadSound("sounds/caveman_move.wav");
 	p_hitMetal = uthRS.LoadSound("sounds/hit_sound_metal.wav");
 	p_hitRock = uthRS.LoadSound("sounds/hit_sound_rock.wav");
+}
+void GameScene::ScreenLimit(float xScale)
+{	
+	if (xScale > 0)
+	{
+		if (xScale < screenDiameterRatio)
+		{
+			//if ()
+		}
+	}
 }
