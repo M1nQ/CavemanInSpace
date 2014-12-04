@@ -35,7 +35,7 @@ void Caveman::ChangeDirectionMouse(pmath::Vec2 arrowDirection, bool strongpull)
 void Caveman::ChangeDirectionTouch(pmath::Vec2 startPosition, pmath::Vec2 endPosition)
 {
 	pmath::Vec2 temp = cavemanColl->GetPosition() - endPosition;
-	speed = temp.length() * 0.05f; // if resolution problems, calc as percentage of screen size
+	speed = 5; // if resolution problems, calc as percentage of screen size
 	temp.normalize();
 	cavemanColl->SetVelocity(temp * speed);
 }

@@ -307,25 +307,36 @@ void GameScene::Input()
 	// TODO: check which input version should be used?
 
 	// Handles touch input.
-	/*if (uthInput.Touch[0].Motion() == TouchMotion::DRAG && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Common.Position()) > 10)
+	if (uthInput.Touch[0].Motion() == TouchMotion::DRAG && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Common.Position()) > 10)
 	{
 		if (p_arrow->IsActive() == false)
-			p_arrow->DrawArrow(uthInput.Touch[0].GetStartPosition());
+			p_arrow->DrawArrow(uthEngine.GetWindow().CoordsToPixel(uthInput.Touch[0].GetStartPosition()));
 		else p_arrow->update(p_caveman->transform.GetPosition());
 	}
 	if (uthInput.Touch[0].Motion() == TouchMotion::RELEASE && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition()) > 10)
 	{
+		bool bigpull = p_arrow->IsStrong();
+		p_caveman->ChangeDirectionMouse(p_arrow->GetNormDirection(), bigpull);
+		if (bigpull)
+		{
+			stats.addOxygen -= 0.1f;
+			p_cavemanMove->SetVolume(100); // OR SetPitch?
+		}
+		else
+		{
+			stats.addOxygen -= 0.05f;
+			p_cavemanMove->SetVolume(70);
+		}
 		p_arrow->DisableArrow();
-		stats.addOxygen -= 0.1f;
-		p_caveman->ChangeDirectionTouch(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition());
+		//p_caveman->ChangeDirectionTouch(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition());
 	}
 	else if (uthInput.Touch[0].Motion() == TouchMotion::TAP)
 	{
 		p_clubAttack->PlayEffect();
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
 		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
-	}*/
-
+	}
+	/*
 	// Mouse input for testing.
 	if (uthInput.Mouse.IsButtonDown(Mouse::MButton::LEFT) == true && p_arrow->IsActive() == false)
 		p_arrow->DrawArrow(uthInput.Common.Position());
@@ -359,7 +370,7 @@ void GameScene::Input()
 		p_clubAttack->PlayEffect();
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
 		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
-	}
+	}*/
 }
 void GameScene::UpdateButtonPositions()
 {
