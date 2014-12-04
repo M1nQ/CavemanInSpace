@@ -310,7 +310,7 @@ void GameScene::Input()
 	if (uthInput.Touch[0].Motion() == TouchMotion::DRAG && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Common.Position()) > 10)
 	{
 		if (p_arrow->IsActive() == false)
-			p_arrow->DrawArrow(uthEngine.GetWindow().CoordsToPixel(uthInput.Touch[0].GetStartPosition()));
+			p_arrow->DrawArrow(uthEngine.GetWindow().CoordsToPixel(uthInput.Common.Position()));
 		else p_arrow->update(p_caveman->transform.GetPosition());
 	}
 	if (uthInput.Touch[0].Motion() == TouchMotion::RELEASE && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition()) > 10)
