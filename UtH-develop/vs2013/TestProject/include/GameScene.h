@@ -59,6 +59,7 @@ namespace uth
 		PhysicsContactListener contactListener;
 		PhysicsWorld* p_world;
 		ParticleSystem* p_partsys;
+		ParticleSystem* p_rockpartsys;
 		float particleTimer;
 
 		// Background

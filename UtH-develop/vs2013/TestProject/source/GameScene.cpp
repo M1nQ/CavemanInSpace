@@ -36,11 +36,14 @@ void GameScene::Update(float dt)
 		}
 		else
 		{
+			p_rockpartsys->SetEmitProperties(false);
 			p_partsys->SetEmitProperties(false);
 			particleTimer = 0;
 		}
 		p_partsys->RaiseUpdateFlag();
 		p_partsys->Update(dt);
+		p_rockpartsys->RaiseUpdateFlag();
+		p_rockpartsys->Update(dt);
 
 		MaintainObjectList(dt);
 
@@ -68,6 +71,7 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 
 	Scene::Draw(target, attributes);
 	p_partsys->Draw(target, attributes);
+	p_rockpartsys->Draw(target, attributes);
 
 	if (deleteAsteroid != nullptr)
 		deleteAsteroid->Draw(target, attributes);
@@ -130,8 +134,8 @@ void GameScene::ReactToHit(GameObject* a)
 			{
 				p_hitRock->PlayEffect();
 				stats.addScore += 10;
-				p_partsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
-				p_partsys->SetEmitProperties(true, 0, 0.2f, 1, 2);
+				p_rockpartsys->transform.SetPosition(a->GetComponent<Rigidbody>()->GetPosition());
+				p_rockpartsys->SetEmitProperties(true, 0, 0.7f, 1, 2);
 				
 				particleTimer = 50;
 				// TODO: destroy object, change particles to animation?
@@ -308,7 +312,7 @@ void GameScene::Input()
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
 		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
 	}
-	/*
+	
 	// Mouse input for testing.
 	if (uthInput.Mouse.IsButtonDown(Mouse::MButton::LEFT) == true && p_arrow->IsActive() == false)
 		p_arrow->DrawArrow(uthInput.Common.Position());
@@ -342,7 +346,7 @@ void GameScene::Input()
 		p_clubAttack->PlayEffect();
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
 		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
-	}*/
+	}
 }
 void GameScene::UpdateButtonPositions()
 {
@@ -528,8 +532,9 @@ void GameScene::ParticleInit()
 	// particle effect for astronaut kill
 
 	p_partsys = new ParticleSystem(100);
+	p_rockpartsys = new ParticleSystem(50);
 	auto oxypart = uthRS.LoadTexture("Placeholders/oxypart.png");
-	//auto rockpart
+	auto rockpart = uthRS.LoadTexture("Placeholders/rockpart.png");
 
 
 	ParticleTemplate pt;
@@ -542,6 +547,16 @@ void GameScene::ParticleInit()
 	p_partsys->AddAffector(new OxygenAffector());
 	p_partsys->SetEmitProperties(false);
 	particleTimer = 0;
+
+	ParticleTemplate pt_r;
+	pt_r.SetTexture(rockpart);
+	pt_r.SetLifetime(2.5f);
+	pt_r.SetSpeed(70.f, 100.f);
+	pt_r.SetColor(1, 1, 1, 1);
+
+	p_rockpartsys->SetTemplate(pt_r);
+	p_rockpartsys->AddAffector(new OxygenAffector());
+	p_partsys->SetEmitProperties(false);
 }
 void GameScene::VariableInit()
 {
