@@ -10,13 +10,21 @@ void Caveman::Init(PhysicsWorld *world)
 	cavemanColl->SetVelocity(pmath::Vec2(0, 0));
 	cavemanColl->SetPhysicsGroup(-1);
 	this->AddTag("Caveman");
-	
+	rotate = false;
 }
 
 
-void Caveman::Hit()
+void Caveman::Hit(const Vec2& hitPoint)
 {
 	//animation not done!!!!!
+
+	if (hitPoint.length() != 0)
+	{
+		rotate = true;
+		targetRotation = atan2(hitPoint.x - transform.GetPosition().x, (hitPoint.y - transform.GetPosition().y) * -1);
+		targetRotation *= 180 / pi;
+		targetRotation += -90;
+	}
 }
 void Caveman::ChangeDirectionMouse(pmath::Vec2 arrowDirection, bool strongpull)
 {
@@ -38,6 +46,36 @@ void Caveman::ChangeDirectionTouch(pmath::Vec2 startPosition, pmath::Vec2 endPos
 	speed = 5; // if resolution problems, calc as percentage of screen size
 	temp.normalize();
 	cavemanColl->SetVelocity(temp * speed);
+}
+
+void Caveman::update(float dt)
+{
+	if (rotate)
+	{
+		static float rotation = 0;
+		rotation = (int)transform.GetRotation() % 360;
+
+		if (rotation > 180) rotation -= 360;
+		else if (rotation < -180) rotation += 360;
+
+		if (abs(rotation - targetRotation) < 2.f)
+		{
+			rotate = false;
+
+			if (rotation < targetRotation)
+				GetComponent<Rigidbody>("Rigidbody")->Rotate((targetRotation - rotation) * 0.1f);
+			else
+				GetComponent<Rigidbody>("Rigidbody")->Rotate((rotation - targetRotation) * 0.1f);
+		}
+		else if (rotation < targetRotation)
+		{
+			GetComponent<Rigidbody>("Rigidbody")->Rotate((targetRotation - rotation) * 0.1f);
+		}
+		else
+		{
+			GetComponent<Rigidbody>("Rigidbody")->Rotate((rotation - targetRotation) * 0.1f);
+		}
+	}
 }
 
 Caveman::Caveman()
