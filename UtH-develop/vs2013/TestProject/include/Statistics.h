@@ -50,4 +50,4 @@ private:
 	Vec4 color;
 };
 
-#endif STATISTICS_H
+#endif

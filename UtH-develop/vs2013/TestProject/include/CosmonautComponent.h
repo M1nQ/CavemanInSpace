@@ -16,4 +16,4 @@ private:
 	GameObject* caveman;
 };
 
-#endif COSMONAUTCOMPONENT_H
+#endif

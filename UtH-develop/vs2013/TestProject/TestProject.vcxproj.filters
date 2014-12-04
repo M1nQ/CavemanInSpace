@@ -125,8 +125,5 @@
     <ClInclude Include="include\CavemanGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\TrailComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

@@ -7,7 +7,6 @@
 #include <map>
 #include <list>
 #include <fstream>
-#include <TrailComponent.h>
 
 using namespace uth;
 using namespace std;
@@ -75,8 +74,6 @@ namespace uth
 		Arrow* p_arrow;
 		multimap<string, GameObject*> objectList;
 		multimap<string, GameObject*>::reverse_iterator i_ObjectList;
-		list<GameObject*> trailList;
-		list<GameObject*>::iterator i_trailList;
 		GameObject* deleteAsteroid;
 
 		GameObject* p_indicator;
