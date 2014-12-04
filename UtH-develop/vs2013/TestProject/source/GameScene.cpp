@@ -362,14 +362,11 @@ void GameScene::UpdateButtonPositions()
 }
 void GameScene::GameOverLogic()
 {
-	int newscore = stats.GetFinalScore();
-
-	scorefile.open("newscore.dat", std::ios::binary | std::ios::out);
-	if (scorefile)
-	{
-		scorefile.write((char*)&newscore, sizeof(int));
-	}
-	scorefile.close();
+	string newscore = to_string(stats.GetFinalScore());
+	FileManager fm;
+	fm.OpenFile("newscore.dat", FileManager::Location::ASSET, true);
+	fm.WriteString(newscore);
+	fm.CloseFile();
 	uthSceneM.GoToScene(2);
 }
 void GameScene::GameState()
@@ -604,7 +601,7 @@ void GameScene::SoundInit()
 	p_hitRock = uthRS.LoadSound("sounds/hit_sound_rock.wav");
 }
 
-// Helper method for naut indicator
+// Helper method for naut indicator (not working)
 
 Vec2 GameScene::ScreenLimitPoint(Vec2 cavepos, Vec2 astropos, Vec2 corner1, Vec2 corner2)
 {	

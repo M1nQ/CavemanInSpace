@@ -96,16 +96,34 @@ void MenuScene::Draw(RenderTarget& target, RenderAttributes attributes)
 
 void MenuScene::ReadHighScores()
 {
-	highscorefile.open("highscores.dat", std::ios::binary | std::ios::in);
-	if (highscorefile)
+	//highscorefile.open("highscores.dat", std::ios::binary | std::ios::in);
+	//if (highscorefile)
+	//{
+	//	while (highscorefile.peek() != EOF)
+	//	{
+	//		for (int i = 0; i < 3; ++i)
+	//			highscorefile.read((char*)&scores[i], sizeof(int));
+	//	}
+	//}
+	//highscorefile.close();
+	FileManager files;
+	string stringscores[3];
+
+	files.OpenFile("highscores1.dat");
+	stringscores[0] = files.ReadText();
+	files.CloseFile();
+	files.OpenFile("highscores2.dat");
+	stringscores[1] = files.ReadText();
+	files.CloseFile();
+	files.OpenFile("highscores3.dat");
+	stringscores[2] = files.ReadText();
+	files.CloseFile();
+
+	for (int i = 0; i < 3; ++i)
 	{
-		while (highscorefile.peek() != EOF)
-		{
-			for (int i = 0; i < 3; ++i)
-				highscorefile.read((char*)&scores[i], sizeof(int));
-		}
+		scores[i] = stoi(stringscores[i]);
 	}
-	highscorefile.close();
+
 }
 
 

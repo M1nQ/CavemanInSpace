@@ -55,12 +55,17 @@ void GameOverScene::Draw(RenderTarget& target, RenderAttributes attributes)
 
 void GameOverScene::GetFinalScore()
 {
-	savefile.open("newscore.dat", std::ios::binary | std::ios::in);
+	files.OpenFile("newscore.dat");
+	stringscores[3] = files.ReadText();
+	files.CloseFile();
+	allscores[3] = stoi(stringscores[3]);
+
+	/*savefile.open("newscore.dat", std::ios::binary | std::ios::in);
 	if (savefile)
 	{
 		savefile.read((char*)&allscores[3], sizeof(int));
 	}
-	savefile.close();
+	savefile.close();*/
 
 	
 }
@@ -68,15 +73,25 @@ void GameOverScene::GetFinalScore()
 void GameOverScene::FindOldScores()
 {
 	// read higscores
-	savefile.open("highscores.dat", std::ios::binary | std::ios::in);
+	/*savefile.open("highscores.dat", std::ios::binary | std::ios::in);
 	if (savefile)
+	{*/
+	files.OpenFile("highscores1.dat");
+	stringscores[0] = files.ReadText();
+	files.CloseFile();
+	files.OpenFile("highscores2.dat");
+	stringscores[1] = files.ReadText();
+	files.CloseFile();
+	files.OpenFile("highscores3.dat");
+	stringscores[2] = files.ReadText();
+	files.CloseFile();
+
+	for (int i = 0; i < 3; ++i)
 	{
-		for (int i = 0; i < 3; ++i)
-		{
-			savefile.read((char*)&allscores[i], sizeof(int));
-		}
+		allscores[i] = stoi(stringscores[i]);
 	}
-	savefile.close();	
+	/*}
+	savefile.close();	*/
 }
 
 void GameOverScene::SaveHighScores()
@@ -95,9 +110,25 @@ void GameOverScene::SaveHighScores()
 			}
 		}
 	}
+	for (int i = 0; i < 3; ++i)
+	{
+		stringscores[i] = to_string(allscores[i]);
+	}
 
 	// write new highscore list, 3 biggest scores
-	savefile.open("highscores.dat", std::ios::binary | std::ios::out);
+
+	files.OpenFile("highscores1.dat", FileManager::Location::ASSET, true);
+	files.WriteString(stringscores[0]);
+	files.CloseFile();
+	files.OpenFile("highscores2.dat", FileManager::Location::ASSET, true);
+	files.WriteString(stringscores[1]);
+	files.CloseFile();
+	files.OpenFile("highscores3.dat", FileManager::Location::ASSET, true);
+	files.WriteString(stringscores[2]);
+	files.CloseFile();
+
+
+	/*savefile.open("highscores.dat", std::ios::binary | std::ios::out);
 	if (savefile)
 	{
 		
@@ -106,5 +137,5 @@ void GameOverScene::SaveHighScores()
 		savefile.write((char*)&allscores[2], sizeof(int));
 		
 	}
-	savefile.close();
+	savefile.close();*/
 }

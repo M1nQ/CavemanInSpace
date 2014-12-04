@@ -35,10 +35,11 @@ namespace uth
 
 		std::fstream savefile;
 
-		//FileManager files;
+		FileManager files;
 
 		//working copy of scores, should be changed into a multimap if names needed
 		int allscores[4];
+		string stringscores[4];
 		int finalscore;
 	};
 }
