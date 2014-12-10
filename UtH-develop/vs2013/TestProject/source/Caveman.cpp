@@ -18,12 +18,32 @@ void Caveman::Hit(const Vec2& hitPoint)
 {
 	//animation not done!!!!!
 
+	// Sets the caveman to turn towards the click
 	if (hitPoint.length() != 0)
 	{
 		rotate = true;
 		targetRotation = atan2(hitPoint.x - transform.GetPosition().x, (hitPoint.y - transform.GetPosition().y) * -1);
 		targetRotation *= 180 / pi;
-		targetRotation += -90;
+		targetRotation -= 90;
+		GetComponent<Rigidbody>("Rigidbody")->SetAngularVelocity(0);
+
+		if (targetRotation > 180) targetRotation -= 360;
+		else if (targetRotation < -180) targetRotation += 360;
+
+		if (abs(targetRotation - transform.GetRotation()) > 180)
+		{
+			if (transform.GetRotation() > 0)
+				rotatePositive = true;
+			else
+				rotatePositive = false;
+		}
+		else
+		{
+			if (targetRotation > transform.GetRotation())
+				rotatePositive = true;
+			else
+				rotatePositive = false;
+		}
 	}
 }
 void Caveman::ChangeDirectionMouse(pmath::Vec2 arrowDirection, bool strongpull)
@@ -50,30 +70,38 @@ void Caveman::ChangeDirectionTouch(pmath::Vec2 startPosition, pmath::Vec2 endPos
 
 void Caveman::update(float dt)
 {
+	// Turns the caveman gradually towards the hit position.
+
+	if (transform.GetRotation() > 180)
+		GetComponent<Rigidbody>("Rigidbody")->SetAngle(transform.GetRotation() - 360);
+	if (transform.GetRotation() < -180)
+		GetComponent<Rigidbody>("Rigidbody")->SetAngle(transform.GetRotation() + 360);
+
 	if (rotate)
 	{
-		static float rotation = 0;
-		rotation = (int)transform.GetRotation() % 360;
-
-		if (rotation > 180) rotation -= 360;
-		else if (rotation < -180) rotation += 360;
-
-		if (abs(rotation - targetRotation) < 2.f)
+		if (abs(targetRotation - transform.GetRotation()) < 4)
 		{
 			rotate = false;
 
-			if (rotation < targetRotation)
-				GetComponent<Rigidbody>("Rigidbody")->Rotate((targetRotation - rotation) * 0.1f);
-			else
-				GetComponent<Rigidbody>("Rigidbody")->Rotate((rotation - targetRotation) * 0.1f);
-		}
-		else if (rotation < targetRotation)
-		{
-			GetComponent<Rigidbody>("Rigidbody")->Rotate((targetRotation - rotation) * 0.1f);
+			if (rotatePositive) GetComponent<Rigidbody>("Rigidbody")->SetAngularVelocity(-0.2f);
+			else GetComponent<Rigidbody>("Rigidbody")->SetAngularVelocity(0.2f);
 		}
 		else
 		{
-			GetComponent<Rigidbody>("Rigidbody")->Rotate((rotation - targetRotation) * 0.1f);
+			if (abs(targetRotation - transform.GetRotation()) < 180)
+			{
+				if (rotatePositive)
+					GetComponent<Rigidbody>("Rigidbody")->Rotate(abs(targetRotation - transform.GetRotation()) * 0.07f);
+				else
+					GetComponent<Rigidbody>("Rigidbody")->Rotate(abs(targetRotation - transform.GetRotation()) * -0.07f);
+			}
+			else
+			{
+				if (rotatePositive)
+					GetComponent<Rigidbody>("Rigidbody")->Rotate((360 - abs(targetRotation - transform.GetRotation())) * 0.07f);
+				else
+					GetComponent<Rigidbody>("Rigidbody")->Rotate((360 - abs(targetRotation - transform.GetRotation())) * -0.07f);
+			}
 		}
 	}
 }

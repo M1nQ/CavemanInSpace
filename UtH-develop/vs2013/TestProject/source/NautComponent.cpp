@@ -20,4 +20,8 @@ void NautComponent::Hit(Vec2 position)
 		parent->GetComponent<Rigidbody>("Rigidbody")->SetVelocity(newDirection * 3);
 		--hp;
 	}
+	//if (hp <= 0)
+	//{
+	//	parent->GetComponent<Rigidbody>("Rigidbody")->SetKinematic(true);
+	//}
 }
