@@ -10,7 +10,7 @@ bool GameOverScene::Init()
 	background->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
 	background->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
 	
-	startTex = uthRS.LoadTexture("Placeholders/Play.png");
+	startTex = uthRS.LoadTexture("Placeholders/Replay.png");
 
 	music = uthRS.LoadSound("sounds/C64_feels.ogg");
 	music->Loop(true);

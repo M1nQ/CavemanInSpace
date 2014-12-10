@@ -31,7 +31,7 @@ namespace uth
 		// Top three scores are read from a safe file. May be moved to TitleScene.
 		void ReadHighScores();
 		void SetScoreText();
-		void SetOverlayMode();
+		void SetOverlayMode(GameObject* bgPic);
 		void CloseOverlayMode();
 		void Scores_SetActive(bool active);
 
@@ -41,17 +41,20 @@ namespace uth
 		Button* creditsButton;
 		Button* highScores;
 		Button* closeButton;
+		Button* tutorialButton;
 
 		Texture* startTex;
 		Texture* creditTex;
 		Texture* scoreTex;
 		Texture* closeTex;
+		Texture* tutorialTex;
 
 		Sound* buttonSound;
 		Sound* music;
 
 		GameObject* background;
 		GameObject* credits;
+		GameObject* tutorial;
 
 		GameObject* leaderboard[3];
 

@@ -2,7 +2,7 @@
 
 MenuScene::MenuScene() 
 {
-	std:: fstream highscorefile("highscores.dat");
+	//std:: fstream highscorefile("highscores.dat");
 	textColor = pmath::Vec4(1,1,1,1);
 }
 MenuScene::~MenuScene() {}
@@ -15,7 +15,8 @@ bool MenuScene::Init()
 	startTex = uthRS.LoadTexture("Placeholders/Play.png");
 	creditTex = uthRS.LoadTexture("Placeholders/credButton.png");
 	scoreTex = uthRS.LoadTexture("Placeholders/HiScore.png");
-	closeTex = uthRS.LoadTexture("Placeholders/eimitn.png");
+	closeTex = uthRS.LoadTexture("Placeholders/Close.png");
+	tutorialTex = uthRS.LoadTexture("Placeholders/Tutorial.png");
 
 	/*buttonSound = uthRS.LoadSound("");*/
 	music = uthRS.LoadSound("sounds/C64_feels.ogg");
@@ -31,6 +32,18 @@ bool MenuScene::Init()
 	credits->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
 	AddChild<GameObject>(credits);
 
+	// tutorial screen
+	tutorial = new GameObject("Tutorial");
+	tutorial->AddComponent(new Sprite("Placeholders/Tutorial_screen2.png"));
+	// set size to fit screen height
+	float scaleratio = uthEngine.GetWindow().GetCamera().GetSize().y / tutorial->transform.GetSize().y;
+	Vec2 size = Vec2(tutorial->transform.GetSize().x * scaleratio, tutorial->transform.GetSize().y * scaleratio);
+
+	tutorial->transform.ScaleToSize(size);
+	AddChild<GameObject>(tutorial);
+
+	// size & place
+
 
 	ReadHighScores();
 	SetScoreText();
@@ -39,20 +52,30 @@ bool MenuScene::Init()
 	creditsButton = new Button(uthEngine.GetWindow(), creditTex);
 	creditsButton->setCallBack([this]()
 	{
-		SetOverlayMode();
+		SetOverlayMode(credits);
 	});
-	creditsButton->transform.SetPosition(250, 250);
+	creditsButton->transform.SetPosition(375, 250);
 	AddChild<Button>(creditsButton);
 
 	// show highscores -button
 	highScores = new Button(uthEngine.GetWindow(), scoreTex);
 	highScores->setCallBack([this]()
 	{
-		SetOverlayMode();
+		SetOverlayMode(credits);
 		Scores_SetActive(true);
 	});
-	highScores->transform.SetPosition(-250, 250);
+	highScores->transform.SetPosition(-375, 250);
 	AddChild<Button>(highScores);
+
+	// show tutorial -button
+	tutorialButton = new Button(uthEngine.GetWindow(), tutorialTex);
+	tutorialButton->setCallBack([this]()
+	{
+		SetOverlayMode(tutorial);
+		
+	});
+	tutorialButton->transform.SetPosition(-125, 250);
+	AddChild<Button>(tutorialButton);
 
 	// start game -button
 	startButton = new Button(uthEngine.GetWindow(), startTex);
@@ -60,7 +83,7 @@ bool MenuScene::Init()
 	{
 		uthSceneM.GoToScene(1);
 	});
-	startButton->transform.SetPosition(0, 250);
+	startButton->transform.SetPosition(125, 250);
 	AddChild<Button>(startButton);
 
 	// close overlay -button
@@ -130,21 +153,23 @@ void MenuScene::ReadHighScores()
 
 // TODO: Uncomment Play calls when sound is implemented!
 
-void MenuScene::SetOverlayMode()
+void MenuScene::SetOverlayMode(GameObject* bgPic)
 {
 	//buttonSound->Play();
 	// set overlay and closeOverlay active
-	credits->SetActive(true);
+	bgPic->SetActive(true);
 	closeButton->SetActive(true);
 	// disable menuscreen buttons
 	startButton->SetActive(false);
 	highScores->SetActive(false);
 	creditsButton->SetActive(false);
+	tutorialButton->SetActive(false);
 }
 void MenuScene::CloseOverlayMode()
 {
 	//buttonSound->Play();
 	// disable overlay etc.
+	tutorial->SetActive(false);
 	credits->SetActive(false);
 	closeButton->SetActive(false);
 	Scores_SetActive(false);
@@ -153,6 +178,7 @@ void MenuScene::CloseOverlayMode()
 	startButton->SetActive(true);
 	creditsButton->SetActive(true);
 	highScores->SetActive(true);
+	tutorialButton->SetActive(true);
 }
 
 void MenuScene::SetScoreText()

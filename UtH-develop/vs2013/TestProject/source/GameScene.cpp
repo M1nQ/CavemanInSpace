@@ -354,11 +354,11 @@ void GameScene::UpdateButtonPositions()
 										 uthEngine.GetWindow().GetCamera().GetPosition().x +
 														 uthEngine.GetWindowResolution().x *
 																					  0.5f -
-																					  50.f ,
+																					  130.f ,
 										 uthEngine.GetWindow().GetCamera().GetPosition().y -
 														 uthEngine.GetWindowResolution().y *
 																					  0.5f + 
-																					 20.f);
+																					 70.f);
 }
 void GameScene::GameOverLogic()
 {
@@ -486,7 +486,7 @@ void GameScene::PauseInit()
 }
 void GameScene::ButtonsInit()
 {
-	p_pauseButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/eimitn.png"));
+	p_pauseButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/Pause.png"));
 	p_pauseButton->SetActive(true);
 	p_pauseButton->setCallBack([this]()
 	{
@@ -591,6 +591,9 @@ void GameScene::VariableInit()
 }
 void GameScene::SoundInit()
 {
+	music = uthRS.LoadSound("sounds/C64_feels.ogg");
+	music->Loop(true);
+
 	p_astroDie = uthRS.LoadSound("sounds/astronaut_dying_groan.wav");
 	p_astroHit = uthRS.LoadSound("sounds/astronaut_hit.wav");
 	p_panic1 = uthRS.LoadSound("sounds/astronaut_panic_voice_1.wav");

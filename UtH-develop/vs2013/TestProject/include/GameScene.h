@@ -97,7 +97,8 @@ namespace uth
 		Sound* p_cavemanMove;
 		Sound* p_hitMetal;
 		Sound* p_hitRock;
-		// TODO: add music!
+
+		Sound* music;
 
 		// Scorekeeping
 		Statistics stats;
