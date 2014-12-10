@@ -593,6 +593,7 @@ void GameScene::SoundInit()
 {
 	music = uthRS.LoadSound("sounds/C64_feels.ogg");
 	music->Loop(true);
+	music->Play();
 
 	p_astroDie = uthRS.LoadSound("sounds/astronaut_dying_groan.wav");
 	p_astroHit = uthRS.LoadSound("sounds/astronaut_hit.wav");

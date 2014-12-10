@@ -8,7 +8,7 @@ Statistics::Statistics()
 	p_oxygenBar->AddComponent(new Sprite("Placeholders/oxygenbar_placeholder.png"));
 
 	p_scoreText = new GameObject();
-	p_scoreText->AddComponent(new Text("FreePixel.ttf", 50.f, "Score"));
+	p_scoreText->AddComponent(new Text("KOMIKAX_.ttf", 50.f, "Score"));
 	p_scoreText->GetComponent<Text>("Score")->AddText(to_string(score), color);
 	p_scoreText->transform.SetPosition(0,0);
 }
@@ -36,7 +36,7 @@ void Statistics::ResetScore()
 	score = 0;
 	addScore = 0;
 	addOxygen = 0;
-	color = Vec4(1, 1, 1, 1);
+	color = Vec4(0.7f, 0.7f, 0.7f, 1);
 	
 }
 

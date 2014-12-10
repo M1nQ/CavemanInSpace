@@ -3,7 +3,7 @@
 MenuScene::MenuScene() 
 {
 	//std:: fstream highscorefile("highscores.dat");
-	textColor = pmath::Vec4(1,1,1,1);
+	textColor = pmath::Vec4(0.7f,0.7f,0.7f,1);
 }
 MenuScene::~MenuScene() {}
 
@@ -21,6 +21,7 @@ bool MenuScene::Init()
 	/*buttonSound = uthRS.LoadSound("");*/
 	music = uthRS.LoadSound("sounds/C64_feels.ogg");
 	music->Loop(true);
+	music->Play();
 
 	background = new GameObject("Background");
 	background->AddComponent(new Sprite("Placeholders/Title_screen.png"));
@@ -183,12 +184,14 @@ void MenuScene::CloseOverlayMode()
 
 void MenuScene::SetScoreText()
 {
+
 	for (int i = 0; i < 3; ++i)
 	{
+		string text = to_string(i + 1) + ":   " + to_string(scores[i]);
 		leaderboard[i] = new GameObject();
-		leaderboard[i]->AddComponent(new Text("FreePixel.ttf", 50.f, "Score"));
-		leaderboard[i]->GetComponent<Text>("Score")->AddText(to_string(scores[i]), textColor);
-		leaderboard[i]->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + pmath::Vec2(0, (50 * i)));
+		leaderboard[i]->AddComponent(new Text("KOMIKAX_.ttf", 50.f, "Score"));
+		leaderboard[i]->GetComponent<Text>("Score")->AddText((text), textColor);
+		leaderboard[i]->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + pmath::Vec2(0, (70 * i)));
 		AddChild<GameObject>(leaderboard[i]);
 		leaderboard[i]->SetActive(false);
 	}

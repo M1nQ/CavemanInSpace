@@ -14,6 +14,7 @@ bool GameOverScene::Init()
 
 	music = uthRS.LoadSound("sounds/C64_feels.ogg");
 	music->Loop(true);
+	music->Play();
 
 	// fill in the scores array so that newest is last
 	FindOldScores();
