@@ -3,13 +3,15 @@
 void Caveman::Init(PhysicsWorld *world)
 {
 	speed = 4;
-	this->AddComponent(new Sprite("Placeholders/caveman.png"));
+	this->AddComponent(new AnimatedSprite(uthRS.LoadTexture("Placeholders/caveman_animation_attack2.png"), 5, Vec2(150,154), 5,0U,false,false));
+	//this->transform.ScaleToSize(this->transform.GetSize() / 7);
 	this->transform.SetPosition(0, 0);
 	this->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
 	cavemanColl = this->GetComponent<Rigidbody>();
 	cavemanColl->SetVelocity(pmath::Vec2(0, 0));
 	cavemanColl->SetPhysicsGroup(-1);
 	this->AddTag("Caveman");
+	this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 1);
 	rotate = false;
 }
 
@@ -17,7 +19,8 @@ void Caveman::Init(PhysicsWorld *world)
 void Caveman::Hit(const Vec2& hitPoint)
 {
 	//animation not done!!!!!
-
+	this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 5, 0,10);
+	animTime = 0.5f;
 	// Sets the caveman to turn towards the click
 	if (hitPoint.length() != 0)
 	{
@@ -70,6 +73,9 @@ void Caveman::ChangeDirectionTouch(pmath::Vec2 startPosition, pmath::Vec2 endPos
 
 void Caveman::update(float dt)
 {
+	if (animTime > 0) animTime -= dt;
+	else this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 1);
+
 	// Turns the caveman gradually towards the hit position.
 
 	if (transform.GetRotation() > 180)

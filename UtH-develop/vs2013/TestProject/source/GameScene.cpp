@@ -311,6 +311,7 @@ void GameScene::Input()
 		p_clubAttack->PlayEffect();
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
 		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
+		p_caveman->Hit(hitPoint);
 	}
 	
 	// Mouse input for testing.
@@ -334,7 +335,7 @@ void GameScene::Input()
 			else
 			{
 				stats.addOxygen -= 0.05f;
-				p_cavemanMove->SetVolume(70);
+				p_cavemanMove->SetVolume(40);
 			}
 			p_arrow->DisableArrow();
 			p_cavemanMove->PlayEffect();
@@ -346,6 +347,7 @@ void GameScene::Input()
 		p_clubAttack->PlayEffect();
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
 		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
+		p_caveman->Hit(hitPoint);
 	}
 }
 void GameScene::UpdateButtonPositions()
@@ -571,7 +573,7 @@ void GameScene::VariableInit()
 	AddChild<Caveman>(p_caveman);
 	p_caveman->Init(p_world);
 
-	p_club = new Club(p_caveman->transform.GetSize());
+	p_club = new Club(Vec2(100,100)/*p_caveman->transform.GetSize()*/);
 	p_club->Init(p_world);
 	AddChild<Club>(p_club);
 

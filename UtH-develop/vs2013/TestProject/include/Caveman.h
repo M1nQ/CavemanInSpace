@@ -28,6 +28,7 @@ private:
 	bool rotate;
 	bool rotatePositive;
 	int timeFromHit;
+	float animTime;
 	float speed;
 	float targetRotation;
 	
