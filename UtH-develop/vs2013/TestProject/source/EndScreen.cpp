@@ -7,18 +7,18 @@ EndScreen::EndScreen()
 	p_finalScore = new GameObject();
 	p_finalScore->AddComponent(new Text("FreePixel.ttf", 50.f, "Score"));
 	p_finalScore->GetComponent<Text>("Score")->AddText(to_string(finalScore), color);
-	p_finalScore->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(250, 50));
+	p_finalScore->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(-250, 50));
 
 	// High scores as separate objects. TODO: change to array or (if possible) one object?
 	p_first = new GameObject();
 	p_first->AddComponent(new Text("FreePixel.ttf", 50.f, "Score"));
-	p_first->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(250, 150));
+	p_first->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(-250, 150));
 	p_second = new GameObject();
 	p_second->AddComponent(new Text("FreePixel.ttf", 50.f, "Score"));
-	p_second->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(250, 200));
+	p_second->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(-250, 200));
 	p_third = new GameObject();
 	p_third->AddComponent(new Text("FreePixel.ttf", 50.f, "Score"));
-	p_third->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(250, 250));
+	p_third->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(-250, 250));
 }
 
 EndScreen::~EndScreen()

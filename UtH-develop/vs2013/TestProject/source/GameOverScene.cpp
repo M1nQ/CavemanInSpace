@@ -6,7 +6,7 @@ GameOverScene::~GameOverScene() {}
 bool GameOverScene::Init()
 {
 	background = new GameObject();
-	background->AddComponent(new Sprite("Placeholders/gameOver.png"));
+	background->AddComponent(new Sprite("Placeholders/endBg.png"));
 	background->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
 	background->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
 	
@@ -29,7 +29,7 @@ bool GameOverScene::Init()
 		uthSceneM.GoToScene(1);
 	});
 
-	Vec2 offset = Vec2(300, -50);
+	Vec2 offset = Vec2(350, 160);
 	startButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition() + offset);
 	AddChild<Button>(startButton);
 
