@@ -17,8 +17,9 @@ bool MenuScene::Init()
 	scoreTex = uthRS.LoadTexture("Placeholders/HiScore.png");
 	closeTex = uthRS.LoadTexture("Placeholders/eimitn.png");
 
-	/*buttonSound = uthRS.LoadSound("");
-	music = uthRS.LoadSound("");*/
+	/*buttonSound = uthRS.LoadSound("");*/
+	music = uthRS.LoadSound("sounds/C64_feels.ogg");
+	music->Loop(true);
 
 	background = new GameObject("Background");
 	background->AddComponent(new Sprite("Placeholders/Title_screen.png"));
@@ -30,7 +31,7 @@ bool MenuScene::Init()
 	credits->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
 	AddChild<GameObject>(credits);
 
-	
+
 	ReadHighScores();
 	SetScoreText();
 

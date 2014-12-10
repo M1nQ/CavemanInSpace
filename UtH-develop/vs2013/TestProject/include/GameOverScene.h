@@ -31,6 +31,7 @@ namespace uth
 		Button* startButton;
 		GameObject* background;
 
+		Sound* music;
 		EndScreen end;
 
 		std::fstream savefile;
