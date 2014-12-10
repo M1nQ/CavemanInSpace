@@ -5,6 +5,7 @@
 #include <Button.h>
 #include <EndScreen.h>
 #include <fstream>
+#include <Statistics.h>
 
 using namespace uth;
 

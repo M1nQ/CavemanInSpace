@@ -17,6 +17,13 @@ namespace uth
 		stm << n;
 		return stm.str();
 	}
+	template < typename T > int stoi(const T& j)
+	{
+		std::istringstream ss(j);
+		int i;
+		ss >> i;
+		return i;
+	}
 }
 class Statistics
 {

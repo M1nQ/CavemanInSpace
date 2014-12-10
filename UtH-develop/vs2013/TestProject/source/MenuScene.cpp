@@ -132,7 +132,7 @@ void MenuScene::ReadHighScores()
 	//}
 	//highscorefile.close();
 	FileManager files;
-	string stringscores[3];
+	
 
 	files.OpenFile("highscores1.dat");
 	stringscores[0] = files.ReadText();
@@ -144,11 +144,7 @@ void MenuScene::ReadHighScores()
 	stringscores[2] = files.ReadText();
 	files.CloseFile();
 
-	for (int i = 0; i < 3; ++i)
-	{
-		scores[i] = stoi(stringscores[i]);
-	}
-
+	
 }
 
 
@@ -187,7 +183,7 @@ void MenuScene::SetScoreText()
 
 	for (int i = 0; i < 3; ++i)
 	{
-		string text = to_string(i + 1) + ":   " + to_string(scores[i]);
+		string text = to_string(i + 1) + ":   " + stringscores[i];
 		leaderboard[i] = new GameObject();
 		leaderboard[i]->AddComponent(new Text("KOMIKAX_.ttf", 50.f, "Score"));
 		leaderboard[i]->GetComponent<Text>("Score")->AddText((text), textColor);

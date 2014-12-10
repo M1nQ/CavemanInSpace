@@ -60,7 +60,7 @@ namespace uth
 
 		std::fstream highscorefile;
 
-		int scores[3];
+		string stringscores[3];
 		pmath::Vec4 textColor;
 	};
 }
