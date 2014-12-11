@@ -2,16 +2,14 @@
 
 MenuScene::MenuScene() 
 {
-	//std:: fstream highscorefile("highscores.dat");
 	textColor = pmath::Vec4(0.7f,0.7f,0.7f,1);
 }
 MenuScene::~MenuScene() {}
 
 bool MenuScene::Init()
 {
-	// avoid recurrent Get-calls (or not?)
-	//wnd = uthEngine.GetWindow();
 
+	// Button textures
 	startTex = uthRS.LoadTexture("Placeholders/Play.png");
 	creditTex = uthRS.LoadTexture("Placeholders/credButton.png");
 	scoreTex = uthRS.LoadTexture("Placeholders/HiScore.png");
@@ -122,30 +120,17 @@ void MenuScene::Draw(RenderTarget& target, RenderAttributes attributes)
 
 void MenuScene::ReadHighScores()
 {
-	//highscorefile.open("highscores.dat", std::ios::binary | std::ios::in);
-	//if (highscorefile)
-	//{
-	//	while (highscorefile.peek() != EOF)
-	//	{
-	//		for (int i = 0; i < 3; ++i)
-	//			highscorefile.read((char*)&scores[i], sizeof(int));
-	//	}
-	//}
-	//highscorefile.close();
 	FileManager files;
-	
 
-	files.OpenFile("highscores1.dat");
+	files.OpenFile("highscores1.dat", FileManager::Location::INTERNAL);
 	stringscores[0] = files.ReadText();
 	files.CloseFile();
-	files.OpenFile("highscores2.dat");
+	files.OpenFile("highscores2.dat", FileManager::Location::INTERNAL);
 	stringscores[1] = files.ReadText();
 	files.CloseFile();
-	files.OpenFile("highscores3.dat");
+	files.OpenFile("highscores3.dat", FileManager::Location::INTERNAL);
 	stringscores[2] = files.ReadText();
 	files.CloseFile();
-
-	
 }
 
 

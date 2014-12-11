@@ -366,7 +366,7 @@ void GameScene::GameOverLogic()
 {
 	string newscore = to_string(stats.GetFinalScore());
 	FileManager fm;
-	fm.OpenFile("newscore.dat", FileManager::Location::ASSET, true);
+	fm.OpenFile("newscore.dat", FileManager::Location::INTERNAL, true);
 	fm.WriteString(newscore);
 	fm.CloseFile();
 	uthSceneM.GoToScene(2);
