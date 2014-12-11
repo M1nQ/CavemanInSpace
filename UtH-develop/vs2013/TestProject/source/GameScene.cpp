@@ -376,41 +376,65 @@ void GameScene::GameOverLogic()
 }
 void GameScene::GameState()
 {
-	if (stats.GetGameTime() > 60)
+	if (stats.GetGameTime() > 100)
 	{
-		asteroidAmount = 30;
-		astronautAmount = 10;
+		asteroidAmount = 90;
+		astronautAmount = 1;
+		cosmonautAmount = 1;
+	}
+	else if (stats.GetGameTime() > 90)
+	{
+		asteroidAmount = 80;
+		astronautAmount = 2;
+		cosmonautAmount = 2;
+	}
+	else if (stats.GetGameTime() > 80)
+	{
+		asteroidAmount = 70;
+		astronautAmount = 3;
+		cosmonautAmount = 3;
+	}
+	else if (stats.GetGameTime() > 70)
+	{
+		asteroidAmount = 60;
+		astronautAmount = 4;
+		cosmonautAmount = 4;
+	}
+	else if (stats.GetGameTime() > 60)
+	{
+		asteroidAmount = 55;
+		astronautAmount = 5;
 		cosmonautAmount = 5;
 	}
 	else if (stats.GetGameTime() > 50)
 	{
-		asteroidAmount = 40;
-		astronautAmount = 15;
-		cosmonautAmount = 10;
+		asteroidAmount = 50;
+		astronautAmount = 10;
+		cosmonautAmount = 5;
 	}
 	else if (stats.GetGameTime() > 40)
 	{
-		asteroidAmount = 40;
-		astronautAmount = 20;
-		cosmonautAmount = 10;
+		asteroidAmount = 50;
+		astronautAmount = 15;
+		cosmonautAmount = 5;
 	}
 	else if (stats.GetGameTime() > 30)
 	{
 		asteroidAmount = 50;
 		astronautAmount = 20;
-		cosmonautAmount = 15;
+		cosmonautAmount = 10;
 	}
 	else if (stats.GetGameTime() > 20)
 	{
-		asteroidAmount = 40;
-		astronautAmount = 30;
-		cosmonautAmount = 20;
+		asteroidAmount = 50;
+		astronautAmount = 20;
+		cosmonautAmount = 10;
 	}
 	else if (stats.GetGameTime() > 10)
 	{
-		asteroidAmount = 30;
-		astronautAmount = 30;
-		cosmonautAmount = 30;
+		asteroidAmount = 45;
+		astronautAmount = 25;
+		cosmonautAmount = 15;
 	}
 	else
 	{
