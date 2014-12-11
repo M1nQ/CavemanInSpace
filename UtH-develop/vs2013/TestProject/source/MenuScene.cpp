@@ -8,6 +8,8 @@ MenuScene::~MenuScene() {}
 
 bool MenuScene::Init()
 {
+	// Back button
+	uthInput.SetAndroidBackFunction([]() { uthEngine.Exit(); });
 
 	// Button textures
 	startTex = uthRS.LoadTexture("Placeholders/Play.png");
