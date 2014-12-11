@@ -17,18 +17,6 @@ public:
 
 	// Creates a gameObject of specified type to given position with a randomized angle.
 	GameObject* CreateGameObject(PhysicsWorld* world, Vec2 position, string spritePath, string nameTag);
-	// Creates an astronaut to the given position, heading towards the center of the screen.
-	GameObject* CreateAstronaut(PhysicsWorld* world, Vec2 position, string tag = "Astronaut");
-	// Creates an asteroid to the given position, heading towards the center of the screen.
-	GameObject* CreateAsteroid(PhysicsWorld* world, Vec2 position, string tag = "Asteroid");
-	// Creates a cosmonaut to the given position, heading towards the center of the screen.
-	GameObject* CreateCosmonaut(PhysicsWorld* world, Vec2 position, string tag = "Cosmonaut");
-	// TODO:
-	GameObject* CreateTaikonaut(PhysicsWorld* world, Vec2 position, string tag = "Taikonaut");
-	GameObject* CreateMeteorite(PhysicsWorld* world, Vec2 position, string tag = "Meteorite");
-	GameObject* CreateSatellite(PhysicsWorld* world, Vec2 position, string tag = "Satellite");
-	GameObject* CreateSpaceship(PhysicsWorld* world, Vec2 position, string tag = "Spaceship");
-	GameObject* CreateUfo(PhysicsWorld* world, Vec2 position, string tag = "Ufo");
 
 private:
 	// Sets the object's direction towards the center of the screen, and randomizes a speed.

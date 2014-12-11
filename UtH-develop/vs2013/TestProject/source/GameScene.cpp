@@ -175,19 +175,23 @@ void GameScene::MaintainObjectList(float dt)
 }
 void GameScene::AddObjects()
 {
+
 	// Maintains the objectlist so, that it always holds a certain amount of specified objects.
 	
 	while (objectList.count("Astronaut") < astronautAmount)
 	{
-		objectList.insert(make_pair("Astronaut", prefabObject.CreateAstronaut(p_world, GetRandomSpawnPosition())));
+		objectList.insert(make_pair("Astronaut", prefabObject.CreateGameObject(p_world, GetRandomSpawnPosition(), "Placeholders/astronautPlaceHolder.png", "Astronaut")));
 	}
 	while (objectList.count("Cosmonaut") < cosmonautAmount)
 	{
-		objectList.insert(make_pair("Cosmonaut", prefabObject.CreateCosmonaut(p_world, GetRandomSpawnPosition())));
+		objectList.insert(make_pair("Cosmonaut", prefabObject.CreateGameObject(p_world, GetRandomSpawnPosition(), "Placeholders/Cosmonaut.png", "Cosmonaut")));
 	}
 	while (objectList.count("Asteroid") < asteroidAmount)
 	{
-		objectList.insert(make_pair("Asteroid", prefabObject.CreateAsteroid(p_world, GetRandomSpawnPosition())));
+		if (Randomizer::GetInt(0, 2) == 0)
+			objectList.insert(make_pair("Asteroid", prefabObject.CreateGameObject(p_world, GetRandomSpawnPosition(), "Placeholders/Asteroid_3.png", "Asteroid")));
+		else
+			objectList.insert(make_pair("Asteroid", prefabObject.CreateGameObject(p_world, GetRandomSpawnPosition(), "Placeholders/Asteroid_4.png", "Asteroid")));
 	}
 }
 bool GameScene::DeleteObjects(GameObject* p_object)
