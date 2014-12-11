@@ -33,7 +33,7 @@ bool GameOverScene::Init()
 		uthSceneM.GoToScene(1);
 	});
 
-	Vec2 offset = Vec2(350, 160);
+	Vec2 offset = uthEngine.GetWindow().GetCamera().GetSize() / 4;
 	startButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition() + offset);
 	AddChild<Button>(startButton);
 

@@ -3,22 +3,23 @@
 
 EndScreen::EndScreen()
 {
+	Vec2 scrsize = uthEngine.GetWindow().GetSize();
 	color = Vec4(0.7f, 0.7f, 0.7f, 1);
 	p_finalScore = new GameObject();
 	p_finalScore->AddComponent(new Text("KOMIKAX_.ttf", 50.f, "Score"));
 	p_finalScore->GetComponent<Text>("Score")->AddText(to_string(finalScore), color);
-	p_finalScore->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(-300, 50));
+	p_finalScore->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(-scrsize.x / 4, scrsize.y / 12));
 
 	// High scores as separate objects. TODO: change to array or (if possible) one object?
 	p_first = new GameObject();
 	p_first->AddComponent(new Text("KOMIKAX_.ttf", 50.f, "Score"));
-	p_first->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(-300, 150));
+	p_first->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(-scrsize.x / 4, 2 * scrsize.y / 12));
 	p_second = new GameObject();
 	p_second->AddComponent(new Text("KOMIKAX_.ttf", 50.f, "Score"));
-	p_second->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(-300, 200));
+	p_second->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(-scrsize.x / 4, 3 * scrsize.y / 12));
 	p_third = new GameObject();
 	p_third->AddComponent(new Text("KOMIKAX_.ttf", 50.f, "Score"));
-	p_third->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(-300, 250));
+	p_third->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + Vec2(-scrsize.x / 4, 4 * scrsize.y / 12));
 }
 
 EndScreen::~EndScreen()
