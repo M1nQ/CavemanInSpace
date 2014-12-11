@@ -616,7 +616,7 @@ void GameScene::VariableInit()
 	AddChild<Caveman>(p_caveman);
 	p_caveman->Init(p_world);
 
-	p_club = new Club(Vec2(100,100)/*p_caveman->transform.GetSize()*/);
+	p_club = new Club(p_caveman->GetComponent<Rigidbody>()->GetSize());
 	p_club->Init(p_world);
 	AddChild<Club>(p_club);
 

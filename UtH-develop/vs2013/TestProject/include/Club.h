@@ -21,6 +21,7 @@ private:
 	Vec2 size;
 	Rigidbody* clubColl;
 	
+	float hitDelay;
 	float timeFromHit;
 	float reach;
 	Vec2 hitDirection;

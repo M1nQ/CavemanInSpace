@@ -4,9 +4,10 @@ void Caveman::Init(PhysicsWorld *world)
 {
 	speed = 4;
 	this->AddComponent(new AnimatedSprite(uthRS.LoadTexture("Placeholders/caveman_animation_attack2.png"), 5, Vec2(150,154), 5,0U,false,false));
-	//this->transform.ScaleToSize(this->transform.GetSize() / 7);
+	Vec2 originOffset = Vec2(-(this->transform.GetSize().x) / 6, (this->transform.GetSize().y) / 7);
+	this->transform.SetOrigin(originOffset);
 	this->transform.SetPosition(0, 0);
-	this->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
+	this->AddComponent(new Rigidbody(*world, COLLIDER_BALL,Vec2(85,1)));
 	cavemanColl = this->GetComponent<Rigidbody>();
 	cavemanColl->SetVelocity(pmath::Vec2(0, 0));
 	cavemanColl->SetPhysicsGroup(-1);
@@ -18,9 +19,11 @@ void Caveman::Init(PhysicsWorld *world)
 
 void Caveman::Hit(const Vec2& hitPoint)
 {
-	//animation not done!!!!!
-	this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 5, 0,10);
-	animTime = 0.5f;
+	if (animTime <= 0)
+	{
+		this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 5, 0, 10);
+		animTime = 0.5f;
+	}
 
 	// Sets the caveman to turn towards the click
 	if (hitPoint.length() != 0)
@@ -56,9 +59,9 @@ void Caveman::ChangeDirectionMouse(pmath::Vec2 arrowDirection, bool strongpull)
 	//pmath::Vec2 temp = (-1.f * pullPosition) + (uthEngine.GetWindow().GetSize() * 0.5f);
 	//temp.normalize();
 	if (strongpull)
-		speed = 5;
+		speed = 7;
 	else
-		speed = 3;
+		speed = 4;
 
 	cavemanColl->SetVelocity(arrowDirection * speed);
 }
