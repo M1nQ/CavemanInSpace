@@ -87,6 +87,7 @@ namespace uth
 		// Buttons
 		Button* p_pauseButton;
 		Button* p_playButton;
+		Button* p_replayButton;
 
 		// Sounds
 		Sound* p_astroDie;
@@ -102,8 +103,7 @@ namespace uth
 
 		// Scorekeeping
 		Statistics stats;
-		std::fstream scorefile;
-
+		
 		int nauts;
 
 	};

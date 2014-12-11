@@ -59,6 +59,7 @@ void GameScene::Update(float dt)
 
 	UpdateButtonPositions();
 	p_playButton->Update(dt);
+	p_replayButton->Update(dt);
 	if (stats.IsDead())
 			GameOverLogic();
 }
@@ -85,6 +86,7 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 	stats.Draw(target, attributes);
 	overlay->Draw(target, attributes);
 	p_playButton->Draw(target, attributes);
+	p_replayButton->Draw(target, attributes);
 	//p_indicator->Draw(target, attributes); // for testing only!
 }
 
@@ -352,15 +354,16 @@ void GameScene::Input()
 }
 void GameScene::UpdateButtonPositions()
 {
+	Vec2 offset = (p_pauseButton->transform.GetSize() / 4);
 	p_pauseButton->transform.SetPosition(
 										 uthEngine.GetWindow().GetCamera().GetPosition().x +
 														 uthEngine.GetWindowResolution().x *
 																					  0.5f -
-																					  130.f ,
+																				  offset.x ,
 										 uthEngine.GetWindow().GetCamera().GetPosition().y -
 														 uthEngine.GetWindowResolution().y *
 																					  0.5f + 
-																					 70.f);
+																				  offset.y);
 }
 void GameScene::GameOverLogic()
 {
@@ -489,14 +492,18 @@ void GameScene::PauseInit()
 void GameScene::ButtonsInit()
 {
 	p_pauseButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/Pause.png"));
+	p_pauseButton->transform.ScaleToSize(p_pauseButton->transform.GetSize() / 2);
 	p_pauseButton->SetActive(true);
 	p_pauseButton->setCallBack([this]()
 	{
 		paused = true;
+		Vec2 campos = uthEngine.GetWindow().GetCamera().GetPosition();
 		p_playButton->SetActive(true);
-		p_playButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
+		p_playButton->transform.SetPosition(campos.x, campos.y - p_playButton->transform.GetSize().y);
+		p_replayButton->SetActive(true);
+		p_replayButton->transform.SetPosition(campos.x, campos.y + p_replayButton->transform.GetSize().y);
 		overlay->SetActive(true);
-		overlay->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
+		overlay->transform.SetPosition(campos);
 	});
 
 	p_playButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/Play.png"));
@@ -505,7 +512,15 @@ void GameScene::ButtonsInit()
 	{
 		paused = false;
 		p_playButton->SetActive(false);
+		p_replayButton->SetActive(false);
 		overlay->SetActive(false);
+	});
+
+	p_replayButton = new Button(uthEngine.GetWindow(), uthRS.LoadTexture("Placeholders/Replay.png"));
+	p_replayButton->SetActive(false);
+	p_replayButton->setCallBack([this]()
+	{
+		uthSceneM.GoToScene(1);
 	});
 }
 void GameScene::ContactLogicInit()
