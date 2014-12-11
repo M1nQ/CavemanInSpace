@@ -21,6 +21,7 @@ void Caveman::Hit(const Vec2& hitPoint)
 	//animation not done!!!!!
 	this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 5, 0,10);
 	animTime = 0.5f;
+
 	// Sets the caveman to turn towards the click
 	if (hitPoint.length() != 0)
 	{
@@ -97,16 +98,16 @@ void Caveman::update(float dt)
 			if (abs(targetRotation - transform.GetRotation()) < 180)
 			{
 				if (rotatePositive)
-					GetComponent<Rigidbody>("Rigidbody")->Rotate(abs(targetRotation - transform.GetRotation()) * 0.07f);
+					GetComponent<Rigidbody>("Rigidbody")->Rotate(abs(targetRotation - transform.GetRotation()) * 3 * dt);
 				else
-					GetComponent<Rigidbody>("Rigidbody")->Rotate(abs(targetRotation - transform.GetRotation()) * -0.07f);
+					GetComponent<Rigidbody>("Rigidbody")->Rotate(abs(targetRotation - transform.GetRotation()) * -3 * dt);
 			}
 			else
 			{
 				if (rotatePositive)
-					GetComponent<Rigidbody>("Rigidbody")->Rotate((360 - abs(targetRotation - transform.GetRotation())) * 0.07f);
+					GetComponent<Rigidbody>("Rigidbody")->Rotate((360 - abs(targetRotation - transform.GetRotation())) * 3 * dt);
 				else
-					GetComponent<Rigidbody>("Rigidbody")->Rotate((360 - abs(targetRotation - transform.GetRotation())) * -0.07f);
+					GetComponent<Rigidbody>("Rigidbody")->Rotate((360 - abs(targetRotation - transform.GetRotation())) * -3 * dt);
 			}
 		}
 	}

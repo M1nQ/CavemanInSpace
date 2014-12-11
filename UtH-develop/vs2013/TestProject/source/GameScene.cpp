@@ -315,40 +315,40 @@ void GameScene::Input()
 	}
 	
 	// Mouse input for testing.
-	//if (uthInput.Mouse.IsButtonDown(Mouse::MButton::LEFT) == true && p_arrow->IsActive() == false)
-	//	p_arrow->DrawArrow(uthInput.Common.Position());
-	//if (uthInput.Common.Event() == InputEvent::DRAG)
-	//{
-	//	p_arrow->update(p_caveman->transform.GetPosition());
-	//}
-	//if (uthInput.Mouse.IsButtonReleased(Mouse::MButton::LEFT) == true)
-	//{
-	//	if (p_pauseButton->IsClicked() == false)
-	//	{
-	//		bool bigpull = p_arrow->IsStrong();
-	//		p_caveman->ChangeDirectionMouse(p_arrow->GetNormDirection(), bigpull);
-	//		if (bigpull)
-	//		{
-	//			stats.addOxygen -= 0.1f;
-	//			p_cavemanMove->SetVolume(100); // OR SetPitch?
-	//		}
-	//		else
-	//		{
-	//			stats.addOxygen -= 0.05f;
-	//			p_cavemanMove->SetVolume(40);
-	//		}
-	//		p_arrow->DisableArrow();
-	//		p_cavemanMove->PlayEffect();
-	//	}
-	//	else p_arrow->DisableArrow();
-	//}
-	//if (uthInput.Mouse.IsButtonPressed(Mouse::MButton::RIGHT) == true)
-	//{  
-	//	p_clubAttack->PlayEffect();
-	//	Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
-	//	p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
-	//	p_caveman->Hit(hitPoint);
-	//}
+	if (uthInput.Mouse.IsButtonDown(Mouse::MButton::LEFT) == true && p_arrow->IsActive() == false)
+		p_arrow->DrawArrow(uthInput.Common.Position());
+	if (uthInput.Common.Event() == InputEvent::DRAG)
+	{
+		p_arrow->update(p_caveman->transform.GetPosition());
+	}
+	if (uthInput.Mouse.IsButtonReleased(Mouse::MButton::LEFT) == true)
+	{
+		if (p_pauseButton->IsClicked() == false)
+		{
+			bool bigpull = p_arrow->IsStrong();
+			p_caveman->ChangeDirectionMouse(p_arrow->GetNormDirection(), bigpull);
+			if (bigpull)
+			{
+				stats.addOxygen -= 0.1f;
+				p_cavemanMove->SetVolume(100); // OR SetPitch?
+			}
+			else
+			{
+				stats.addOxygen -= 0.05f;
+				p_cavemanMove->SetVolume(40);
+			}
+			p_arrow->DisableArrow();
+			p_cavemanMove->PlayEffect();
+		}
+		else p_arrow->DisableArrow();
+	}
+	if (uthInput.Mouse.IsButtonPressed(Mouse::MButton::RIGHT) == true)
+	{  
+		p_clubAttack->PlayEffect();
+		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
+		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
+		p_caveman->Hit(hitPoint);
+	}
 }
 void GameScene::UpdateButtonPositions()
 {
