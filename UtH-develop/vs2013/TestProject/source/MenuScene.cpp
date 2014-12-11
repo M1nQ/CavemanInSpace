@@ -19,7 +19,7 @@ bool MenuScene::Init()
 	tutorialTex = uthRS.LoadTexture("Placeholders/Tutorial.png");
 
 	/*buttonSound = uthRS.LoadSound("");*/
-	music = uthRS.LoadSound("sounds/C64_feels.ogg");
+	music = uthRS.LoadSound("sounds/menumusic.ogg");
 	music->Loop(true);
 	music->Play();
 
@@ -102,6 +102,7 @@ bool MenuScene::Init()
 }
 bool MenuScene::DeInit()
 {
+	music->Stop();
 	return true;
 }
 void MenuScene::Update(float dt)

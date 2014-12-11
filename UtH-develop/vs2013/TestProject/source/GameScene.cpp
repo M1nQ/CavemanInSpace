@@ -593,7 +593,7 @@ void GameScene::VariableInit()
 }
 void GameScene::SoundInit()
 {
-	music = uthRS.LoadSound("sounds/C64_feels.ogg");
+	music = uthRS.LoadSound("sounds/gamemusic.ogg");
 	music->Loop(true);
 	music->Play();
 

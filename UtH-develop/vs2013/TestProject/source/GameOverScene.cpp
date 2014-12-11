@@ -12,9 +12,9 @@ bool GameOverScene::Init()
 	
 	startTex = uthRS.LoadTexture("Placeholders/Replay.png");
 
-	music = uthRS.LoadSound("sounds/C64_feels.ogg");
-	music->Loop(true);
-	music->Play();
+	//music = uthRS.LoadSound("sounds/gamemusic.ogg");
+	//music->Loop(true);
+	//music->Play();
 
 	// fill in the scores array so that newest is last
 	FindOldScores();
