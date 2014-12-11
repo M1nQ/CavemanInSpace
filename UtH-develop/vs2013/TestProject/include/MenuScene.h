@@ -34,6 +34,7 @@ namespace uth
 		void SetOverlayMode(GameObject* bgPic);
 		void CloseOverlayMode();
 		void Scores_SetActive(bool active);
+		void ButtonInit();
 
 		//Window wnd;
 

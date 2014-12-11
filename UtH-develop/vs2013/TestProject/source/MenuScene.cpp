@@ -49,53 +49,8 @@ bool MenuScene::Init()
 	ReadHighScores();
 	SetScoreText();
 
-	// show credits -button
-	creditsButton = new Button(uthEngine.GetWindow(), creditTex);
-	creditsButton->setCallBack([this]()
-	{
-		SetOverlayMode(credits);
-	});
-	creditsButton->transform.SetPosition(375, 250);
-	AddChild<Button>(creditsButton);
+	ButtonInit();
 
-	// show highscores -button
-	highScores = new Button(uthEngine.GetWindow(), scoreTex);
-	highScores->setCallBack([this]()
-	{
-		SetOverlayMode(credits);
-		Scores_SetActive(true);
-	});
-	highScores->transform.SetPosition(-375, 250);
-	AddChild<Button>(highScores);
-
-	// show tutorial -button
-	tutorialButton = new Button(uthEngine.GetWindow(), tutorialTex);
-	tutorialButton->setCallBack([this]()
-	{
-		SetOverlayMode(tutorial);
-		
-	});
-	tutorialButton->transform.SetPosition(-125, 250);
-	AddChild<Button>(tutorialButton);
-
-	// start game -button
-	startButton = new Button(uthEngine.GetWindow(), startTex);
-	startButton->setCallBack([]()
-	{
-		uthSceneM.GoToScene(1);
-	});
-	startButton->transform.SetPosition(125, 250);
-	AddChild<Button>(startButton);
-
-	// close overlay -button
-	closeButton = new Button(uthEngine.GetWindow(), closeTex);
-	closeButton->setCallBack([this]()
-	{
-		CloseOverlayMode();
-	});
-	closeButton->transform.SetPosition(500, -250);
-	AddChild<Button>(closeButton);
-	
 	CloseOverlayMode();
 
 	return true;
@@ -187,4 +142,58 @@ void MenuScene::Scores_SetActive(bool active)
 	{
 		leaderboard[i]->SetActive(active);
 	}
+}
+
+void MenuScene::ButtonInit()
+{
+	Vec2 bsize = creditTex->GetSize();
+	Vec2 scrsize = uthEngine.GetWindow().GetSize();
+	float offsetX = scrsize.x / 9;
+	// show credits -button
+	creditsButton = new Button(uthEngine.GetWindow(), creditTex);
+	creditsButton->setCallBack([this]()
+	{
+		SetOverlayMode(credits);
+	});
+	creditsButton->transform.SetPosition(offsetX * 3, scrsize.y/2 - bsize.y);
+	AddChild<Button>(creditsButton);
+
+	// show highscores -button
+	highScores = new Button(uthEngine.GetWindow(), scoreTex);
+	highScores->setCallBack([this]()
+	{
+		SetOverlayMode(credits);
+		Scores_SetActive(true);
+	});
+	highScores->transform.SetPosition(-(offsetX * 3), scrsize.y / 2 - bsize.y);
+	AddChild<Button>(highScores);
+
+	// show tutorial -button
+	tutorialButton = new Button(uthEngine.GetWindow(), tutorialTex);
+	tutorialButton->setCallBack([this]()
+	{
+		SetOverlayMode(tutorial);
+	});
+	
+	tutorialButton->transform.SetPosition(-offsetX, scrsize.y / 2 - bsize.y);
+	AddChild<Button>(tutorialButton);
+
+	// start game -button
+	startButton = new Button(uthEngine.GetWindow(), startTex);
+	startButton->setCallBack([]()
+	{
+		uthSceneM.GoToScene(1);
+	});
+	startButton->transform.SetPosition(offsetX, scrsize.y / 2 - bsize.y);
+	AddChild<Button>(startButton);
+
+	// close overlay -button
+	closeButton = new Button(uthEngine.GetWindow(), closeTex);
+	closeButton->setCallBack([this]()
+	{
+		CloseOverlayMode();
+	});
+	closeButton->transform.SetPosition((scrsize.x - bsize.x) / 2, -(scrsize.y - bsize.y) / 2);
+	AddChild<Button>(closeButton);
+
 }
