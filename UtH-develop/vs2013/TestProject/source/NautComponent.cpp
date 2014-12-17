@@ -25,12 +25,12 @@ void NautComponent::Hit(Vec2 position)
 			if (parent->HasTag("Astronaut"))
 				DieAnimation(0, 12, 7);
 			else if (parent->HasTag("Cosmonaut"))
-				DieAnimation(0, 0, 0);
+				DieAnimation(10, 15, 6);
 		}
 	}
 }
 
-void NautComponent::DieAnimation(int startFrame, int frameAmount, float fps)
+void NautComponent::DieAnimation(int startFrame, int lastFrame, float fps)
 {
-	parent->GetComponent<AnimatedSprite>()->ChangeAnimation(0, frameAmount, startFrame, fps, false);
+	parent->GetComponent<AnimatedSprite>()->ChangeAnimation(0, lastFrame, startFrame, fps, false);
 }
