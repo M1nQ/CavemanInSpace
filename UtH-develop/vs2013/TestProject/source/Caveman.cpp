@@ -7,7 +7,7 @@ void Caveman::Init(PhysicsWorld *world)
 	Vec2 originOffset = Vec2(-(this->transform.GetSize().x) / 6, (this->transform.GetSize().y) / 7);
 	this->transform.SetOrigin(originOffset);
 	this->transform.SetPosition(0, 0);
-	this->AddComponent(new Rigidbody(*world, COLLIDER_BALL,Vec2(85,1)));
+	this->AddComponent(new Rigidbody(*world, COLLIDER_BALL, Vec2(85, 1)));
 	cavemanColl = this->GetComponent<Rigidbody>();
 	cavemanColl->SetVelocity(pmath::Vec2(0, 0));
 	cavemanColl->SetPhysicsGroup(-1);
