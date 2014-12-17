@@ -140,8 +140,6 @@ void GameScene::ReactToHit(GameObject* a)
 				p_rockpartsys->SetEmitProperties(true, 0, 0.7f, 1, 2);
 				
 				particleTimer = 50;
-				// TODO: destroy object, change particles to animation?
-				//delete(a);
 				deleteAsteroid = a;
 				objectList.erase(--(i_ObjectList.base()));
 			}
@@ -217,6 +215,8 @@ void GameScene::DeleteAsteroid(float dt)
 {
 	if (deleteAsteroid != nullptr)
 	{
+		deleteAsteroid->GetComponent<Rigidbody>("Rigidbody")->SetKinematic(true);
+
 		if (deleteAsteroid->GetComponent<Sprite>()->GetColor().a > 0)
 		{
 			deleteAsteroid->GetComponent<Sprite>()->SetColor(1, 1, 1, (deleteAsteroid->GetComponent<Sprite>()->GetColor().a) - 2 / (1 / dt));
