@@ -3,7 +3,8 @@
 void Caveman::Init(PhysicsWorld *world)
 {
 	speed = 4;
-	this->AddComponent(new AnimatedSprite(uthRS.LoadTexture("Placeholders/caveman_animation_attack2.png"), 5, Vec2(150,154), 5,0U,false,false));
+	this->AddComponent(new AnimatedSprite(uthRS.LoadTexture("caveman_animations.png"), 26, Vec2(716,794), 5,0/*,false,false*/));
+	this->transform.ScaleToSize(119, 132);
 	Vec2 originOffset = Vec2(-(this->transform.GetSize().x) / 6, (this->transform.GetSize().y) / 7);
 	this->transform.SetOrigin(originOffset);
 	this->transform.SetPosition(0, 0);
@@ -21,8 +22,10 @@ void Caveman::Hit(const Vec2& hitPoint)
 {
 	if (animTime <= 0)
 	{
-		this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 5, 0, 10);
-		animTime = 0.5f;
+		this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 10, 0, 10);
+		//this->GetComponent<AnimatedSprite>()->ChangeAnimation(10, 16, 0, 10);
+
+		animTime = 1.f;
 	}
 
 	// Sets the caveman to turn towards the click
@@ -53,6 +56,12 @@ void Caveman::Hit(const Vec2& hitPoint)
 		}
 	}
 }
+void Caveman::Die()
+{
+	this->GetComponent<AnimatedSprite>()->ChangeAnimation(10, 16, 0, 10);
+	isDead = true;
+}
+// Used for both input types!
 void Caveman::ChangeDirectionMouse(pmath::Vec2 arrowDirection, bool strongpull)
 {
 	// Calculates the vector between touch position and caveman's position.
@@ -66,7 +75,7 @@ void Caveman::ChangeDirectionMouse(pmath::Vec2 arrowDirection, bool strongpull)
 	cavemanColl->SetVelocity(arrowDirection * speed);
 }
 
-// works if touch getPosition methods return screen (camera) coordinates
+// not used anywhere.
 void Caveman::ChangeDirectionTouch(pmath::Vec2 startPosition, pmath::Vec2 endPosition)
 {
 	pmath::Vec2 temp = cavemanColl->GetPosition() - endPosition;
@@ -78,7 +87,8 @@ void Caveman::ChangeDirectionTouch(pmath::Vec2 startPosition, pmath::Vec2 endPos
 void Caveman::update(float dt)
 {
 	if (animTime > 0) animTime -= dt;
-	else this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 1);
+	else if (!isDead) this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 1);
+	else {}
 
 	// Turns the caveman gradually towards the hit position.
 

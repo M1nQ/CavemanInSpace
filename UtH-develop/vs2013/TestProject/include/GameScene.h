@@ -73,6 +73,8 @@ namespace uth
 		Caveman* p_caveman;
 		Club* p_club;
 		Arrow* p_arrow;
+		float deathTimer;
+		bool isDying;
 		multimap<string, GameObject*> objectList;
 		multimap<string, GameObject*>::reverse_iterator i_ObjectList;
 		GameObject* deleteAsteroid;

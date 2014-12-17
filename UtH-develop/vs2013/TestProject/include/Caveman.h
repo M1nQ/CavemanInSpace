@@ -19,6 +19,7 @@ public:
 	//Input methods
 	//Hit method calls reaction method in prefab class?
 	void Hit(const Vec2& hitPoint);
+	void Die();
 	// For testing input
 	void ChangeDirectionMouse(pmath::Vec2 arrowDirection, bool strongpull);
 	void ChangeDirectionTouch(pmath::Vec2 startPosition, pmath::Vec2 endPosition);
@@ -27,6 +28,7 @@ public:
 private:
 	bool rotate;
 	bool rotatePositive;
+	bool isDead;
 	int timeFromHit;
 	float animTime;
 	float speed;
