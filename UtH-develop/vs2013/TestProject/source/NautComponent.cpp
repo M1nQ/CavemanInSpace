@@ -5,7 +5,7 @@ void NautComponent::Update(float dt)
 	if (hp <= 0 && parent->GetComponent<Sprite>()->GetColor().a > 0)
 	{
 		// Substaracts from alpha: Alpha - precentage in seconds
-		parent->GetComponent<Sprite>()->SetColor(1, 1, 1, (parent->GetComponent<Sprite>()->GetColor().a) - 1 / (1 / dt));
+		parent->GetComponent<AnimatedSprite>()->SetColor(1, 1, 1, (parent->GetComponent<AnimatedSprite>()->GetColor().a) - 1 / (1 / dt));
 		parent->GetComponent<Rigidbody>()->SetKinematic(true);
 	}
 }

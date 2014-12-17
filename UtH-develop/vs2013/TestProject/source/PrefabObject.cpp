@@ -19,6 +19,10 @@ GameObject* PrefabObject::CreateGameObject(PhysicsWorld* world, Vec2 position, s
 		p_object->AddComponent(new NautComponent("NautComponent", 0.4f, 2));
 		p_object->AddComponent(new Sprite(uthRS.LoadTexture(spritePath)));
 	}
+	else
+	{
+		p_object->AddComponent(new Sprite(uthRS.LoadTexture(spritePath)));
+	}
 
 	p_object->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
 
