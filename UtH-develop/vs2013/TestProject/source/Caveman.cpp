@@ -15,6 +15,7 @@ void Caveman::Init(PhysicsWorld *world)
 	this->AddTag("Caveman");
 	this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 1);
 	rotate = false;
+	isDead = false;
 }
 
 
@@ -23,8 +24,6 @@ void Caveman::Hit(const Vec2& hitPoint)
 	if (animTime <= 0)
 	{
 		this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 10, 0, 10);
-		//this->GetComponent<AnimatedSprite>()->ChangeAnimation(10, 16, 0, 10);
-
 		animTime = 1.f;
 	}
 
