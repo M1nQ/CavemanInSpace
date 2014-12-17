@@ -25,18 +25,15 @@ namespace uth
 
 	private:
 
-		// TODO:
-		// Buttons
+		
 
-		// Top three scores are read from a safe file. May be moved to TitleScene.
+		// Top three scores are read from a safe file.
 		void ReadHighScores();
 		void SetScoreText();
 		void SetOverlayMode(GameObject* bgPic);
 		void CloseOverlayMode();
 		void Scores_SetActive(bool active);
 		void ButtonInit();
-
-		//Window wnd;
 
 		Button* startButton;
 		Button* creditsButton;
@@ -56,6 +53,7 @@ namespace uth
 		GameObject* background;
 		GameObject* credits;
 		GameObject* tutorial;
+		GameObject* hiscorebg;
 
 		GameObject* leaderboard[3];
 

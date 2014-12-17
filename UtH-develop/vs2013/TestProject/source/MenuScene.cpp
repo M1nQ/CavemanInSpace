@@ -2,7 +2,7 @@
 
 MenuScene::MenuScene() 
 {
-	textColor = pmath::Vec4(0.7f,0.7f,0.7f,1);
+	textColor = pmath::Vec4(0.1f,0.1f,0.1f,1);
 }
 MenuScene::~MenuScene() {}
 
@@ -32,6 +32,12 @@ bool MenuScene::Init()
 	credits->AddComponent(new Sprite("Placeholders/credits.png"));
 	credits->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
 	AddChild<GameObject>(credits);
+
+	// high score screen specs
+	hiscorebg = new GameObject("Hiscorebg");
+	hiscorebg->AddComponent(new Sprite("Placeholders/Hiscorebg.png"));
+	hiscorebg->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
+	AddChild<GameObject>(hiscorebg);
 
 	// tutorial screen
 	tutorial = new GameObject("Tutorial");
@@ -111,6 +117,7 @@ void MenuScene::CloseOverlayMode()
 	// disable overlay etc.
 	tutorial->SetActive(false);
 	credits->SetActive(false);
+	hiscorebg->SetActive(false);
 	closeButton->SetActive(false);
 	Scores_SetActive(false);
 
@@ -130,7 +137,7 @@ void MenuScene::SetScoreText()
 		leaderboard[i] = new GameObject();
 		leaderboard[i]->AddComponent(new Text("KOMIKAX_.ttf", 50.f, "Score"));
 		leaderboard[i]->GetComponent<Text>("Score")->AddText((text), textColor);
-		leaderboard[i]->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + pmath::Vec2(0, (70 * i)));
+		leaderboard[i]->transform.SetPosition((uthEngine.GetWindow().GetCamera().GetPosition()) + pmath::Vec2(30, (70 * i)-50));
 		AddChild<GameObject>(leaderboard[i]);
 		leaderboard[i]->SetActive(false);
 	}
@@ -162,7 +169,7 @@ void MenuScene::ButtonInit()
 	highScores = new Button(uthEngine.GetWindow(), scoreTex);
 	highScores->setCallBack([this]()
 	{
-		SetOverlayMode(credits);
+		SetOverlayMode(hiscorebg);
 		Scores_SetActive(true);
 	});
 	highScores->transform.SetPosition(-(offsetX * 3), scrsize.y / 2 - bsize.y);
