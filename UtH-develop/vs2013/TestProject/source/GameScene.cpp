@@ -194,7 +194,7 @@ void GameScene::AddObjects()
 	}
 	while (objectList.count("Cosmonaut") < cosmonautAmount)
 	{
-		objectList.insert(make_pair("Cosmonaut", prefabObject.CreateGameObject(p_world, GetRandomSpawnPosition(), "Placeholders/Cosmonaut.png", "Cosmonaut")));
+		objectList.insert(make_pair("Cosmonaut", prefabObject.CreateGameObject(p_world, GetRandomSpawnPosition(), "CosmonautAnim.png", "Cosmonaut")));
 	}
 	while (objectList.count("Asteroid") < asteroidAmount)
 	{
@@ -229,9 +229,9 @@ void GameScene::DeleteAsteroid(float dt)
 	{
 		deleteAsteroid->GetComponent<Rigidbody>("Rigidbody")->SetKinematic(true);
 
-		if (deleteAsteroid->GetComponent<AnimatedSprite>()->GetColor().a > 0)
+		if (deleteAsteroid->GetComponent<Sprite>()->GetColor().a > 0)
 		{
-			deleteAsteroid->GetComponent<AnimatedSprite>()->SetColor(1, 1, 1, (deleteAsteroid->GetComponent<Sprite>()->GetColor().a) - 2 / (1 / dt));
+			deleteAsteroid->GetComponent<Sprite>()->SetColor(1, 1, 1, (deleteAsteroid->GetComponent<Sprite>()->GetColor().a) - 2 / (1 / dt));
 			deleteAsteroid->GetComponent<Rigidbody>()->SetKinematic(true);
 		}
 		else

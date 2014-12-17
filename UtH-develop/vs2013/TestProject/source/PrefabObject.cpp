@@ -17,7 +17,9 @@ GameObject* PrefabObject::CreateGameObject(PhysicsWorld* world, Vec2 position, s
 	else if (nameTag == "Cosmonaut")
 	{
 		p_object->AddComponent(new NautComponent("NautComponent", 0.4f, 2));
-		p_object->AddComponent(new Sprite(uthRS.LoadTexture(spritePath)));
+		p_object->AddComponent(new AnimatedSprite(uthRS.LoadTexture(spritePath), 15, Vec2(103, 100), 5, 0));
+		p_object->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 5, 0, 5, true, false);
+		p_object->transform.ScaleToSize(Vec2(120, 116.5f));
 	}
 	else
 	{
