@@ -51,7 +51,7 @@ void Club::Hit(Vec2 cavemanPosition, Vec2 tapPosition)
 	Vec2 temp = tapPosition - cavemanPosition;
 	temp.normalize();
 	hitDirection = temp;
-	hitDelay = 0.5f;
+	hitDelay = 1.f;
 	timeFromHit = 0.5f;
 }
 
