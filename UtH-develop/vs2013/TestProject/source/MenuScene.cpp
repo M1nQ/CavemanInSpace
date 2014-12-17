@@ -155,7 +155,6 @@ void MenuScene::ButtonInit()
 {
 	Vec2 bsize = creditTex->GetSize();
 	Vec2 scrsize = uthEngine.GetWindow().GetSize();
-
 	float offsetX = scrsize.x / 9;
 	// show credits -button
 	creditsButton = new Button(uthEngine.GetWindow(), creditTex);

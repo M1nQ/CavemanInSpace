@@ -64,6 +64,7 @@ void GameScene::Update(float dt)
 	{
 		if (!isDying)
 		{
+			WriteLog("YUP");
 			p_caveman->Die();
 			isDying = true;
 		}
