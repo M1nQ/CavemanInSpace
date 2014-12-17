@@ -15,6 +15,7 @@ void Caveman::Init(PhysicsWorld *world)
 	this->AddTag("Caveman");
 	this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 1);
 	rotate = false;
+	isDead = false;
 }
 
 
@@ -86,9 +87,14 @@ void Caveman::ChangeDirectionTouch(pmath::Vec2 startPosition, pmath::Vec2 endPos
 
 void Caveman::update(float dt)
 {
-	if (animTime > 0) animTime -= dt;
-	else if (!isDead) this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 1);
-	else {}
+	
+
+	if (!isDead)
+	{
+		if (animTime > 0) animTime -= dt;
+		else  this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 1);
+	}
+	
 
 	// Turns the caveman gradually towards the hit position.
 
