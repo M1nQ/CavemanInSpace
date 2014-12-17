@@ -540,10 +540,11 @@ void GameScene::ButtonsInit()
 	{
 		paused = true;
 		Vec2 campos = uthEngine.GetWindow().GetCamera().GetPosition();
+		float offsetY = uthEngine.GetWindow().GetCamera().GetSize().y / 4;
 		p_playButton->SetActive(true);
-		p_playButton->transform.SetPosition(campos.x, campos.y - p_playButton->transform.GetSize().y);
+		p_playButton->transform.SetPosition(campos.x, campos.y - offsetY);
 		p_replayButton->SetActive(true);
-		p_replayButton->transform.SetPosition(campos.x, campos.y + p_replayButton->transform.GetSize().y);
+		p_replayButton->transform.SetPosition(campos.x, campos.y + offsetY);
 		overlay->SetActive(true);
 		overlay->transform.SetPosition(campos);
 	});

@@ -155,14 +155,17 @@ void MenuScene::ButtonInit()
 {
 	Vec2 bsize = creditTex->GetSize();
 	Vec2 scrsize = uthEngine.GetWindow().GetSize();
-	float offsetX = scrsize.x / 9;
+	float scaleratio = (scrsize.x / 6) / bsize.x; 
+	float offsetX = scrsize.x / 8;
+	float offsetY = 2 * scrsize.y / 6; // from bottom of the screen
 	// show credits -button
 	creditsButton = new Button(uthEngine.GetWindow(), creditTex);
 	creditsButton->setCallBack([this]()
 	{
 		SetOverlayMode(credits);
 	});
-	creditsButton->transform.SetPosition(offsetX * 3, scrsize.y/2 - bsize.y);
+	creditsButton->transform.ScaleToSize(creditTex->GetSize().x * scaleratio, creditTex->GetSize().y * scaleratio);
+	creditsButton->transform.SetPosition(-(offsetX * 1.5f), offsetY);
 	AddChild<Button>(creditsButton);
 
 	// show highscores -button
@@ -172,7 +175,9 @@ void MenuScene::ButtonInit()
 		SetOverlayMode(hiscorebg);
 		Scores_SetActive(true);
 	});
-	highScores->transform.SetPosition(-(offsetX * 3), scrsize.y / 2 - bsize.y);
+	highScores->transform.ScaleToSize(scoreTex->GetSize().x * scaleratio, scoreTex->GetSize().y * scaleratio);
+
+	highScores->transform.SetPosition(-(offsetX * 3.f), offsetY);
 	AddChild<Button>(highScores);
 
 	// show tutorial -button
@@ -181,8 +186,9 @@ void MenuScene::ButtonInit()
 	{
 		SetOverlayMode(tutorial);
 	});
-	
-	tutorialButton->transform.SetPosition(-offsetX, scrsize.y / 2 - bsize.y);
+	tutorialButton->transform.ScaleToSize(tutorialTex->GetSize().x * scaleratio, tutorialTex->GetSize().y * scaleratio);
+
+	tutorialButton->transform.SetPosition(offsetX * 1.7f, offsetY);
 	AddChild<Button>(tutorialButton);
 
 	// start game -button
@@ -191,7 +197,9 @@ void MenuScene::ButtonInit()
 	{
 		uthSceneM.GoToScene(1);
 	});
-	startButton->transform.SetPosition(offsetX, scrsize.y / 2 - bsize.y);
+	startButton->transform.ScaleToSize(startTex->GetSize().x * scaleratio, startTex->GetSize().y * scaleratio);
+
+	startButton->transform.SetPosition(0, offsetY);
 	AddChild<Button>(startButton);
 
 	// close overlay -button
@@ -200,7 +208,9 @@ void MenuScene::ButtonInit()
 	{
 		CloseOverlayMode();
 	});
-	closeButton->transform.SetPosition((scrsize.x - bsize.x) / 2, -(scrsize.y - bsize.y) / 2);
+	Vec2 newSize = Vec2(closeTex->GetSize().x * scaleratio, closeTex->GetSize().y * scaleratio);
+	closeButton->transform.ScaleToSize(newSize);
+	closeButton->transform.SetPosition((scrsize.x - newSize.x) / 2, -(scrsize.y - newSize.y) / 2);
 	AddChild<Button>(closeButton);
 
 }
