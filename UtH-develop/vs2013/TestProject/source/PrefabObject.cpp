@@ -7,16 +7,23 @@ GameObject* PrefabObject::CreateGameObject(PhysicsWorld* world, Vec2 position, s
 
 	GameObject* p_object = new GameObject(nameTag);
 	p_object->transform.SetPosition(position);
-	p_object->AddComponent(new Sprite(uthRS.LoadTexture(spritePath)));
+
+	if (nameTag == "Astronaut")
+	{
+		p_object->AddComponent(new NautComponent());
+		p_object->AddComponent(new AnimatedSprite(uthRS.LoadTexture(spritePath), 22, Vec2(100, 100), 5.f, 12));
+		p_object->GetComponent<AnimatedSprite>()->ChangeAnimation(12, 10, 12, 5, true, false);
+	}
+	else if (nameTag == "Cosmonaut")
+	{
+		p_object->AddComponent(new NautComponent("NautComponent", 0.4f, 2));
+		p_object->AddComponent(new Sprite(uthRS.LoadTexture(spritePath)));
+	}
+
 	p_object->AddComponent(new Rigidbody(*world, COLLIDER_BALL));
 
 	if (nameTag.find("naut") != string::npos)
 		p_object->AddTag("Naut");
-
-	if (nameTag == "Astronaut")
-		p_object->AddComponent(new NautComponent());
-	else if (nameTag == "Cosmonaut")
-		p_object->AddComponent(new NautComponent("NautComponent", 0.4f, 2));
 
 	Direct(p_object);
 	return p_object;

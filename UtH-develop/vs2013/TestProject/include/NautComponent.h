@@ -22,6 +22,8 @@ public:
 	float oxygen;
 
 protected:
+	void DieAnimation(int startFrame, int frameAmount, float fps);
+
 	int hp;
 };
 

@@ -19,5 +19,18 @@ void NautComponent::Hit(Vec2 position)
 		if (newDirection.length() > 0) newDirection.normalize();
 		parent->GetComponent<Rigidbody>("Rigidbody")->SetVelocity(newDirection * 3);
 		--hp;
+
+		if (hp <= 0)
+		{
+			if (parent->HasTag("Astronaut"))
+				DieAnimation(0, 12, 7);
+			else if (parent->HasTag("Cosmonaut"))
+				DieAnimation(0, 0, 0);
+		}
 	}
+}
+
+void NautComponent::DieAnimation(int startFrame, int frameAmount, float fps)
+{
+	parent->GetComponent<AnimatedSprite>()->ChangeAnimation(0, frameAmount, startFrame, fps, false);
 }
