@@ -24,6 +24,11 @@ EndScreen::EndScreen()
 
 EndScreen::~EndScreen()
 {
+	delete p_finalScore;
+
+	delete p_first;
+	delete p_second;
+	delete p_third;
 }
 
 void EndScreen::Update(float dt)

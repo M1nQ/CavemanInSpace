@@ -14,6 +14,8 @@ Statistics::Statistics()
 }
 Statistics::~Statistics()
 {
+	delete p_oxygenBar;
+	delete p_scoreText;
 }
 void Statistics::Update(float dt)
 {

@@ -4,7 +4,10 @@ MenuScene::MenuScene()
 {
 	textColor = pmath::Vec4(0.1f,0.1f,0.1f,1);
 }
-MenuScene::~MenuScene() {}
+MenuScene::~MenuScene() 
+{
+	delete background;
+}
 
 bool MenuScene::Init()
 {

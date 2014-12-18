@@ -1,7 +1,12 @@
 #include <GameScene.h>
 
-GameScene::GameScene() {}
-GameScene::~GameScene() {}
+GameScene::GameScene()
+	: stats(),
+	prefabObject()
+{}
+GameScene::~GameScene() 
+{
+}
 
 bool GameScene::Init()
 {	
@@ -18,6 +23,24 @@ bool GameScene::Init()
 }
 bool GameScene::DeInit()
 {
+	for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
+	{
+		delete(i_ObjectList->second);
+	}
+
+	delete p_world;
+
+	for (int i = 0; i < 4; ++i)
+	{
+		delete p_background[i];
+	}
+
+	delete p_pauseButton;
+	delete overlay;
+	delete p_replayButton;
+	delete p_playButton;
+	delete p_partsys;
+	delete p_rockpartsys;
 
 	return true;
 }
@@ -612,8 +635,8 @@ void GameScene::VariableInit()
 	deathTimer = 1.6f;
 	isDying = false;
 
-	prefabObject = PrefabObject();
-	stats = Statistics();
+	//prefabObject = PrefabObject();
+	//stats = Statistics();
 	nauts = 0;
 	uthEngine.GetWindow().GetCamera().SetPosition(p_caveman->transform.GetPosition());
 

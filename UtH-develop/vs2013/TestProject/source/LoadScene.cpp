@@ -9,6 +9,7 @@ bool LoadScene::Init()
 }
 bool LoadScene::DeInit()
 {
+	delete loadbg;
 	return true;
 }
 

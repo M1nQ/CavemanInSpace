@@ -13,8 +13,6 @@ void Caveman::Init(PhysicsWorld *world)
 	cavemanColl->SetPhysicsGroup(-1);
 	this->AddTag("Caveman");
 	this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 1);
-	rotate = false;
-	isDead = false;
 }
 
 
@@ -117,6 +115,13 @@ void Caveman::update(float dt)
 }
 
 Caveman::Caveman()
+	: rotate(false),
+	rotatePositive(false),
+	isDead(false),
+	timeFromHit(0),
+	animTime(0),
+	targetRotation(0),
+	hitDirection(0,0)
 {
 }
 Caveman::~Caveman()

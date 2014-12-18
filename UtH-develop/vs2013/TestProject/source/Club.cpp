@@ -1,6 +1,9 @@
 #include <Club.h>
 
 Club::Club(Vec2 clubSize)
+	: hitDelay(0),
+	timeFromHit(0),
+	hitDirection()
 {
 	size = Vec2(clubSize.x, 1);
 	reach = 1.f * clubSize.x;

@@ -1,6 +1,8 @@
 #include <GameOverScene.h>
 
-GameOverScene::GameOverScene() {}
+GameOverScene::GameOverScene()
+	: end()
+{}
 GameOverScene::~GameOverScene() {}
 
 bool GameOverScene::Init()
@@ -20,7 +22,6 @@ bool GameOverScene::Init()
 	FindOldScores();
 	GetFinalScore();
 
-	end = EndScreen();
 	end.SetFinalScore(allscores[3]);
 	int newScore = allscores[3]; // because SaveHighScores will change list order
 	

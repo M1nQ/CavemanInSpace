@@ -79,8 +79,6 @@ namespace uth
 		multimap<string, GameObject*>::reverse_iterator i_ObjectList;
 		GameObject* deleteAsteroid;
 
-		GameObject* p_indicator;
-
 		PrefabObject prefabObject;
 		short asteroidAmount;
 		short astronautAmount;
