@@ -16,6 +16,7 @@ public:
 	void update(float dt, Vec2 cavemanPos);
 	void Hit(Vec2 cavemanPosition, Vec2 tapPosition);
 	void HasHit();
+	bool isHitting();
 
 private:
 	Vec2 size;

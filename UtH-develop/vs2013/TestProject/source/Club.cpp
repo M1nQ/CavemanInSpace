@@ -57,3 +57,9 @@ void Club::HasHit()
 {
 	timeFromHit = 0;
 }
+bool Club::isHitting()
+{
+	if (hitDelay > 0)
+		return true;
+	return false;
+}

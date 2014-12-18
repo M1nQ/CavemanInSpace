@@ -329,7 +329,7 @@ void GameScene::Input()
 			p_arrow->DrawArrow(uthInput.Common.Position());
 		else p_arrow->update(p_caveman->transform.GetPosition());
 	}
-	else if (uthInput.Touch[0].Motion() == TouchMotion::TAP)
+	else if (uthInput.Touch[0].Motion() == TouchMotion::TAP && p_club->isHitting() == false)
 	{
 		p_clubAttack->PlayEffect();
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
@@ -365,7 +365,7 @@ void GameScene::Input()
 		}
 		else p_arrow->DisableArrow();
 	}
-	if (uthInput.Mouse.IsButtonPressed(Mouse::MButton::RIGHT) == true)
+	if (uthInput.Mouse.IsButtonPressed(Mouse::MButton::RIGHT) == true && p_club->isHitting() == false)
 	{  
 		p_clubAttack->PlayEffect();
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
