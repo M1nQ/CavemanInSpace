@@ -6,7 +6,7 @@ GameOverScene::~GameOverScene() {}
 bool GameOverScene::Init()
 {
 	background = new GameObject();
-	background->AddComponent(new Sprite("Placeholders/endBg.png"));
+	background->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/endBg.png")));
 	background->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
 	background->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition());
 	

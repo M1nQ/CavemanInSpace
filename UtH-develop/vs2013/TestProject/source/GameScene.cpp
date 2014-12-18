@@ -306,7 +306,9 @@ void GameScene::Input()
 
 	// Handles touch input.
 
-	if (uthInput.Touch[0].Motion() == TouchMotion::RELEASE && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition()) > 30)
+	if (uthInput.Touch[0].Motion() == TouchMotion::RELEASE && 
+									   p_arrow->IsActive() && 
+											Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition()) > 30)
 	{
 		bool bigpull = p_arrow->IsStrong();
 		p_caveman->ChangeDirectionMouse(p_arrow->GetNormDirection(), bigpull);
@@ -344,7 +346,7 @@ void GameScene::Input()
 	{
 		p_arrow->update(p_caveman->transform.GetPosition());
 	}
-	if (uthInput.Mouse.IsButtonReleased(Mouse::MButton::LEFT) == true)
+	if (uthInput.Mouse.IsButtonReleased(Mouse::MButton::LEFT) == true && p_arrow->IsActive())
 	{
 		if (p_pauseButton->IsClicked() == false)
 		{
