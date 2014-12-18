@@ -103,25 +103,15 @@ void Caveman::update(float dt)
 		{
 			rotate = false;
 
-			if (rotatePositive) GetComponent<Rigidbody>("Rigidbody")->SetAngularVelocity(-0.2f);
-			else GetComponent<Rigidbody>("Rigidbody")->SetAngularVelocity(0.2f);
+			//if (rotatePositive) GetComponent<Rigidbody>("Rigidbody")->SetAngularVelocity(-0.2f);
+			//else GetComponent<Rigidbody>("Rigidbody")->SetAngularVelocity(0.2f);
 		}
 		else
 		{
-			if (abs(targetRotation - transform.GetRotation()) < 180)
-			{
-				if (rotatePositive)
-					GetComponent<Rigidbody>("Rigidbody")->SetAngle(transform.GetRotation() + (abs(targetRotation - transform.GetRotation()) * 3 * dt));
-				else
-					GetComponent<Rigidbody>("Rigidbody")->SetAngle(transform.GetRotation() + (abs(targetRotation - transform.GetRotation()) * -3 * dt));
-			}
+			if (rotatePositive)
+				GetComponent<Rigidbody>()->Rotate(150 * dt);
 			else
-			{
-				if (rotatePositive)
-					GetComponent<Rigidbody>("Rigidbody")->SetAngle(transform.GetRotation() + (360 - abs(targetRotation - transform.GetRotation())) * 3 * dt);
-				else
-					GetComponent<Rigidbody>("Rigidbody")->SetAngle(transform.GetRotation() + (360 - abs(targetRotation - transform.GetRotation())) * -3 * dt);
-			}
+				GetComponent<Rigidbody>()->Rotate(-150 * dt);
 		}
 	}
 }
@@ -133,17 +123,31 @@ Caveman::~Caveman()
 {
 }
 
-//if (abs(targetRotation - transform.GetRotation()) < 180)
+// The jolly ol' rrrotation
+//
+//if (rotate)
 //{
-//	if (rotatePositive)
-//		GetComponent<Rigidbody>("Rigidbody")->Rotate(abs(targetRotation - transform.GetRotation()) * 3 * dt);
+//	if (abs(targetRotation - transform.GetRotation()) < 4)
+//	{
+//		rotate = false;
+//
+//		if (rotatePositive) GetComponent<Rigidbody>("Rigidbody")->SetAngularVelocity(-0.2f);
+//		else GetComponent<Rigidbody>("Rigidbody")->SetAngularVelocity(0.2f);
+//	}
 //	else
-//		GetComponent<Rigidbody>("Rigidbody")->Rotate(abs(targetRotation - transform.GetRotation()) * -3 * dt);
-//}
-//else
-//{
-//	if (rotatePositive)
-//		GetComponent<Rigidbody>("Rigidbody")->Rotate((360 - abs(targetRotation - transform.GetRotation())) * 3 * dt);
-//	else
-//		GetComponent<Rigidbody>("Rigidbody")->Rotate((360 - abs(targetRotation - transform.GetRotation())) * -3 * dt);
-//}
+//	{
+//		if (abs(targetRotation - transform.GetRotation()) < 180)
+//		{
+//			if (rotatePositive)
+//				GetComponent<Rigidbody>("Rigidbody")->SetAngle(transform.GetRotation() + (abs(targetRotation - transform.GetRotation()) * 3 * dt));
+//			else
+//				GetComponent<Rigidbody>("Rigidbody")->SetAngle(transform.GetRotation() + (abs(targetRotation - transform.GetRotation()) * -3 * dt));
+//		}
+//		else
+//		{
+//			if (rotatePositive)
+//				GetComponent<Rigidbody>("Rigidbody")->SetAngle(transform.GetRotation() + (360 - abs(targetRotation - transform.GetRotation())) * 3 * dt);
+//			else
+//				GetComponent<Rigidbody>("Rigidbody")->SetAngle(transform.GetRotation() + (360 - abs(targetRotation - transform.GetRotation())) * -3 * dt);
+//		}
+//	}
