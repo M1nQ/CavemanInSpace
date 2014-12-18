@@ -111,16 +111,16 @@ void Caveman::update(float dt)
 			if (abs(targetRotation - transform.GetRotation()) < 180)
 			{
 				if (rotatePositive)
-					GetComponent<Rigidbody>("Rigidbody")->Rotate(abs(targetRotation - transform.GetRotation()) * 3 * dt);
+					GetComponent<Rigidbody>("Rigidbody")->SetAngle(transform.GetRotation() + (abs(targetRotation - transform.GetRotation()) * 3 * dt));
 				else
-					GetComponent<Rigidbody>("Rigidbody")->Rotate(abs(targetRotation - transform.GetRotation()) * -3 * dt);
+					GetComponent<Rigidbody>("Rigidbody")->SetAngle(transform.GetRotation() + (abs(targetRotation - transform.GetRotation()) * -3 * dt));
 			}
 			else
 			{
 				if (rotatePositive)
-					GetComponent<Rigidbody>("Rigidbody")->Rotate((360 - abs(targetRotation - transform.GetRotation())) * 3 * dt);
+					GetComponent<Rigidbody>("Rigidbody")->SetAngle(transform.GetRotation() + (360 - abs(targetRotation - transform.GetRotation())) * 3 * dt);
 				else
-					GetComponent<Rigidbody>("Rigidbody")->Rotate((360 - abs(targetRotation - transform.GetRotation())) * -3 * dt);
+					GetComponent<Rigidbody>("Rigidbody")->SetAngle(transform.GetRotation() + (360 - abs(targetRotation - transform.GetRotation())) * -3 * dt);
 			}
 		}
 	}
@@ -132,3 +132,18 @@ Caveman::Caveman()
 Caveman::~Caveman()
 {
 }
+
+//if (abs(targetRotation - transform.GetRotation()) < 180)
+//{
+//	if (rotatePositive)
+//		GetComponent<Rigidbody>("Rigidbody")->Rotate(abs(targetRotation - transform.GetRotation()) * 3 * dt);
+//	else
+//		GetComponent<Rigidbody>("Rigidbody")->Rotate(abs(targetRotation - transform.GetRotation()) * -3 * dt);
+//}
+//else
+//{
+//	if (rotatePositive)
+//		GetComponent<Rigidbody>("Rigidbody")->Rotate((360 - abs(targetRotation - transform.GetRotation())) * 3 * dt);
+//	else
+//		GetComponent<Rigidbody>("Rigidbody")->Rotate((360 - abs(targetRotation - transform.GetRotation())) * -3 * dt);
+//}
