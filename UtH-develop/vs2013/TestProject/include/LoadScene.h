@@ -23,6 +23,7 @@ namespace uth
 		bool LoadEverything();
 
 		GameObject* loadbg;
+		Texture* textures[20];
 	};
 }
 

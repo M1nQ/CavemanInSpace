@@ -24,24 +24,24 @@ bool MenuScene::Init()
 	music->Play();
 
 	background = new GameObject("Background");
-	background->AddComponent(new Sprite("Placeholders/Title_screen.png"));
+	background->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/Title_screen.png")));
 	background->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
 	
 	// credit screen specs
 	credits = new GameObject("Credits");
-	credits->AddComponent(new Sprite("Placeholders/credits.png"));
+	credits->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/credits.png")));
 	credits->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
 	AddChild<GameObject>(credits);
 
 	// high score screen specs
 	hiscorebg = new GameObject("Hiscorebg");
-	hiscorebg->AddComponent(new Sprite("Placeholders/Hiscorebg.png"));
+	hiscorebg->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/Hiscorebg.png")));
 	hiscorebg->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
 	AddChild<GameObject>(hiscorebg);
 
 	// tutorial screen
 	tutorial = new GameObject("Tutorial");
-	tutorial->AddComponent(new Sprite("Placeholders/Tutorial_screen2.png"));
+	tutorial->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/Tutorial_screen2.png")));
 	// set size to fit screen height
 	float scaleratio = uthEngine.GetWindow().GetCamera().GetSize().y / tutorial->transform.GetSize().y;
 	Vec2 size = Vec2(tutorial->transform.GetSize().x * scaleratio, tutorial->transform.GetSize().y * scaleratio);

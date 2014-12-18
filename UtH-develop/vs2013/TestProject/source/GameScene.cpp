@@ -103,7 +103,7 @@ void GameScene::Draw(RenderTarget& target, RenderAttributes attributes)
 	overlay->Draw(target, attributes);
 	p_playButton->Draw(target, attributes);
 	p_replayButton->Draw(target, attributes);
-	//p_indicator->Draw(target, attributes); // for testing only!
+
 }
 
 // Private //
@@ -486,7 +486,7 @@ void GameScene::BackgroundInit()
 	for (int i = 0; i < 4; ++i)
 	{
 		p_background[i] = new GameObject("Background");
-		p_background[i]->AddComponent(new Sprite("Big_Background.png"));
+		p_background[i]->AddComponent(new Sprite(uthRS.LoadTexture("Big_Background.png")));
 	}
 	p_background[1]->transform.SetPosition(Vec2(p_background[1]->GetComponent<Sprite>()->GetSize().x, 0));
 	p_background[2]->transform.SetPosition(Vec2(0, p_background[1]->GetComponent<Sprite>()->GetSize().y));
@@ -496,7 +496,7 @@ void GameScene::PauseInit()
 {
 	// Game paused overlay
 	overlay = new GameObject();
-	overlay->AddComponent(new Sprite("Overlay.png"));
+	overlay->AddComponent(new Sprite(uthRS.LoadTexture("Overlay.png")));
 	overlay->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
 	overlay->SetActive(false);
 }
@@ -591,10 +591,7 @@ void GameScene::VariableInit()
 {
 	paused = false;
 	screenDiameter = sqrt(pow(uthEngine.GetWindowResolution().x, 2) + pow(uthEngine.GetWindowResolution().y, 2));
-	corners[0] = Vec2(0, 0);
-	corners[1] = Vec2(uthEngine.GetWindowResolution().x, 0);
-	corners[2] = Vec2(uthEngine.GetWindowResolution().x, uthEngine.GetWindowResolution().y);
-	corners[4] = Vec2(0, uthEngine.GetWindowResolution().y);
+
 
 	Randomizer::SetSeed(time(NULL));
 	p_world = new PhysicsWorld(0, 0);
@@ -612,9 +609,6 @@ void GameScene::VariableInit()
 	AddChild<Arrow>(p_arrow);
 	deathTimer = 1.6f;
 	isDying = false;
-
-	p_indicator = new GameObject();
-	p_indicator->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/oxypart.png")));
 
 	prefabObject = PrefabObject();
 	stats = Statistics();

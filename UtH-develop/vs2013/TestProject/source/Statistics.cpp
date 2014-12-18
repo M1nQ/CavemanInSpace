@@ -5,7 +5,7 @@ Statistics::Statistics()
 	ResetScore();
 
 	p_oxygenBar = new GameObject();
-	p_oxygenBar->AddComponent(new Sprite("Placeholders/oxygenbar_placeholder.png"));
+	p_oxygenBar->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/oxygenbar_placeholder.png")));
 
 	p_scoreText = new GameObject();
 	p_scoreText->AddComponent(new Text("KOMIKAX_.ttf", 50.f, "Score"));

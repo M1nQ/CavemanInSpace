@@ -10,8 +10,6 @@ Club::~Club()
 
 void Club::Init(PhysicsWorld *world)
 {
-	//this->AddComponent(new Sprite("Placeholders/clubHolder.png"));
-	//this->transform.SetPosition(cavemanColl->GetPosition());
 	this->transform.ScaleToSize(size);
 	this->AddComponent(new Rigidbody(*world, COLLIDER_BALL, size));
 	this->AddTag("Club");
