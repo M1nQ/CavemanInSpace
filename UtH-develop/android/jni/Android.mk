@@ -43,7 +43,8 @@ LOCAL_SRC_FILES := main.cpp \
 ../../vs2013/TestProject/source/Arrow.cpp \
 ../../vs2013/TestProject/source/Club.cpp \
 ../../vs2013/TestProject/source/EndScreen.cpp \
-../../vs2013/TestProject/source/NautComponent.cpp
+../../vs2013/TestProject/source/NautComponent.cpp \
+../../vs2013/TestProject/source/LoadScene.cpp
 
 LOCAL_LDLIBS    := -llog -landroid -lEGL -lGLESv2 -lOpenSLES
 LOCAL_STATIC_LIBRARIES := android_native_app_glue engine
