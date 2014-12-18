@@ -2,20 +2,23 @@
 #include <UtH/Renderer/RenderTarget.hpp>
 #include <cassert>
 #include <UtH/Platform/Debug.hpp>
+#include <UtH/Engine/SceneManager.hpp>
 
 namespace uth
 {
 	Object::Object()
 		: transform(this),
 		m_parent(nullptr),
-		m_active(true)
+		m_active(true),
+		m_isRemoved(false)
 	{
 
 	}
 	Object::Object(Object* p)
-		: transform(this), 
+		: transform(this),
 		m_parent(p),
-		m_active(true)
+		m_active(true),
+		m_isRemoved(false)
 	{
 
 	}
@@ -50,9 +53,14 @@ namespace uth
 			return;
 
 		const std::vector<std::shared_ptr<Object>> objBackup(m_children);
-		for (int i = 0; i < objBackup.size(); ++i)
-			if (objBackup[i]->m_active)
-				objBackup[i]->Update(dt);
+
+		for (auto o : objBackup)
+		{
+			if (o->IsActive())
+				o->Update(dt);
+			if (o->IsRemoved())
+				RemoveChild(o);
+		}
 	}
 	void Object::Draw(RenderTarget& target, RenderAttributes attributes)
 	{
@@ -66,9 +74,31 @@ namespace uth
 		}
 	}
 
+	void Object::AddChildren(const std::vector<std::shared_ptr<Object>>& objects, const bool keepGlobalPos)
+	{
+		for (auto& o : objects)
+			AddChild(o, keepGlobalPos);
+	}
+	void Object::AddChildren(const std::vector<Object*>& objects, const bool keepGlobalPos)
+	{
+		for (auto& o : objects)
+			AddChild(o, keepGlobalPos);
+	}
+
 	bool Object::HasChild(const std::shared_ptr<Object>& object) const
 	{
 		return std::find(m_children.begin(), m_children.end(), object) != m_children.end();
+	}
+	bool Object::HasChild(const Object* object) const
+	{
+		for (auto it = m_children.begin(); it != m_children.end(); ++it)
+		{
+			if (object == it->get())
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	void Object::RemoveChild(const std::shared_ptr<Object>& object)
@@ -79,15 +109,17 @@ namespace uth
 	}
 	void Object::RemoveChild(Object* object)
 	{
-		for (auto it = m_children.begin(); it != m_children.end(); it++)
+		for (auto it = m_children.begin(); it != m_children.end(); ++it)
 		{
-			if ((*it).get() == object)
+			if (object == it->get())
 			{
-				RemoveChild(*it);
+				(*it)->setParent(nullptr);
+				m_children.erase(it);
 				return;
 			}
 		}
 	}
+
 	void Object::RemoveChildren()
 	{
 		assert(
@@ -111,14 +143,32 @@ namespace uth
 			RemoveChild(o);
 		}
 	}
+	void Object::RemoveChildren(const std::vector<Object*>& objects)
+	{
+		for (auto& o : objects)
+		{
+			RemoveChild(o);
+		}
+	}
+	void Object::Remove()
+	{
+		m_isRemoved = true;
+	}
+	bool Object::IsRemoved() const
+	{
+		return m_isRemoved;
+	}
 
-	std::vector<std::shared_ptr<Object>> Object::ExtractChildren(const std::string& tag)
+	std::vector<std::shared_ptr<Object>> Object::ExtractChildren(const std::string& tag, const bool keepGlobalPos)
 	{
 		std::vector<std::shared_ptr<Object>> retVal;
 		for (auto it = m_children.begin(); it != m_children.end(); it++)
 		{
-			if ((*it)->HasTag(tag))
+			const auto& c = (*it);
+			if (c->HasTag(tag))
 			{
+				if (keepGlobalPos)
+					c->transform.SetTransform(c->transform.GetTransform());
 				retVal.push_back(*it);
 				m_children.erase(it);
 			}
@@ -157,11 +207,6 @@ namespace uth
 		findAll(retVal);
 		return retVal;
 	}
-
-	//bool Object::InWorld() const
-	//{
-	//	return m_inWorld;
-	//}
 
 	void Object::AddTags(const std::vector<std::string>& tags)
 	{
@@ -238,4 +283,83 @@ namespace uth
 	{
 		m_parent = p;
 	}
+
+    namespace rj = rapidjson;
+
+    rj::Value Object::save(rapidjson::MemoryPoolAllocator<>& alloc) const
+    {
+        rj::Value val;
+        val.SetObject();
+
+        // Active flag
+        val.AddMember(rj::StringRef("identifier"), rj::StringRef(typeid(*this).name()), alloc);
+        val.AddMember(rj::StringRef("active"), m_active, alloc);
+        
+        val.AddMember(rj::StringRef("transform"), transform.save(alloc), alloc);
+
+        // Tags
+        if (!m_tagList.empty())
+        {
+            rj::Value tagArray;
+            tagArray.SetArray();
+
+            for (auto& i : m_tagList)
+                tagArray.PushBack(rj::Value(i.c_str(), alloc), alloc);
+
+            val.AddMember(rj::StringRef("tags"), tagArray, alloc);
+        }
+        
+        // Children
+        if (!m_children.empty())
+        {
+            val.AddMember(rj::StringRef("children"), rj::kArrayType, alloc);
+            rj::Value& childArray = val["children"];
+
+            for (auto& i : m_children)
+                childArray.PushBack(i->save(alloc), alloc);
+        }
+
+        return val;
+    }
+
+    bool Object::load(const rj::Value& doc)
+    {
+        m_children.clear();
+        m_tagList.clear();
+
+        m_active = doc["active"].GetBool();
+
+        // We'll just assume the transform is valid.
+        transform.load(doc["transform"]);
+
+        // Tags
+        if (doc.HasMember("tags") && doc["tags"].IsArray())
+        {
+            const rj::Value& tagArray = doc["tags"];
+
+            for (auto itr = tagArray.Begin(); itr != tagArray.End(); ++itr)
+                m_tagList.emplace(itr->GetString());
+        }
+
+        // Children
+        if (doc.HasMember("children") && doc["children"].IsArray())
+        {
+            const rj::Value& childArray = doc["children"];
+
+            for (auto itr = childArray.Begin(); itr != childArray.End(); ++itr)
+            {
+                std::unique_ptr<Object> ptr(static_cast<Object*>(uthSceneM.GetSaveable(*itr)));
+                
+                if (!ptr)
+                    return false;
+
+                if (ptr->load(*itr))
+                    AddChild(ptr.release());
+                else
+                    return false;
+            }
+        }
+
+        return true;
+    }
 }

@@ -2,18 +2,25 @@
 #define SCENEMANAGER_H_UTH
 
 #include <UtH/Engine/Scene.hpp>
-#include <UtH/Platform/Singleton.hpp>
+#include <UtH/Engine/Saveable.hpp>
+#include <functional>
+#include <unordered_map>
+#include <type_traits>
+#include <rapidjson/document.h>
 
-#define uthSceneM uth::SceneManager::getInstance()
+#define uthSceneM uth::SceneManager::GetInstance()
 
 namespace uth
 {
-	class SceneManager : public Singleton<SceneManager>
+	class SceneManager
 	{
-		friend class Singleton<SceneManager>;
+		friend class ResourceManager;
 		SceneManager();
 		~SceneManager();
 	public:
+
+        static SceneManager& GetInstance();
+
 		void GoToScene(int SceneNumber, bool disposeCurrent = true);
 
 		void Update(float dt);
@@ -23,12 +30,45 @@ namespace uth
 
 		void registerNewSceneFunc(Scene* (*newSceneFunc)(int SceneID),int SceneCount);
 
-	private:
-		void endScene();
+        bool SaveCurrentScene(const std::string& saveName);
+
+        bool LoadCurrentScene(const std::string& saveName);
+        
+		void AndroidReturn();
+		void AndroidLeave();
+
+
+        typedef std::function<Saveable*(const rapidjson::Value& val)> ObjectCFunc;
+
+        template<typename T>
+        void RegisterSaveable()
+        {
+            static_assert(std::is_base_of<Saveable, T>::value, "Tried to register an object that doesn't derive from uth::Saveable");
+            static_assert(!std::is_reference<T>::value && !std::is_pointer<T>::value, "Tried to register an object as pointer or reference. Must be full definition.");
+
+            m_saveableFuncs.emplace(typeid(T).name(), [](const rapidjson::Value&) -> Saveable*
+            {
+                return new T();
+            });
+        }
+
+        template<typename T>
+        void RegisterSaveable(ObjectCFunc func)
+        {
+            static_assert(std::is_base_of<Saveable, T>::value, "Tried to register an object that doesn't derive from uth::Saveable");
+            static_assert(!std::is_reference<T>::value && !std::is_pointer<T>::value, "Tried to register an object as pointer or reference. Must be full definition.");
+
+            m_saveableFuncs.emplace(typeid(T).name(), func);
+        }
+
+        Saveable* GetSaveable(const rapidjson::Value& val);
+
+        void endScene();
+
+    private:
 		void startScene();
 		void m_switchScene();
 		Scene* (*makeActiveScene)(int SceneID);
-
 		Scene* curScene;
 
 		int m_sceneID;
@@ -36,6 +76,7 @@ namespace uth
 		int sceneCount;
 		bool m_pendingSceneSwitch;
 
+        std::unordered_map<std::string, ObjectCFunc> m_saveableFuncs;
 
 	};
 

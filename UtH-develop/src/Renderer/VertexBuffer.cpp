@@ -4,20 +4,43 @@
 
 using namespace uth;
 
+std::unordered_set<VertexBuffer*> VertexBuffer::VERTEXBUFFERS;
+
 VertexBuffer::VertexBuffer()
     : m_arrayBufferNeedsUpdate(false),
       m_elementBufferNeedsUpdate(false)
 {
+	VERTEXBUFFERS.emplace(this);
 	init();
 }
 
 VertexBuffer::~VertexBuffer()
 {
+	VERTEXBUFFERS.erase(this);
+
 	clear();
 	uth::Graphics::DeleteBuffers(1, &m_arrayBuffer);
 	uth::Graphics::DeleteBuffers(1, &m_elementBuffer);
 }
 
+template<typename T>
+bool Replace(std::vector<T>& target, const unsigned int offset, const std::vector<T>& source)
+{
+	const int extraItems = source.size() + offset - target.size();
+	if (extraItems > 0)
+	{
+		target.insert(target.end(), source.end() - extraItems, source.end());
+		memcpy(target.data(), source.data(),
+			(source.size() - extraItems) * sizeof(T));
+		return false;
+	}
+	else
+	{
+		memcpy(target.data(), source.data(),
+			(source.size()) * sizeof(T));
+		return true;
+	}
+}
 
 // Public
 
@@ -61,18 +84,32 @@ void VertexBuffer::addIndices(const std::vector<unsigned short>& indices)
     m_elementBufferNeedsUpdate = true;
 }
 
-void VertexBuffer::changeBufferData(const unsigned int offset, const std::vector<Vertex>& vertices) const
+void VertexBuffer::changeBufferData(const unsigned int vertexOffset, const std::vector<Vertex>& vertices)
 {
-    unsigned int size = vertices.size() * sizeof(Vertex);
-    uth::Graphics::BindBuffer(ARRAY_BUFFER, m_arrayBuffer);
-    Graphics::SetBufferSubData(ARRAY_BUFFER, offset, size, &vertices.front());
+	const unsigned int size = vertices.size() * sizeof(Vertex);
+
+	if (Replace(m_vertexData, vertexOffset, vertices))
+	{
+		uth::Graphics::BindBuffer(ARRAY_BUFFER, m_arrayBuffer);
+		Graphics::SetBufferSubData(ARRAY_BUFFER,
+			vertexOffset * sizeof(Vertex), size, &vertices.front());
+	}
+	else
+		setData();
 }
 
-void VertexBuffer::changeElementData(const unsigned int offset, const std::vector<unsigned int>& indices)
+void VertexBuffer::changeElementData(const unsigned int indexOffset, const std::vector<unsigned short>& indices)
 {
-    unsigned int size = indices.size() * sizeof(unsigned int);
-    uth::Graphics::BindBuffer(ELEMENT_ARRAY_BUFFER, m_elementBuffer);
-    Graphics::SetBufferSubData(ELEMENT_ARRAY_BUFFER, offset, size, &indices.front());
+	const unsigned int size = indices.size() * sizeof(unsigned int);
+
+	if (Replace(m_indices, indexOffset, indices))
+	{
+		uth::Graphics::BindBuffer(ELEMENT_ARRAY_BUFFER, m_elementBuffer);
+		Graphics::SetBufferSubData(ELEMENT_ARRAY_BUFFER,
+			indexOffset * sizeof(unsigned int), size, &indices.front());
+	}
+	else
+		setData();
 }
 
 const std::vector<Vertex>& VertexBuffer::getVertices() const
@@ -140,4 +177,20 @@ void VertexBuffer::setData() const
 		&m_indices.front(), drawMode);
         m_elementBufferNeedsUpdate = false;
     }
+}
+
+bool VertexBuffer::ClearOpenGLContext()
+{
+	uth::Graphics::DeleteBuffers(1, &m_arrayBuffer);
+	uth::Graphics::DeleteBuffers(1, &m_elementBuffer);
+	return true;
+}
+bool VertexBuffer::RecreateOpenGLContext()
+{
+	uth::Graphics::GenerateBuffers(1, &m_arrayBuffer);
+	uth::Graphics::GenerateBuffers(1, &m_elementBuffer);
+	m_arrayBufferNeedsUpdate = true;
+	m_elementBufferNeedsUpdate = true;
+	setData();
+	return true;
 }

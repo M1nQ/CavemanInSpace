@@ -7,13 +7,17 @@
 #include <pmath/Vector.hpp>
 #include <UtH/Renderer/Vertex.hpp>
 #include <UtH/Resources/Shader.hpp>
+#include <UtH/Platform/Configuration.hpp>
+#include <unordered_set>
 
 namespace uth
 {
 	class VertexBuffer
 	{
+		static std::unordered_set<VertexBuffer*> VERTEXBUFFERS;
 
-        friend class SpriteBatch;
+		friend class ResourceManager;
+		friend class SpriteBatch;
 
 	public:
 		VertexBuffer();
@@ -27,8 +31,8 @@ namespace uth
 		// Add vector of indexes at the end of current index vector, offsets indices with already added indices
 		void addIndices(const std::vector<unsigned short>& indices);
 
-        void changeBufferData(const unsigned int offset, const std::vector<Vertex>& vertices) const;
-        void changeElementData(const unsigned int offset, const std::vector<unsigned int>& indices);
+		void changeBufferData(const unsigned int vertexOffset, const std::vector<Vertex>& vertices);
+		void changeElementData(const unsigned int indexOffset, const std::vector<unsigned short>& indices);
 
         const std::vector<Vertex>& getVertices() const;
         const std::vector<unsigned short>& getIndices() const;
@@ -43,7 +47,11 @@ namespace uth
 		void init();
 		void setData() const;
 
-        std::vector<Vertex> m_vertexData;
+		bool ClearOpenGLContext();
+		bool RecreateOpenGLContext();
+
+		std::vector<Vertex> m_vertexData;
+		std::vector<unsigned short> m_indices;
 
         mutable bool m_arrayBufferNeedsUpdate,
                      m_elementBufferNeedsUpdate;
@@ -51,7 +59,6 @@ namespace uth
 		unsigned int m_arrayBuffer;
 		unsigned int m_elementBuffer;
 
-		std::vector<unsigned short> m_indices;
 	};
 }
 #endif

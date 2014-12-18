@@ -8,10 +8,11 @@
 
 #include <vector>
 #include <pmath/Vector3.hpp>
+#include <UtH/Resources/Resource.hpp>
 
 namespace uth
 {
-	class Sound
+	class Sound : public Resource
 	{
 		struct Deleter
 		{
@@ -22,9 +23,11 @@ namespace uth
 		};
 
 		friend class ResourceManager;
-	public:
+
 		Sound();
 		~Sound();
+
+	public:
 
 		// Loads and creates new sound
 		//static Sound* Load(std::string fileName);
@@ -35,7 +38,7 @@ namespace uth
 		// Plays from specific second
 		void Play(float offset);
 
-		// Intented for soundeffects.
+		// Indented for soundeffects.
 		// This function copies sound source and starts
 		// to play new source.
 		void PlayEffect();
@@ -45,6 +48,7 @@ namespace uth
 
 		// Pauses source. Use Play() to continue.
 		void Pause();
+		void Pause(bool pause);
 
 		// Toggles loop on or off
 		void Loop();
@@ -52,8 +56,13 @@ namespace uth
 		// Sets loop true or false
 		void Loop(bool looping);
 
-		// Adjust volume
+		// Adjust source volume
+		// Use SetListenerVolume if you want copied sounds
+		// to use same volume as old one.
 		void SetVolume(int volumePercent);
+
+		// Adjust listener volume
+		void SetListenerVolume(int volumePercent);
 
 		// Adjust pitch
 		void SetPitch(int pitchPercent);
@@ -71,24 +80,32 @@ namespace uth
 		// Check if source is playing.
 		bool IsPlaying();
 
+		// Stops all effects
+		void StopEffects();
+
 	private:
 		Sound(const Sound&);
 
-		bool Load(std::string fileName);
+		bool LoadFromFile(const std::string& filePath) override;
+		void Unload() override;
+		bool EnsureLoaded() override;
+
 		void Initialize(std::string fileName);
 		static void CreateSources(ALuint &source);
 		ALint Status();
-		void Copy();
-
-		void InsertToMap(std::string fileName);
-		void RemoveFromMap(std::string fileName);
+		void effectCopy();
 
 		ALuint source;
 		ALuint buffer;
 
 		bool loop;
+		bool enginePaused;
 		float duration;
 		std::vector<ALuint> tempSource;
+
+		Sound* copy;
+		Sound* Copy();
+		
 		float _posX, _posY, _posZ;
 
 	};

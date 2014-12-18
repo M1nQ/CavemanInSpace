@@ -40,8 +40,10 @@ $(SRC_PATH)Resources/ResourceManager.cpp \
 $(SRC_PATH)Resources/Shader.cpp \
 $(SRC_PATH)Resources/Texture.cpp \
 $(SRC_PATH)Resources/Font.cpp \
+$(SRC_PATH)Resources/Image.cpp \
 $(SRC_PATH)Resources/Sound.cpp \
-$(SRC_PATH)Resources/Image.cpp
+$(SRC_PATH)Resources/Resource.cpp
+
 
 #Platform
 LOCAL_SRC_FILES += \
@@ -61,7 +63,8 @@ $(SRC_PATH)Platform/Android/InputController.cpp \
 $(SRC_PATH)Platform/Android/InputCommon.cpp \
 $(SRC_PATH)Platform/Android/InputMouse.cpp \
 $(SRC_PATH)Platform/Android/InputKeyboard.cpp \
-$(SRC_PATH)Platform/Android/JavaFunctions.cpp
+$(SRC_PATH)Platform/Android/JavaFunctions.cpp \
+$(SRC_PATH)Platform/Android/GooglePlayGameServices.cpp 
 
 #Engine
 LOCAL_SRC_FILES += \
