@@ -103,7 +103,6 @@
   <ItemGroup>
     <ClCompile Include="source\Arrow.cpp" />
     <ClCompile Include="source\Club.cpp" />
-    <ClCompile Include="source\CosmonautComponent.cpp" />
     <ClCompile Include="Source\EndScreen.cpp" />
     <ClCompile Include="source\Button.cpp" />
     <ClCompile Include="source\NautComponent.cpp" />
@@ -115,7 +114,6 @@
     <ClCompile Include="source\MenuScene.cpp" />
     <ClCompile Include="source\PrefabObject.cpp" />
     <ClCompile Include="source\Statistics.cpp" />
-    <ClCompile Include="source\TaikonautComponent.cpp" />
     <ClCompile Include="source\TestScene.cpp" />
     <ClCompile Include="source\TitleScene.cpp" />
   </ItemGroup>
@@ -123,7 +121,6 @@
     <ClInclude Include="include\CavemanGame.h" />
     <ClInclude Include="include\Arrow.h" />
     <ClInclude Include="include\Club.h" />
-    <ClInclude Include="include\CosmonautComponent.h" />
     <ClInclude Include="include\EndScreen.h" />
     <ClInclude Include="include\Button.h" />
     <ClInclude Include="include\Caveman.h" />
@@ -135,7 +132,6 @@
     <ClInclude Include="include\Scenes.hpp" />
     <ClInclude Include="include\Scores.h" />
     <ClInclude Include="include\Statistics.h" />
-    <ClInclude Include="include\TaikonautComponent.h" />
     <ClInclude Include="include\TestScene.hpp" />
     <ClInclude Include="include\TitleScene.h" />
     <ClInclude Include="include\OxygenAffector.h">

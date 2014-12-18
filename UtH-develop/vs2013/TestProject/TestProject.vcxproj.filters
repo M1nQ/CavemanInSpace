@@ -60,12 +60,6 @@
     <ClCompile Include="source\Arrow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\CosmonautComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\TaikonautComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Scenes.hpp">
@@ -111,12 +105,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\NautComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CosmonautComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\TaikonautComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Arrow.h">
