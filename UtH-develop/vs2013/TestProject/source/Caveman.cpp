@@ -3,8 +3,7 @@
 void Caveman::Init(PhysicsWorld *world)
 {
 	speed = 4;
-	this->AddComponent(new AnimatedSprite(uthRS.LoadTexture("caveman_animations.png"), 26, Vec2(716,794), 5,0/*,false,false*/));
-	this->transform.ScaleToSize(119, 132);
+	this->AddComponent(new AnimatedSprite(uthRS.LoadTexture("caveman_animations.png"), 26, Vec2(119, 132), 5, 0/*,false,false*/));
 	Vec2 originOffset = Vec2(-(this->transform.GetSize().x) / 6, (this->transform.GetSize().y) / 7);
 	this->transform.SetOrigin(originOffset);
 	this->transform.SetPosition(0, 0);
