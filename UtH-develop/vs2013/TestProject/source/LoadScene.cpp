@@ -3,7 +3,7 @@
 bool LoadScene::Init()
 {
 	loadbg = new GameObject("loader");
-	loadbg->AddComponent(new Sprite("Placeholders/title_screen.png"));
+	loadbg->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/title_screen.png")));
 	loadbg->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
 	return true;
 }
@@ -54,8 +54,8 @@ bool LoadScene::LoadEverything()
 	uthRS.LoadSound("sounds/gamemusic.ogg");
 	uthRS.LoadSound("sounds/astronaut_dying_groan.wav");
 	uthRS.LoadSound("sounds/astronaut_hit.wav");
-	uthRS.LoadSound("sounds/astronaut_panic_voice_1.wav");
-	uthRS.LoadSound("sounds/astronaut_panic_voice_2.wav");
+	//uthRS.LoadSound("sounds/astronaut_panic_voice_1.wav");
+	//uthRS.LoadSound("sounds/astronaut_panic_voice_2.wav");
 	uthRS.LoadSound("sounds/caveman_club_attack.wav");
 	uthRS.LoadSound("sounds/caveman_move.wav");
 	uthRS.LoadSound("sounds/hit_sound_metal.wav");

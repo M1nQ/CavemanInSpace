@@ -94,8 +94,8 @@ namespace uth
 		// Sounds
 		Sound* p_astroDie;
 		Sound* p_astroHit;
-		Sound* p_panic1;
-		Sound* p_panic2;
+		//Sound* p_panic1;
+		//Sound* p_panic2;
 		Sound* p_clubAttack;
 		Sound* p_cavemanMove;
 		Sound* p_hitMetal;

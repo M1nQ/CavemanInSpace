@@ -625,8 +625,8 @@ void GameScene::SoundInit()
 
 	p_astroDie = uthRS.LoadSound("sounds/astronaut_dying_groan.wav");
 	p_astroHit = uthRS.LoadSound("sounds/astronaut_hit.wav");
-	p_panic1 = uthRS.LoadSound("sounds/astronaut_panic_voice_1.wav");
-	p_panic2 = uthRS.LoadSound("sounds/astronaut_panic_voice_2.wav");
+	//p_panic1 = uthRS.LoadSound("sounds/astronaut_panic_voice_1.wav");
+	//p_panic2 = uthRS.LoadSound("sounds/astronaut_panic_voice_2.wav");
 	p_clubAttack = uthRS.LoadSound("sounds/caveman_club_attack.wav");
 	p_cavemanMove = uthRS.LoadSound("sounds/caveman_move.wav");
 	p_hitMetal = uthRS.LoadSound("sounds/hit_sound_metal.wav");
