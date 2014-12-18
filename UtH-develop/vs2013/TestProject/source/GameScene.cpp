@@ -5,6 +5,7 @@ GameScene::~GameScene() {}
 
 bool GameScene::Init()
 {	
+	paused = true;
 	VariableInit();
 	ParticleInit();
 	ContactLogicInit();
@@ -12,11 +13,12 @@ bool GameScene::Init()
 	PauseInit();
 	BackgroundInit();
 	SoundInit();
-
+	paused = false;
 	return true;
 }
 bool GameScene::DeInit()
 {
+
 	return true;
 }
 void GameScene::Update(float dt)
@@ -303,13 +305,8 @@ void GameScene::Input()
 	// TODO: check which input version should be used?
 
 	// Handles touch input.
-	if (uthInput.Touch[0].Motion() == TouchMotion::DRAG && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Common.Position()) > 10)
-	{
-		if (p_arrow->IsActive() == false)
-			p_arrow->DrawArrow(uthInput.Common.Position());
-		else p_arrow->update(p_caveman->transform.GetPosition());
-	}
-	if (uthInput.Touch[0].Motion() == TouchMotion::RELEASE && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition()) > 10)
+
+	if (uthInput.Touch[0].Motion() == TouchMotion::RELEASE && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition()) > 30)
 	{
 		bool bigpull = p_arrow->IsStrong();
 		p_caveman->ChangeDirectionMouse(p_arrow->GetNormDirection(), bigpull);
@@ -326,6 +323,12 @@ void GameScene::Input()
 		p_arrow->DisableArrow();
 		//p_caveman->ChangeDirectionTouch(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition());
 	}
+	else if (uthInput.Touch[0].Motion() == TouchMotion::DRAG && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Common.Position()) > 30)
+	{
+		if (p_arrow->IsActive() == false)
+			p_arrow->DrawArrow(uthInput.Common.Position());
+		else p_arrow->update(p_caveman->transform.GetPosition());
+	}
 	else if (uthInput.Touch[0].Motion() == TouchMotion::TAP)
 	{
 		p_clubAttack->PlayEffect();
@@ -335,40 +338,40 @@ void GameScene::Input()
 	}
 	
 	// Mouse input for testing.
-	//if (uthInput.Mouse.IsButtonDown(Mouse::MButton::LEFT) == true && p_arrow->IsActive() == false)
-	//	p_arrow->DrawArrow(uthInput.Common.Position());
-	//if (uthInput.Common.Event() == InputEvent::DRAG)
-	//{
-	//	p_arrow->update(p_caveman->transform.GetPosition());
-	//}
-	//if (uthInput.Mouse.IsButtonReleased(Mouse::MButton::LEFT) == true)
-	//{
-	//	if (p_pauseButton->IsClicked() == false)
-	//	{
-	//		bool bigpull = p_arrow->IsStrong();
-	//		p_caveman->ChangeDirectionMouse(p_arrow->GetNormDirection(), bigpull);
-	//		if (bigpull)
-	//		{
-	//			stats.addOxygen -= 0.1f;
-	//			p_cavemanMove->SetVolume(100); // OR SetPitch?
-	//		}
-	//		else
-	//		{
-	//			stats.addOxygen -= 0.05f;
-	//			p_cavemanMove->SetVolume(40);
-	//		}
-	//		p_arrow->DisableArrow();
-	//		p_cavemanMove->PlayEffect();
-	//	}
-	//	else p_arrow->DisableArrow();
-	//}
-	//if (uthInput.Mouse.IsButtonPressed(Mouse::MButton::RIGHT) == true)
-	//{  
-	//	p_clubAttack->PlayEffect();
-	//	Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
-	//	p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
-	//	p_caveman->Hit(hitPoint, isDying);
-	//}
+	if (uthInput.Mouse.IsButtonDown(Mouse::MButton::LEFT) == true && p_arrow->IsActive() == false)
+		p_arrow->DrawArrow(uthInput.Common.Position());
+	if (uthInput.Common.Event() == InputEvent::DRAG)
+	{
+		p_arrow->update(p_caveman->transform.GetPosition());
+	}
+	if (uthInput.Mouse.IsButtonReleased(Mouse::MButton::LEFT) == true)
+	{
+		if (p_pauseButton->IsClicked() == false)
+		{
+			bool bigpull = p_arrow->IsStrong();
+			p_caveman->ChangeDirectionMouse(p_arrow->GetNormDirection(), bigpull);
+			if (bigpull)
+			{
+				stats.addOxygen -= 0.1f;
+				p_cavemanMove->SetVolume(100); // OR SetPitch?
+			}
+			else
+			{
+				stats.addOxygen -= 0.05f;
+				p_cavemanMove->SetVolume(40);
+			}
+			p_arrow->DisableArrow();
+			p_cavemanMove->PlayEffect();
+		}
+		else p_arrow->DisableArrow();
+	}
+	if (uthInput.Mouse.IsButtonPressed(Mouse::MButton::RIGHT) == true)
+	{  
+		p_clubAttack->PlayEffect();
+		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
+		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
+		p_caveman->Hit(hitPoint, isDying);
+	}
 }
 void GameScene::UpdateButtonPositions()
 {
@@ -392,7 +395,7 @@ void GameScene::GameOverLogic()
 	fm.WriteString(newscore);
 	fm.CloseFile();
 	// go to end scene
-	uthSceneM.GoToScene(2);
+	uthSceneM.GoToScene(3);
 }
 void GameScene::GameState()
 {

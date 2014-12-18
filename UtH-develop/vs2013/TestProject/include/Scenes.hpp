@@ -7,6 +7,7 @@ enum SceneName
 {
 	DEFAULT = UTHDefaultScene,
 	//TITLE,
+	LOAD,
 	MENU,
 	GAME,
 	GAMEOVER,
@@ -22,6 +23,7 @@ enum SceneName
 #include <MenuScene.h>
 #include <GameScene.h>
 #include <GameOverScene.h>
+#include <LoadScene.h>
 
 using namespace uth;
 
@@ -34,6 +36,7 @@ Scene* NewSceneFunc(int SceneID)
 	case MENU:		return new MenuScene();
 	case GAME:		return new GameScene();
 	case GAMEOVER:	return new GameOverScene();
+	case LOAD:		return new LoadScene();
 	default:		return new DefaultScene();
 	}
 }

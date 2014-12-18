@@ -30,7 +30,7 @@ bool GameOverScene::Init()
 	startButton = new Button(uthEngine.GetWindow(), startTex);	
 	startButton->setCallBack([]()
 	{
-		uthSceneM.GoToScene(1);
+		uthSceneM.GoToScene(2);
 	});
 
 	float offsetX = 3 * uthEngine.GetWindow().GetCamera().GetSize().x / 10;

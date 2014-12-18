@@ -195,7 +195,7 @@ void MenuScene::ButtonInit()
 	startButton = new Button(uthEngine.GetWindow(), startTex);
 	startButton->setCallBack([]()
 	{
-		uthSceneM.GoToScene(1);
+		uthSceneM.GoToScene(2);
 	});
 	startButton->transform.ScaleToSize(startTex->GetSize().x * scaleratio, startTex->GetSize().y * scaleratio);
 
