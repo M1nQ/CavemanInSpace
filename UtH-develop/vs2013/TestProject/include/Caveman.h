@@ -18,7 +18,7 @@ public:
 	//void update(float dt);
 	//Input methods
 	//Hit method calls reaction method in prefab class?
-	void Hit(const Vec2& hitPoint);
+	void Hit(const Vec2& hitPoint, bool isDying);
 	void Die();
 	// For testing input
 	void ChangeDirectionMouse(pmath::Vec2 arrowDirection, bool strongpull);

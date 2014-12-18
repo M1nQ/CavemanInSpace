@@ -27,7 +27,10 @@ void GameScene::Update(float dt)
 		
 		UpdateBackground();
 		p_world->Update(dt);
-		p_club->update(dt, p_caveman->transform.GetPosition());
+		if (!isDying)
+		{
+			p_club->update(dt, p_caveman->transform.GetPosition());
+		}
 		stats.Update(dt);
 
 		if (particleTimer > 0)
@@ -328,7 +331,7 @@ void GameScene::Input()
 		p_clubAttack->PlayEffect();
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
 		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
-		p_caveman->Hit(hitPoint);
+		p_caveman->Hit(hitPoint, isDying);
 	}
 	
 	// Mouse input for testing.
@@ -364,7 +367,7 @@ void GameScene::Input()
 		p_clubAttack->PlayEffect();
 		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
 		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
-		p_caveman->Hit(hitPoint);
+		p_caveman->Hit(hitPoint, isDying);
 	}
 }
 void GameScene::UpdateButtonPositions()
@@ -473,54 +476,6 @@ void GameScene::GameState()
 	}
 }
 
-// Not working at all.
-void GameScene::TraceNauts()
-{
-	Vec2 temp;
-	Vec2 indPos;
-	
-	if (objectList.size() > 0)
-	{
-		for (i_ObjectList = objectList.rbegin(); i_ObjectList != objectList.rend(); ++i_ObjectList)
-		{
-			if (i_ObjectList->second->HasTag("Naut"))
-			{
-				Vec2 cavepos = uthEngine.GetWindow().PixelToCoords(p_caveman->transform.GetPosition());
-				Vec2 nautpos = uthEngine.GetWindow().PixelToCoords(i_ObjectList->second->transform.GetPosition());
-				temp = nautpos - cavepos;
-				
-				// Find the right sector and set indPos at screen edge
-				if ((corners[1] - cavepos).y / (corners[1] - cavepos).x < (temp.y / temp.x) < (corners[2] - cavepos).y / (corners[2] - cavepos).x)
-				{
-					indPos = ScreenLimitPoint(cavepos, nautpos, corners[1], corners[2]);
-				}				
-				else if ((corners[3] - cavepos).y / (corners[3] - cavepos).x < (temp.y / temp.x) < (corners[0] - cavepos).y / (corners[0] - cavepos).x)
-				{
-					indPos = ScreenLimitPoint(cavepos, nautpos, corners[3], corners[0]);
-				}
-				else if (temp.y < 0)
-				{
-					indPos = ScreenLimitPoint(cavepos, nautpos, corners[0], corners[1]);
-				}
-				else
-					indPos = ScreenLimitPoint(cavepos, nautpos, corners[2], corners[3]);
-
-				if (temp.length() <= indPos.length())
-				{
-					// remove / disable
-				}
-				else
-				{
-					// Find Naut's indicator and set to indPos
-					p_indicator->transform.SetPosition(uthEngine.GetWindow().CoordsToPixel(indPos));
-				}
-				
-
-			}
-		}
-	}
-}
-
 // Initialization
 
 void GameScene::BackgroundInit()
@@ -582,15 +537,18 @@ void GameScene::ContactLogicInit()
 	contactListener = PhysicsContactListener();
 	contactListener.onBeginContact = [this](b2Contact* contact, GameObject* a, GameObject* b)
 	{
-		if (b->HasTag("Club"))
+		if (!isDying)
 		{
-			ReactToHit(a);
-			p_club->HasHit();
-		}
-		else if (a->HasTag("Club"))
-		{
-			ReactToHit(b);
-			p_club->HasHit();
+			if (b->HasTag("Club"))
+			{
+				ReactToHit(a);
+				p_club->HasHit();
+			}
+			else if (a->HasTag("Club"))
+			{
+				ReactToHit(b);
+				p_club->HasHit();
+			}
 		}
 	};
 	p_world->SetContactListener(&contactListener);
@@ -676,20 +634,4 @@ void GameScene::SoundInit()
 	p_cavemanMove = uthRS.LoadSound("sounds/caveman_move.wav");
 	p_hitMetal = uthRS.LoadSound("sounds/hit_sound_metal.wav");
 	p_hitRock = uthRS.LoadSound("sounds/hit_sound_rock.wav");
-}
-
-// Helper method for naut indicator (not working)
-
-Vec2 GameScene::ScreenLimitPoint(Vec2 cavepos, Vec2 astropos, Vec2 corner1, Vec2 corner2)
-{	
-	Vec2 result;
-	Vec2 x = corner1 - cavepos;
-	Vec2 d1 = astropos - cavepos;
-	Vec2 d2 = corner2 - corner1;
-
-	float cross = d1.x * d2.y - d1.y * d2.x; // no check for actual crossing since we trust that general direction will be close enough
-
-	float t1 = (x.x * d2.y - x.y * d2.x) / cross;
-	result = cavepos + d1 * t1;
-	return result;
 }

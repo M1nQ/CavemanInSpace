@@ -19,9 +19,9 @@ void Caveman::Init(PhysicsWorld *world)
 }
 
 
-void Caveman::Hit(const Vec2& hitPoint)
+void Caveman::Hit(const Vec2& hitPoint, bool isDying)
 {
-	if (animTime <= 0)
+	if (animTime <= 0 && !isDying)
 	{
 		this->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 10, 0, 10);
 		animTime = 1.f;
