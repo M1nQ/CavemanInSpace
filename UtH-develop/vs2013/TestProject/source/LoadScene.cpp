@@ -3,7 +3,7 @@
 bool LoadScene::Init()
 {
 	loadbg = new GameObject("loader");
-	loadbg->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/title_screen.png")));
+	loadbg->AddComponent(new Sprite(uthRS.LoadTexture("Placeholders/Title_screen.png")));
 	loadbg->transform.ScaleToSize(uthEngine.GetWindow().GetCamera().GetSize());
 	return true;
 }
