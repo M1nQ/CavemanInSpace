@@ -34,6 +34,7 @@ namespace uth
 		void CloseOverlayMode();
 		void Scores_SetActive(bool active);
 		void ButtonInit();
+		void ResetHiScores();
 
 		Button* startButton;
 		Button* creditsButton;

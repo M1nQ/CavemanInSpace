@@ -1,5 +1,9 @@
 #include <LoadScene.h>
 
+LoadScene::LoadScene()
+{
+	loading = false;
+}
 bool LoadScene::Init()
 {
 	loadbg = new GameObject("loader");
@@ -15,8 +19,12 @@ bool LoadScene::DeInit()
 
 void LoadScene::Update(float dt)
 {
-	if (LoadEverything())
-		uthSceneM.GoToScene(1);
+	if (loading)
+	{
+		if (LoadEverything())
+			uthSceneM.GoToScene(1);
+	}
+		loading = true;
 }
 void LoadScene::Draw(RenderTarget& target, RenderAttributes attributes)
 {

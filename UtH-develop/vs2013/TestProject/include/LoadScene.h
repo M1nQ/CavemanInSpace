@@ -11,7 +11,7 @@ namespace uth
 	class LoadScene : public Scene
 	{
 	public:
-		LoadScene(){}
+		LoadScene();
 		~LoadScene(){}
 
 		bool Init() override;
@@ -21,6 +21,7 @@ namespace uth
 		void Draw(RenderTarget& target, RenderAttributes attributes = RenderAttributes()) override;
 
 		bool LoadEverything();
+		bool loading;
 
 		GameObject* loadbg;
 		Texture* textures[20];

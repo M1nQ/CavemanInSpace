@@ -52,8 +52,10 @@ bool MenuScene::Init()
 	tutorial->transform.ScaleToSize(size);
 	AddChild<GameObject>(tutorial);
 
-	// size & place
-
+	
+	// for initialising android data files!
+	// TODO: Remove after first build & build again!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	ResetHiScores();
 
 	ReadHighScores();
 	SetScoreText();
@@ -216,4 +218,18 @@ void MenuScene::ButtonInit()
 	closeButton->transform.SetPosition((scrsize.x - newSize.x) / 2, -(scrsize.y - newSize.y) / 2);
 	AddChild<Button>(closeButton);
 
+}
+void MenuScene::ResetHiScores()
+{
+	FileManager files;
+
+	files.OpenFile("highscores1.dat", FileManager::Location::INTERNAL, true);
+	files.WriteString("0");
+	files.CloseFile();
+	files.OpenFile("highscores2.dat", FileManager::Location::INTERNAL, true);
+	files.WriteString("0");
+	files.CloseFile();
+	files.OpenFile("highscores3.dat", FileManager::Location::INTERNAL, true);
+	files.WriteString("0");
+	files.CloseFile();
 }

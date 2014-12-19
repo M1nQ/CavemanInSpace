@@ -328,38 +328,40 @@ void GameScene::Input()
 	// TODO: check which input version should be used?
 
 	// Handles touch input.
-
-	if (uthInput.Touch[0].Motion() == TouchMotion::RELEASE && 
-									   p_arrow->IsActive() && 
-											Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition()) > 30)
+	if (!isDying)
 	{
-		bool bigpull = p_arrow->IsStrong();
-		p_caveman->ChangeDirectionMouse(p_arrow->GetNormDirection(), bigpull);
-		if (bigpull)
+		if (uthInput.Touch[0].Motion() == TouchMotion::RELEASE &&
+			p_arrow->IsActive() &&
+			Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition()) > 30)
 		{
-			stats.addOxygen -= 0.1f;
-			p_cavemanMove->SetVolume(100); // OR SetPitch?
+			bool bigpull = p_arrow->IsStrong();
+			p_caveman->ChangeDirectionMouse(p_arrow->GetNormDirection(), bigpull);
+			if (bigpull)
+			{
+				stats.addOxygen -= 0.1f;
+				p_cavemanMove->SetVolume(100); // OR SetPitch?
+			}
+			else
+			{
+				stats.addOxygen -= 0.05f;
+				p_cavemanMove->SetVolume(70);
+			}
+			p_arrow->DisableArrow();
+			//p_caveman->ChangeDirectionTouch(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition());
 		}
-		else
+		else if (uthInput.Touch[0].Motion() == TouchMotion::DRAG && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Common.Position()) > 30)
 		{
-			stats.addOxygen -= 0.05f;
-			p_cavemanMove->SetVolume(70);
+			if (p_arrow->IsActive() == false)
+				p_arrow->DrawArrow(uthInput.Common.Position());
+			else p_arrow->update(p_caveman->transform.GetPosition());
 		}
-		p_arrow->DisableArrow();
-		//p_caveman->ChangeDirectionTouch(uthInput.Touch[0].GetStartPosition(), uthInput.Touch[0].GetEndPosition());
-	}
-	else if (uthInput.Touch[0].Motion() == TouchMotion::DRAG && Vec2::distance(uthInput.Touch[0].GetStartPosition(), uthInput.Common.Position()) > 30)
-	{
-		if (p_arrow->IsActive() == false)
-			p_arrow->DrawArrow(uthInput.Common.Position());
-		else p_arrow->update(p_caveman->transform.GetPosition());
-	}
-	else if (uthInput.Touch[0].Motion() == TouchMotion::TAP && p_club->isHitting() == false)
-	{
-		p_clubAttack->PlayEffect();
-		Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
-		p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
-		p_caveman->Hit(hitPoint, isDying);
+		else if (uthInput.Touch[0].Motion() == TouchMotion::TAP && p_club->isHitting() == false)
+		{
+			p_clubAttack->PlayEffect();
+			Vec2 hitPoint = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
+			p_club->Hit(p_caveman->transform.GetPosition(), hitPoint);
+			p_caveman->Hit(hitPoint, isDying);
+		}
 	}
 	
 	// Mouse input for testing.
